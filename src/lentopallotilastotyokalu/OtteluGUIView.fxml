@@ -1,238 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fi.jyu.mit.fxgui.ComboBoxChooser?>
+<?import fi.jyu.mit.fxgui.ListChooser?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="490.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lentopallotilastotyokalu.OtteluGUIController">
-   <bottom>
-      <HBox BorderPane.alignment="CENTER">
+<BorderPane prefHeight="395.0" prefWidth="560.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lentopallotilastotyokalu.OtteluGUIController">
+   <top>
+      <VBox prefHeight="74.0" prefWidth="560.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Tallenna">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button mnemonicParsing="false" text="Poista viimeisin">
-               <HBox.margin>
-                  <Insets bottom="10.0" left="345.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-      </HBox>
-   </bottom>
-   <left>
-      <VBox prefHeight="490.0" prefWidth="535.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Poistu">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox prefHeight="47.0" prefWidth="560.0">
                <children>
                   <TextField prefHeight="28.0" prefWidth="487.0" promptText="Lisää vastustaja" text="Karvapallot">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
                   <DatePicker prefHeight="26.0" prefWidth="487.0" promptText="Lisää Päivä">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </DatePicker>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="633.0">
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox prefHeight="311.0" prefWidth="194.0" BorderPane.alignment="CENTER">
+         <children>
+            <TitledPane collapsible="false" prefHeight="269.0" prefWidth="227.0" text="Valitse pelaaja">
+               <content>
+                  <ListChooser prefHeight="243.0" prefWidth="214.0" rivit="2 Eemi Tervaportti&#10;4 Lauri Kerminen&#10;9 Tommi Siirilä&#10;11 Sauli Sinkkonen&#10;10 Urpo Sivula &#10;5 Antti Siltala &#10;8 Elviss Krastins">
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </ListChooser>
+               </content>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </TitledPane>
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <VBox prefHeight="280.0" prefWidth="338.0" BorderPane.alignment="CENTER">
+         <children>
+            <TitledPane collapsible="false" prefHeight="148.0" prefWidth="328.0" text="Valitse suoritus">
+               <content>
+                  <ListChooser prefHeight="146.0" prefWidth="345.0" rivit="Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
+               </content>
+               <VBox.margin>
+                  <Insets bottom="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </TitledPane>
+            <Label text="Viimeisin tallennettu:">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="39.0" prefWidth="338.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Eemil Tervaportti" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="2" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
+                  <Label text="11 Sauli Sinkkonen">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" />
                      </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Lauri Kerminen" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="4" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
+                  </Label>
+                  <Label text="Ässä">
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets left="10.0" right="10.0" />
                      </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Tommi Siirilä" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="9" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Sauli Sinkkonen" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="11" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children></HBox>
-            <HBox layoutX="10.0" layoutY="35.0" prefHeight="92.0" prefWidth="487.0">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Urpo Sivula" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="10" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Antti Siltala" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="5" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" text="Elviss Krastins" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" text="8" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
+                  </Label>
                </children>
             </HBox>
-            <HBox layoutX="10.0" layoutY="135.0" prefHeight="100.0" prefWidth="633.0">
+            <HBox>
                <children>
-                  <VBox prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
+                  <Button mnemonicParsing="false" text="Tallenna">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Poista viimeisin">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="260.0" prefHeight="80.0" prefWidth="487.0">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="120.0">
-                     <children>
-                        <TextField alignment="CENTER" editable="false" promptText="Pelaaja" />
-                        <TextField alignment="CENTER" editable="false" promptText="Numero" />
-                        <ComboBoxChooser promptText="Valitse tilasto" rivit="Valitse tilasto&#10;Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
-                     </children>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </VBox>
+                  </Button>
                </children>
             </HBox>
          </children>
       </VBox>
-   </left>
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Poistu">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
+   </right>
 </BorderPane>
