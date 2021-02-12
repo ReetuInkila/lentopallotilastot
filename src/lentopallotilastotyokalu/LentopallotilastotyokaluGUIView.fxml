@@ -79,9 +79,9 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField text="Sauli Sinkkonen" GridPane.columnIndex="1" />
-                        <TextField text="11" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField text="Keskitorjuja" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField editable="false" text="Sauli Sinkkonen" GridPane.columnIndex="1" />
+                        <TextField editable="false" text="11" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField editable="false" text="Keskitorjuja" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Nimi" />
                         <Label text="Pelinumero" GridPane.rowIndex="1" />
                         <Label text="Pelipaikka" GridPane.rowIndex="2" />
@@ -98,8 +98,14 @@
                      <children>
                         <GridPane>
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -113,17 +119,17 @@
                            <children>
                               <Label text="Vastustaja" />
                               <Label text="Päivä" GridPane.rowIndex="1" />
-                              <Label text="Syötöt" GridPane.rowIndex="2" />
+                              <Label text="Syötöt" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                               <Label text="Ässät" GridPane.rowIndex="3" />
                               <Label text="Syötönnostot" GridPane.rowIndex="4" />
                               <Label text="Pisteet" GridPane.rowIndex="5" />
                               <TextField editable="false" text="25.1.2020" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField text="4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField editable="false" text="4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField editable="false" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <TextField editable="false" text="Karvapallot" GridPane.columnIndex="1" />
-                              <TextField text="2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <TextField text="2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <TextField text="1" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <TextField editable="false" text="2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField editable="false" text="2" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <TextField editable="false" text="1" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <Label text="Virheet" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
@@ -149,12 +155,14 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Ottelu">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem mnemonicParsing="false" text="Lisää Ottelu" />
+              <MenuItem mnemonicParsing="false" text="Poista Ottelu" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" text="Apua" />
+              <MenuItem mnemonicParsing="false" text="Tietoja" />
             </items>
           </Menu>
         </menus>
@@ -163,7 +171,7 @@
    <bottom>
       <HBox prefHeight="34.0" prefWidth="741.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Lisää pelaaja">
+            <Button mnemonicParsing="false" onAction="#handleLisaaPelaaja" text="Lisää pelaaja">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -171,7 +179,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" prefWidth="96.0" text="Poista pelaaja">
+            <Button mnemonicParsing="false" onAction="#handlePoistaPelaaja" prefWidth="96.0" text="Poista pelaaja">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
