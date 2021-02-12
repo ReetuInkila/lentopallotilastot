@@ -150,19 +150,20 @@
         <menus>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistu" text="Poistu" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Ottelu">
             <items>
-              <MenuItem mnemonicParsing="false" text="Lisää Ottelu" />
-              <MenuItem mnemonicParsing="false" text="Poista Ottelu" />
+              <MenuItem mnemonicParsing="false" onAction="#handleLisaaOttelu"  text="Lisää Ottelu" />
+              <MenuItem mnemonicParsing="false" onAction="#handlePoistaOttelu" text="Poista Ottelu" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Apua">
             <items>
-              <MenuItem mnemonicParsing="false" text="Apua" />
-              <MenuItem mnemonicParsing="false" text="Tietoja" />
+              <MenuItem mnemonicParsing="false" onAction="#handleApua" text="Apua" />
+              <MenuItem mnemonicParsing="false" onAction="#handleTietoja" text="Tietoja" />
             </items>
           </Menu>
         </menus>

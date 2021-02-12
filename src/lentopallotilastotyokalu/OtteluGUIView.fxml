@@ -22,7 +22,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Poistu">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleTallennaPoistu" text="Tallenna ja poistu" />
                   </items>
                 </Menu>
               </menus>
@@ -94,12 +94,12 @@
             </HBox>
             <HBox>
                <children>
-                  <Button mnemonicParsing="false" text="Tallenna">
+                  <Button mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" text="Poista viimeisin">
+                  <Button mnemonicParsing="false" onAction="#HandlePoistaViimeisin" text="Poista viimeisin">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>

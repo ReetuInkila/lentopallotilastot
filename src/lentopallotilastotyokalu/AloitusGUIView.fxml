@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="lentopallotilastotyokalu.AloitusGUIController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lentopallotilastotyokalu.AloitusGUIController">
    <center>
       <VBox prefHeight="524.0" prefWidth="631.0" BorderPane.alignment="CENTER">
          <children>
@@ -33,12 +32,12 @@
                         </ListChooser>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Lisää joukkue">
+                              <Button mnemonicParsing="false" onAction="#onHandleLisaaJoukkue" text="Lisää joukkue">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Poista joukkue">
+                              <Button mnemonicParsing="false" onAction="#onHandlePoistaJoukkue" text="Poista joukkue">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
@@ -47,7 +46,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Button mnemonicParsing="false" text="Avaa">
+                  <Button mnemonicParsing="false" onAction="#onHandleAvaa" text="Avaa">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="227.0" />
                      </HBox.margin>
