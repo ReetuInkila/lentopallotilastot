@@ -20,7 +20,7 @@ public class OtteluMain extends Application {
             final Pane root = ldr.load();
             //final OtteluGUIController otteluCtrl = (OtteluGUIController) ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("ottelu.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Ottelu");
             primaryStage.show();

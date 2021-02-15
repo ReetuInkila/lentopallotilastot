@@ -151,7 +151,8 @@
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleTallenna" text="Tallenna" />
-                  <MenuItem mnemonicParsing="false" onAction="#handlePoistu" text="Poistu" />
+              <MenuItem mnemonicParsing="false" onAction="#handleAvaa" text="Avaa" />
+              <MenuItem mnemonicParsing="false" onAction="#handlePoistu" text="Poistu" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Ottelu">

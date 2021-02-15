@@ -1,6 +1,8 @@
 package lentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ModalController;
+import lentopallotilastotyokalu.OtteluGUIController;
 import javafx.fxml.FXML;
 /**
  * @author RInkila
@@ -25,8 +27,8 @@ public class LentopallotilastotyokaluGUIController {
     }
 
     @FXML void handleLisaaOttelu() {
-        Dialogs.showMessageDialog("Ei osata aloittaa ottelua");
-        // TODO: korvaa ottelun aloituksella 
+        ModalController.showModal(OtteluGUIController.class.getResource("OtteluView.fxml"),
+                "Kerho", null, null);
     }
 
     @FXML void handlePoistaOttelu() {
@@ -36,6 +38,11 @@ public class LentopallotilastotyokaluGUIController {
 
     @FXML void handlePoistu() {
         Dialogs.showMessageDialog("Ei osata poistua");
+        // TODO: korvaa tallenna ja poistu ominaisuudella
+    }
+    
+    @FXML void handleAvaa() {
+        Dialogs.showMessageDialog("Ei osata avata");
         // TODO: korvaa tallenna ja poistu ominaisuudella
     }
 

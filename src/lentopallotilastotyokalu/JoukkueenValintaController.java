@@ -7,19 +7,19 @@ import javafx.fxml.FXML;
  * @version Feb 12, 2021
  *
  */
-public class AloitusGUIController {
+public class JoukkueenValintaController {
 
-    @FXML void onHandleAvaa() {
+    @FXML void handleAvaa() {
         Dialogs.showMessageDialog("Ei osata vielä avata");
         // TODO: korvaa joukkueen sivun avaamisella
     }
 
-    @FXML void onHandleLisaaJoukkue() {
+    @FXML void handleLisaaJoukkue() {
         Dialogs.showMessageDialog("Ei osata lisätä joukkuetta");
         // TODO: korvaa joukkueen lisäyksellä
     }
 
-    @FXML void onHandlePoistaJoukkue() {
+    @FXML void handlePoistaJoukkue() {
         Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
         // TODO: korvaa joukkueen poistamisella
     }

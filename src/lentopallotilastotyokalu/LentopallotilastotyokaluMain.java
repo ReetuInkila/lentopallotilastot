@@ -1,5 +1,6 @@
 package lentopallotilastotyokalu;
 
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -27,6 +28,7 @@ public class LentopallotilastotyokaluMain extends Application {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        
     }
 
     /**

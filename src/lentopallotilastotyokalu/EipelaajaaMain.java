@@ -20,7 +20,7 @@ public class EipelaajaaMain extends Application {
             final Pane root = ldr.load();
             //final EipelaajaaGUIController eipelaajaaCtrl = (EipelaajaaGUIController) ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("eipelaajaa.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Eipelaajaa");
             primaryStage.show();

@@ -12,17 +12,17 @@ import javafx.fxml.FXMLLoader;
  * @version 29.1.2021
  *
  */
-public class AloitusMain extends Application {
+public class JoukkueenValinta extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("AloitusGUIView.fxml"));
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("JoukkueenValinta.fxml"));
             final Pane root = ldr.load();
             //final AloitusGUIController aloitusCtrl = (AloitusGUIController) ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("aloitus.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Aloitus");
+            primaryStage.setTitle("Valitse Joukkue");
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();

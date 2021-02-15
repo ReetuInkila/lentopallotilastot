@@ -20,7 +20,7 @@ public class EipoistettavaaMain extends Application {
             final Pane root = ldr.load();
             //final EipoistettavaaGUIController eipoistettavaaCtrl = (EipoistettavaaGUIController) ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("eipoistettavaa.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Eipoistettavaa");
             primaryStage.show();

@@ -20,7 +20,7 @@ public class LisaajoukkueMain extends Application {
             final Pane root = ldr.load();
             //final LisaajoukkueGUIController lisaajoukkueCtrl = (LisaajoukkueGUIController) ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("lisaajoukkue.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Lisaajoukkue");
             primaryStage.show();

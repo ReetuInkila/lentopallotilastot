@@ -20,7 +20,7 @@ public class OletkovarmaMain extends Application {
             final Pane root = ldr.load();
             //final OletkovarmaGUIController oletkovarmaCtrl = (OletkovarmaGUIController) ldr.getController();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("oletkovarma.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Oletkovarma");
             primaryStage.show();
