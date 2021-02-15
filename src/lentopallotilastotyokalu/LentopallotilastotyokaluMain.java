@@ -23,11 +23,16 @@ public class LentopallotilastotyokaluMain extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Lentopallotilastotyokalu");
+            primaryStage.setTitle("Lentopallo tilastotyokalu");
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
         }
+        Application.Parameters params = getParameters(); 
+        if ( params.getRaw().size() > 0 ) 
+            LentopallotilastotyokaluGUIController.lueTiedosto(params.getRaw().get(0));  
+        else
+            if ( !LentopallotilastotyokaluGUIController.avaa() );
         
     }
 

@@ -2,7 +2,6 @@ package lentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
-import lentopallotilastotyokalu.OtteluController;
 import javafx.fxml.FXML;
 /**
  * @author RInkila
@@ -26,9 +25,9 @@ public class LentopallotilastotyokaluGUIController {
         // TODO: korvaa apua ikkunan näyttämisellä 
     }
 
-    @FXML void handleLisaaOttelu() {
-        ModalController.showModal(OtteluController.class.getResource("OtteluView.fxml"),
-                "Kerho", null, null);
+    @FXML Object handleLisaaOttelu() {
+        return ModalController.showModal(
+                JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, null);
     }
 
     @FXML void handlePoistaOttelu() {
@@ -42,9 +41,10 @@ public class LentopallotilastotyokaluGUIController {
     }
     
     @FXML void handleAvaa() {
-        Dialogs.showMessageDialog("Ei osata avata");
-        // TODO: korvaa tallenna ja poistu ominaisuudella
+        avaa();
     }
+
+    
 
     @FXML void handleTallenna() {
         Dialogs.showMessageDialog("Ei osata Tallentaa");
@@ -54,5 +54,22 @@ public class LentopallotilastotyokaluGUIController {
     @FXML void handleTietoja() {
         Dialogs.showMessageDialog("Ei osata avata tietoja ikkunaa");
         // TODO: korvaa tietoja ikkunan näyttämisellä
+    }
+    
+    
+    /** Haetaan tiedostonnimi ja luetaan se
+     * @return true jos onnistui false jos ei
+     */
+    public static boolean avaa() {
+        String uusijoukkue = JoukkueenValintaController.valitseJoukkue(null, "VaLePa");
+        if (uusijoukkue == null) return false;
+        //lueTiedosto(uusijoukkue);
+        return true;
+        
+    }
+
+    public static void lueTiedosto(String string) {
+        // TODO Auto-generated method stub
+        
     }
 }
