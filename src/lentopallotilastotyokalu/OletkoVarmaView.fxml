@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="158.0" prefWidth="267.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lentopallotilastotyokalu.EipelaajaaGUIController">
+<BorderPane prefHeight="158.0" prefWidth="267.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lentopallotilastotyokalu.OletkoVarmaController">
    <center>
       <VBox prefHeight="158.0" prefWidth="281.0" BorderPane.alignment="CENTER">
          <children>

@@ -9,20 +9,20 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * @author RInkila
- * @version 31.1.2021
+ * @version 29.1.2021
  *
  */
-public class EipoistettavaaMain extends Application {
+public class JoukkueenValintaMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("EipoistettavaaGUIView.fxml"));
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("JoukkueenValinta.fxml"));
             final Pane root = ldr.load();
-            //final EipoistettavaaGUIController eipoistettavaaCtrl = (EipoistettavaaGUIController) ldr.getController();
+            //final AloitusGUIController aloitusCtrl = (AloitusGUIController) ldr.getController();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Eipoistettavaa");
+            primaryStage.setTitle("Valitse Joukkue");
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();

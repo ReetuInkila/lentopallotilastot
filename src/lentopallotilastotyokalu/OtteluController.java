@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
  * @version 29.1.2021
  *
  */
-public class OtteluGUIController {
+public class OtteluController {
 
     @FXML void HandlePoistaViimeisin() {
         Dialogs.showMessageDialog("Ei osata vielä poistaa tilastoja");

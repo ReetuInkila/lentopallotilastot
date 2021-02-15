@@ -16,7 +16,7 @@ public class OtteluMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("OtteluGUIView.fxml"));
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("OtteluView.fxml"));
             final Pane root = ldr.load();
             //final OtteluGUIController otteluCtrl = (OtteluGUIController) ldr.getController();
             Scene scene = new Scene(root);

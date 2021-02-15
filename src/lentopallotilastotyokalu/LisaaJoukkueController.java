@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
  *
  */
 
-public class LisaajoukkueGUIController {
+public class LisaaJoukkueController {
 
     @FXML void handleTallenna() {
         Dialogs.showMessageDialog("Ei osata Tallentaa");

@@ -2,7 +2,7 @@ package lentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
-import lentopallotilastotyokalu.OtteluGUIController;
+import lentopallotilastotyokalu.OtteluController;
 import javafx.fxml.FXML;
 /**
  * @author RInkila
@@ -27,7 +27,7 @@ public class LentopallotilastotyokaluGUIController {
     }
 
     @FXML void handleLisaaOttelu() {
-        ModalController.showModal(OtteluGUIController.class.getResource("OtteluView.fxml"),
+        ModalController.showModal(OtteluController.class.getResource("OtteluView.fxml"),
                 "Kerho", null, null);
     }
 

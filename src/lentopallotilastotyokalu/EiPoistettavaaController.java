@@ -5,6 +5,6 @@ package lentopallotilastotyokalu;
  * @version 31.1.2021
  *
  */
-public class OletkovarmaGUIController {
+public class EiPoistettavaaController {
       // TODO
 }

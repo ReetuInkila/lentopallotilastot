@@ -9,20 +9,20 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * @author RInkila
- * @version 29.1.2021
+ * @version 31.1.2021
  *
  */
-public class JoukkueenValinta extends Application {
+public class OletkoVarmaMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("JoukkueenValinta.fxml"));
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("OletkoVarmaView.fxml"));
             final Pane root = ldr.load();
-            //final AloitusGUIController aloitusCtrl = (AloitusGUIController) ldr.getController();
+            //final OletkovarmaGUIController oletkovarmaCtrl = (OletkovarmaGUIController) ldr.getController();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Valitse Joukkue");
+            primaryStage.setTitle("Oletkovarma");
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();

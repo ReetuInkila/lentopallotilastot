@@ -8,11 +8,11 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="lentopallotilastotyokalu.EipelaajaaGUIController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="lentopallotilastotyokalu.EiPoistettavaaController">
    <center>
       <VBox prefHeight="200.0" prefWidth="355.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Ei valittuna pelaajaa" textAlignment="CENTER">
+            <Label text="Ei viimeistä tilastoa" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -29,3 +29,4 @@
       </VBox>
    </center>
 </BorderPane>
+

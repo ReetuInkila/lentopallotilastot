@@ -5,6 +5,6 @@ package lentopallotilastotyokalu;
  * @version 29.1.2021
  *
  */
-public class EipelaajaaGUIController {
+public class EiPelaajaaController {
       // TODO
 }
