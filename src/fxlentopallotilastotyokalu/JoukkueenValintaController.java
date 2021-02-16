@@ -1,4 +1,4 @@
-package lentopallotilastotyokalu;
+package fxlentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;

@@ -1,4 +1,4 @@
-package lentopallotilastotyokalu;
+package fxlentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
@@ -21,8 +21,7 @@ public class LentopallotilastotyokaluGUIController {
     }
     
     @FXML void handleApua() {
-        Dialogs.showMessageDialog("Ei osata näyttää apua ikkunaa");
-        // TODO: korvaa apua ikkunan näyttämisellä 
+        ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("HelpView.fxml"), "Lentopallo tilastotyökalu", null, ""); 
     }
 
     @FXML Object handleLisaaOttelu() {
@@ -52,8 +51,7 @@ public class LentopallotilastotyokaluGUIController {
     }
 
     @FXML void handleTietoja() {
-        Dialogs.showMessageDialog("Ei osata avata tietoja ikkunaa");
-        // TODO: korvaa tietoja ikkunan näyttämisellä
+        ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("AboutView.fxml"), "Lentopallo tilastotyökalu", null, "");
     }
     
     
@@ -68,8 +66,13 @@ public class LentopallotilastotyokaluGUIController {
         
     }
 
+    /**
+     * @param string   d
+     */
     public static void lueTiedosto(String string) {
         // TODO Auto-generated method stub
         
     }
+    
+
 }

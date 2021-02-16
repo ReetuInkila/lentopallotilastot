@@ -1,4 +1,4 @@
-package lentopallotilastotyokalu;
+package fxlentopallotilastotyokalu;
 
 /**
  * @author RInkila
