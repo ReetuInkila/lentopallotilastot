@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="513.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lentopallotilastotyokalu.LentopallotilastotyokaluGUIController">
+<BorderPane prefHeight="513.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxLentopallotilastotyokalu.LentopallotilastotyokaluGUIController">
    <left>
       <VBox prefHeight="488.0" prefWidth="248.0" BorderPane.alignment="CENTER">
          <children>
@@ -39,7 +39,7 @@
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <ComboBoxChooser prefWidth="230.0" promptText="Nimi " rivit="Nimi&#10;Pelinumero&#10;Pelipaikka&#10;" selectFirst="false">
+            <ComboBoxChooser onAction="#handleHakuehto" prefWidth="230.0" promptText="Nimi " rivit="Nimi&#10;Pelinumero&#10;Pelipaikka&#10;" selectFirst="false">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
@@ -157,7 +157,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Ottelu">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleLisaaOttelu"  text="Lisää Ottelu" />
+              <MenuItem mnemonicParsing="false" onAction="#handleLisaaOttelu" text="Lisää Ottelu" />
               <MenuItem mnemonicParsing="false" onAction="#handlePoistaOttelu" text="Poista Ottelu" />
             </items>
           </Menu>

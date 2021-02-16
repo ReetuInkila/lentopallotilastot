@@ -1,11 +1,13 @@
-package fxlentopallotilastotyokalu;
+package fxLentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 /**
+ * Luokka tilastotyökalussa avattavan joukkueen valitsemisen tapahtumien hoitamiseksi
  * @author RInkila
  * @version Feb 12, 2021
  *
@@ -13,7 +15,8 @@ import javafx.stage.Stage;
 public class JoukkueenValintaController implements ModalControllerInterface<String> {
 
     @FXML void handleAvaa() {
-        Dialogs.showMessageDialog("Ei osata vielä avata");
+        Dialogs.showMessageDialog("Avataan esimerkki joukkue");
+        Platform.exit();
         // TODO: korvaa joukkueen sivun avaamisella
     }
 

@@ -1,4 +1,4 @@
-package fxlentopallotilastotyokalu;
+package fxLentopallotilastotyokalu;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

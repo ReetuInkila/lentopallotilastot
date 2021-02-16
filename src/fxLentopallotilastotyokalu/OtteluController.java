@@ -1,4 +1,4 @@
-package fxlentopallotilastotyokalu;
+package fxLentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
@@ -12,7 +12,9 @@ import javafx.fxml.FXML;
 public class OtteluController implements ModalControllerInterface<String>  {
 
     @FXML void HandlePoistaViimeisin() {
-        Dialogs.showMessageDialog("Ei osata vielä poistaa tilastoja");
+        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
+                "Poistetaanko viimeisin tilasto: ....", "Kyllä", "Ei"); 
+        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata vielä poistaa tilastoja");
         // TODO: korvaa tilaston poistamisella
     }
 
