@@ -1,16 +1,21 @@
 package fxLentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 /**
+ * Luokka ottelu ikkunan toimintojen toteuttamiseksi
  * @author RInkila
  * @version 29.1.2021
  *
  */
 public class OtteluController implements ModalControllerInterface<String>  {
 
+    @FXML private TextField textVastustaja;
+    
     @FXML void HandlePoistaViimeisin() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko viimeisin tilasto: ....", "Kyllä", "Ei"); 
@@ -24,8 +29,9 @@ public class OtteluController implements ModalControllerInterface<String>  {
     }
 
     @FXML void handleTallennaPoistu() {
-        Dialogs.showMessageDialog("Ei osata tallentaa ja poistua");
-        // TODO: korvaa ottelun tallentamisella ja sulkemisella
+        Dialogs.showMessageDialog("Ei osata vielä tallentaa, mutta poistutaan");
+        ModalController.closeStage(textVastustaja);
+
     }
 
     @Override

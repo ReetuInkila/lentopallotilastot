@@ -39,14 +39,14 @@
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <ComboBoxChooser onAction="#handleHakuehto" prefWidth="230.0" promptText="Nimi " rivit="Nimi&#10;Pelinumero&#10;Pelipaikka&#10;" selectFirst="false">
+            <ComboBoxChooser prefWidth="230.0" promptText="Nimi " rivit="Nimi&#10;Pelinumero&#10;Pelipaikka&#10;" selectFirst="false">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </ComboBoxChooser>
-            <TextField>
+            <TextField fx:id="hakuehto" >
                <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </TextField>
             <TitledPane collapsible="false" prefHeight="269.0" prefWidth="227.0" text="Pelaajat">

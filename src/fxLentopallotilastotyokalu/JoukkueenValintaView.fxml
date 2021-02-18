@@ -25,7 +25,7 @@
                <children>
                   <VBox prefHeight="643.0" prefWidth="285.0">
                      <children>
-                        <ListChooser rivit="&#10;Puulaaki&#10;Karvapallot&#10;Valepa">
+                        <ListChooser fx:id="chooserJoukkueet" rivit="&#10;Puulaaki&#10;Karvapallot&#10;Valepa">
                            <VBox.margin>
                               <Insets left="10.0" />
                            </VBox.margin>
@@ -46,7 +46,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Button mnemonicParsing="false" onAction="#handleAvaa" text="Avaa">
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#handleAvaa" text="Avaa">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="227.0" />
                      </HBox.margin>

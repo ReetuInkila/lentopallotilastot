@@ -10,7 +10,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+
 
 /**
  * Luokka lentopallotilastotyökalun käyttöliittymän tapahtumien hoitamiseksi.
@@ -22,7 +22,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     @FXML private TextField hakuehto;
     @FXML private ComboBoxChooser<String> cbKentat;
-    @FXML private Label labelVirhe;
+    private static String joukkueennimi = "Puulaaki";
     
     @FXML void handleLisaaPelaaja() {
         Dialogs.showMessageDialog("Ei osata lisätä pelaajaa");
@@ -33,6 +33,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko pelaaja: ....", "Kyllä", "Ei"); 
         if (vastaus == true ) Dialogs.showMessageDialog("Ei osata poistaa pelaajaa");
+        // TODO: pelaajan poistaminen
     }
     
     @FXML void handleApua() {
@@ -40,23 +41,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         // TODO: tarkenna ohjeita tai linkitä sivulle
     }
 
-    @FXML Object handleLisaaOttelu() {
-        return ModalController.showModal(
-                JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, null);
+    @FXML void handleLisaaOttelu() {
+        ottelu();
     }
-    
-    @FXML private void handleHakuehto() {
-        String hakukentta = cbKentat.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata vielä hakea " + hakukentta + ": " + ehto);
-    }
-
-
-    
-
 
     @FXML void handlePoistaOttelu() {
         Dialogs.showMessageDialog("Ei osata poistaa ottelua");
@@ -73,56 +60,51 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         avaa();
     }
 
-    
-
     @FXML void handleTallenna() {
-        Dialogs.showMessageDialog("Ei osata Tallentaa");
-        // TODO: korvaa tallentamisella
+        tallenna();
+        
     }
-
+    
     @FXML void handleTietoja() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("AboutView.fxml"), "Lentopallo tilastotyökalu", null, "");
         // TODO: tarkenna tietoja ikkuna
     }
     
-    
-    private void naytaVirhe(String virhe) {
-        if ( virhe == null || virhe.isEmpty() ) {
-            labelVirhe.setText("");
-            labelVirhe.getStyleClass().removeAll("virhe");
-            return;
-        }
-        labelVirhe.setText(virhe);
-        labelVirhe.getStyleClass().add("virhe");
-    }
-    
-    
-    /** 
-     * Haetaan tiedostonnimi ja luetaan se
-     * @return true jos onnistui false jos ei
+   
+    /**
+     * Tietojen tallennus
      */
-    public static boolean avaa() {
-        String uusijoukkue = JoukkueenValintaController.valitseJoukkue(null, "VaLePa");
-        if (uusijoukkue == null) return false;
-        //lueTiedosto(uusijoukkue);
-        return true;
-        
+    private static void tallenna() {
+        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
+        // TODO: korvaa tallentamisella
     }
 
     /**
-     * lukee tiedoston ja tuo sen tiedot käyttöliittymälle
-     * @param string luettavan tiedoston nimi
+     * tallentaa ja onnistuessaan palauttaa true
+     * @return true jos tallennus onnistuu
      */
-    public static void lueTiedosto(String string) {
-        // TODO: Lue tiedosto metodi
-        
+    public static boolean voikoSulkea() {
+        tallenna();
+        return true;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle bundle) {
-        //      
+    /**
+     * Avaa ottelu dialogin
+     */
+    private void ottelu() {
+        ModalController.showModal(JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, "");     
     }
 
+    /**
+     *  Avaa joukkueen valinta dialogin
+     */
+    public static void avaa() {
+        ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("JoukkueenValintaView.fxml"), "Valitse joukkue", null, "");   
+    }
     
-
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // TODO Auto-generated method stub   
+    }
+ 
 }

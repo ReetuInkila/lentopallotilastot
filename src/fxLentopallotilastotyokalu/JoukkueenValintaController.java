@@ -1,23 +1,28 @@
 package fxLentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
-import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import fi.jyu.mit.fxgui.ModalController;
 /**
- * Luokka tilastotyökalussa avattavan joukkueen valitsemisen tapahtumien hoitamiseksi
+ * Luokka joukkuuen valinta ikkunan toimintojen toteuttamiseksi 
  * @author RInkila
  * @version Feb 12, 2021
  *
  */
 public class JoukkueenValintaController implements ModalControllerInterface<String> {
 
+    @FXML private ListChooser<Joukkue> chooserJoukkueet;
+    private Joukkue joukkue = null;
+
+    
     @FXML void handleAvaa() {
-        Dialogs.showMessageDialog("Avataan esimerkki joukkue");
-        Platform.exit();
-        // TODO: korvaa joukkueen sivun avaamisella
+        //vastaus = joukkue.getNimi();
+        Dialogs.showMessageDialog("Avataan esimerkkijoukkue");
+        ModalController.closeStage(chooserJoukkueet);
+        // TODO: korvaa joukkueen valitsemisella
     }
 
     @FXML void handleLisaaJoukkue() {
@@ -28,18 +33,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     @FXML void handlePoistaJoukkue() {
         Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
         // TODO: korvaa joukkueen poistamisella
-    }
-
-    /**
-     * Luodaan joukkueen valinta dialogi ja palautetaan sieltä valittu nimi tai null
-     * @param modalityStage mille ollaan modaalisia null = sovellukselle
-     * @param oletus mitä nimeä käytetään oletuksena
-     * @return null jos painetaan cancel muuten valittu joukkue
-     */
-    public static String valitseJoukkue(Stage modalityStage, String oletus) {
-        return ModalController.showModal(
-                JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"), "Valitse joukkue", modalityStage, oletus);
-    }
+    }   
 
     @Override
     public String getResult() {
@@ -54,9 +48,19 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     }
 
     @Override
-    public void setDefault(String oletus) {
+    public void setDefault(String oletus) {  
         // TODO Auto-generated method stub
-        
     }
+
+    /**
+     * Luodaan joukkueenvalinta dialogi ja palautetaan siellä valittu nimi tai null
+     * @param modalityStage mille ollaan modaalisia, null = sovellukselle
+     * @param oletus mitä nimeä näytetään oletuksena
+     * @return null jos painetaan Cancel, muuten kirjoitettu nimi
+     */
+    public static String kysyNimi(Stage modalityStage, String oletus) {
+        return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);
+    
+}
 
 }

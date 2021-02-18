@@ -29,7 +29,7 @@
             </MenuBar>
             <HBox prefHeight="47.0" prefWidth="560.0">
                <children>
-                  <TextField prefHeight="28.0" prefWidth="487.0" promptText="Lisää vastustaja" text="Karvapallot">
+                  <TextField fx:id="textVastustaja" prefHeight="28.0" prefWidth="487.0" promptText="Lisää vastustaja" text="Karvapallot">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -49,7 +49,7 @@
          <children>
             <TitledPane collapsible="false" prefHeight="269.0" prefWidth="227.0" text="Valitse pelaaja">
                <content>
-                  <ListChooser prefHeight="243.0" prefWidth="214.0" rivit="2 Eemi Tervaportti&#10;4 Lauri Kerminen&#10;9 Tommi Siirilä&#10;11 Sauli Sinkkonen&#10;10 Urpo Sivula &#10;5 Antti Siltala &#10;8 Elviss Krastins">
+                  <ListChooser fx:id="chooserPelaajat" prefHeight="243.0" prefWidth="214.0" rivit="2 Eemi Tervaportti&#10;4 Lauri Kerminen&#10;9 Tommi Siirilä&#10;11 Sauli Sinkkonen&#10;10 Urpo Sivula &#10;5 Antti Siltala &#10;8 Elviss Krastins">
                      <padding>
                         <Insets top="10.0" />
                      </padding>
@@ -67,7 +67,7 @@
          <children>
             <TitledPane collapsible="false" prefHeight="148.0" prefWidth="328.0" text="Valitse suoritus">
                <content>
-                  <ListChooser prefHeight="146.0" prefWidth="345.0" rivit="Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
+                  <ListChooser fx:id="chooserTilastot" prefHeight="146.0" prefWidth="345.0" rivit="Syöttö&#10;Ässä&#10;Syötön nosto  &#10;Piste&#10;Virhe" />
                </content>
                <VBox.margin>
                   <Insets bottom="10.0" right="10.0" top="10.0" />
