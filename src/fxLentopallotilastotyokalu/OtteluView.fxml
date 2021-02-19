@@ -29,7 +29,7 @@
             </MenuBar>
             <HBox prefHeight="47.0" prefWidth="560.0">
                <children>
-                  <TextField fx:id="textVastustaja" prefHeight="28.0" prefWidth="487.0" promptText="Lisää vastustaja" text="Karvapallot">
+                  <TextField fx:id="textVastustaja" prefHeight="28.0" prefWidth="487.0" promptText="Lisää vastustaja">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>

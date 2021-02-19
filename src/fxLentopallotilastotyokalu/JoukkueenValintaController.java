@@ -26,12 +26,15 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     }
 
     @FXML void handleLisaaJoukkue() {
-        Dialogs.showMessageDialog("Ei osata lisätä joukkuetta");
+        String uusiJoukkue = Dialogs.showInputDialog("Anna joukkueen nimi", "");
+        if (uusiJoukkue != null) Dialogs.showMessageDialog("Ei osata lisätä joukkuetta: " + uusiJoukkue);
         // TODO: korvaa joukkueen lisäyksellä
     }
 
     @FXML void handlePoistaJoukkue() {
-        Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
+        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
+                "Poistetaanko joukkue: ....", "Kyllä", "Ei"); 
+        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
         // TODO: korvaa joukkueen poistamisella
     }   
 

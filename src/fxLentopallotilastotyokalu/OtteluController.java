@@ -18,7 +18,7 @@ public class OtteluController implements ModalControllerInterface<String>  {
     
     @FXML void HandlePoistaViimeisin() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
-                "Poistetaanko viimeisin tilasto: ....", "Kyllä", "Ei"); 
+                "Poistetaanko viimeisin tilasto: Sauli Sinkkonen, Ässä", "Kyllä", "Ei"); 
         if (vastaus == true ) Dialogs.showMessageDialog("Ei osata vielä poistaa tilastoja");
         // TODO: korvaa tilaston poistamisella
     }
