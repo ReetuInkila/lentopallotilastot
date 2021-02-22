@@ -5,6 +5,7 @@ import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
+import lentopallotilastotyokalu.Joukkue;
 import fi.jyu.mit.fxgui.ModalController;
 /**
  * Luokka joukkuuen valinta ikkunan toimintojen toteuttamiseksi 
