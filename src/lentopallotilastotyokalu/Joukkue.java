@@ -2,9 +2,15 @@ package lentopallotilastotyokalu;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import static kanta.SatunnaisNimi.*;
 
 /**
  * Luokka joukkueelle
+ * -tietää Joukkueen kentät (nimi,id)                
+ * -osaa muuttaa 1|Puulaaki|- merkkijonon            
+ *  joukkueen tiedoiksi                              
+ * -osaa antaa merkkijonona i:n kentän tiedot        
+ * -osaa laittaa merkkijonon i:neksi kentäksi        
  * @author RInkila
  * @version Feb 18, 2021
  *
@@ -16,7 +22,6 @@ public class Joukkue {
     
     private static int seuraavaNro = 1;
 
-    
     /** Tulostetaan joukkueen tiedot
      * @param out tietovirta mihin tulostetaan
      */
@@ -61,20 +66,25 @@ public class Joukkue {
         return tunnusNro;
     }
     
-    public static int rand(int ala, int yla) {
-        double n = (yla-ala)*Math.random() + ala;
-        return (int)Math.round(n);
-    }
-    
     /**
-     * 
+     * @return joukkueen nimi
+     * @example
+     * <pre name="test">
+     *   Joukkue tiimi = new Joukkue();
+     *   tiimi.taytaPuulaakiTiedoilla();
+     *   tiimi.getNimi() =R= "Puulaaki .*";
+     * </pre>
      */
-    public void taytaPuulaakiTiedoilla() {
-        nimi = "Puulaaki" + rand(1000, 9999);
-        
+    public String getNimi() {
+        return nimi;
     }
 
-    
+    /**
+     * Apumetodi jolla saadaan täytettyä testausta varten arvot joukkueelle
+     */
+    public void taytaPuulaakiTiedoilla() {
+        nimi = "Puulaaki " + rand(1000, 9999);    
+    }
 
     /**
      * @param args ei käytössä
@@ -93,10 +103,5 @@ public class Joukkue {
         tiimi2.tulosta(System.out);
         tiimi2.taytaPuulaakiTiedoilla();
         tiimi2.tulosta(System.out);
-        
     }
-
-    
-
-
 }

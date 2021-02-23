@@ -1,9 +1,9 @@
-/**
- * 
- */
 package lentopallotilastotyokalu;
 
 /** Luokka Joukkueet
+ * -pitää yllä varsinaista joukkuerekisteriä, eli osaa lisätä ja poistaa joukkueen                
+ * -lukee ja kirjoittaa joukkueiden tiedostoon      
+ * -osaa etsiä ja lajitella                         
  * @author RInkila
  * @version Feb 22, 2021
  *
@@ -12,13 +12,14 @@ public class Joukkueet {
     
     private static final int Max_JOUKKUEITA = 10;
     private int lkm = 0;
-    private Joukkue[] alkiot;
+    private String tiedostonNimi = "joukkueet.dat";
+    private Joukkue[] alkiot = new Joukkue[Max_JOUKKUEITA];
     
     /**
-     * Luodaan alustava taulukko
+     * Tyhjä muodostaja
      */
     public Joukkueet() {
-        alkiot = new Joukkue[Max_JOUKKUEITA];
+        // Atribuutit alustettu
     }
     
     /**
@@ -42,6 +43,11 @@ public class Joukkueet {
      * joukkueet.anna(3) === tiimi1; #THROWS IndexOutOfBoundsException 
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 4;
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 5;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 6;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 7;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 8;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 9;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 10;
      * joukkueet.lisaa(tiimi1);  #THROWS SailoException
      * </pre>
      */
@@ -62,6 +68,26 @@ public class Joukkueet {
             throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
         return alkiot[i];
     }
+    
+    /**
+     * Lukee joukkueiston tiedostosta.  KESKEN
+     * @param hakemisto tiedoston hakemisto
+     * @throws SailoException jos lukeminen epäonnistuu
+     */
+    public void lueTiedostosta(String hakemisto) throws SailoException {
+        tiedostonNimi = hakemisto + "/nimet.dat";
+        throw new SailoException("Ei osata vielä lukea tiedostoa " + tiedostonNimi);
+    }
+
+    
+    /**
+     * Tallentaa joukkueiston tiedostoon.  KESKEN
+     * @throws SailoException jos talletus epäonnistuu
+     */
+    public void talleta() throws SailoException {
+        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + tiedostonNimi);
+    }
+
     
     /**
      * Palauttaa tilastotyökalun joukkueiden lukumäärän
