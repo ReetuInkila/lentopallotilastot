@@ -31,9 +31,9 @@ public class Joukkueet {
      * Joukkueet joukkueet = new Joukkueet();
      * Joukkue tiimi1 = new Joukkue(), tiimi2 = new Joukkue();
      * joukkueet.getLkm() === 0;
-     * joukkueet.lisaa(aku1); joukkueet.getLkm() === 1;
-     * joukkueet.lisaa(aku2); joukkueet.getLkm() === 2;
-     * joukkueet.lisaa(aku1); joukkueet.getLkm() === 3;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 1;
+     * joukkueet.lisaa(tiimi2); joukkueet.getLkm() === 2;
+     * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 3;
      * joukkueet.anna(0) === tiimi1;
      * joukkueet.anna(1) === tiimi2;
      * joukkueet.anna(2) === tiimi1;
