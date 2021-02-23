@@ -6,6 +6,8 @@ import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import lentopallotilastotyokalu.Joukkue;
+import lentopallotilastotyokalu.Lentopallotilastotyokalu;
+import lentopallotilastotyokalu.SailoException;
 import fi.jyu.mit.fxgui.ModalController;
 /**
  * Luokka joukkuuen valinta ikkunan toimintojen toteuttamiseksi 
@@ -27,9 +29,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     }
 
     @FXML void handleLisaaJoukkue() {
-        String uusiJoukkue = Dialogs.showInputDialog("Anna joukkueen nimi", "");
-        if (uusiJoukkue != null) Dialogs.showMessageDialog("Ei osata lisätä joukkuetta: " + uusiJoukkue);
-        // TODO: korvaa joukkueen lisäyksellä
+        uusiJoukkue();       
     }
 
     @FXML void handlePoistaJoukkue() {
@@ -56,13 +56,31 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
         // TODO Auto-generated method stub
     }
 
+//===================================================================================================================================================================
+// Ei suoraan käyttöliittymään liittyvää koodia
+    
+    /**
+     * Lisätään tilastotyökaluun uusi juokkue
+     */
+    private void uusiJoukkue() {
+        Joukkue uusi = new Joukkue();
+        uusi.rekisteroi();
+        uusi.taytaPuulaakiTiedoilla();//TODO: dialogista joukkueen nimi
+        ///try {
+            //lentopallotilastotyokalu.lisaaJoukkue(uusi);
+        ///} catch (SailoException e) {
+        ///    Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+        ///    return;
+        ///}
+    }
+    
     /**
      * Luodaan joukkueenvalinta dialogi ja palautetaan siellä valittu nimi tai null
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus mitä nimeä näytetään oletuksena
      * @return null jos painetaan Cancel, muuten kirjoitettu nimi
      */
-    public static String kysyNimi(Stage modalityStage, String oletus) {
+    public static String valitseNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);
     
 }

@@ -13,6 +13,7 @@ package lentopallotilastotyokalu;
 public class Lentopallotilastotyokalu {
 
     private final Joukkueet joukkueet = new Joukkueet();
+    private final Pelaajat pelaajat = new Pelaajat();
     
     /**
      * Palautaa joukkueiden m‰‰r‰n
@@ -51,8 +52,33 @@ public class Lentopallotilastotyokalu {
      * joukkueet.lisaa(tiimi1);  #THROWS SailoException
      * </pre>
      */
-    public void lisaa(Joukkue joukkue) throws SailoException {
+    public void lisaaJoukkue(Joukkue joukkue) throws SailoException {
         joukkueet.lisaa(joukkue);
+    }
+    
+    /**
+     * Lis‰‰ uuden pelaajan tietorakenteeseen.  Ottaa pelaajan omistukseensa.
+     * @param pelaaja lis‰t‰‰v‰n joukkueen viite.  Huom tietorakenne muuttuu omistajaksi
+     * @throws SailoException jos tietorakenne on jo t‰ynn‰
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * Pelaajat pelaajat = new Pelaajat();
+     * Pelaaja pelimies1 = new Pelaaja(), pelimies2 = new Pelaaja();
+     * pelaajat.getLkm() === 0;
+     * pelaajat.lisaa(pelimies1); pelaajat.getLkm() === 1;
+     * pelaajat.lisaa(pelimies2); pelaajat.getLkm() === 2;
+     * pelaajat.lisaa(pelimies1); pelaajat.getLkm() === 3;
+     * pelaajat.anna(0) === pelimies1;
+     * pelaajat.anna(1) === pelimies2;
+     * pelaajat.anna(2) === pelimies1;
+     * pelaajat.anna(1) == pelimies1 === false;
+     * pelaajat.anna(1) == pelimies2 === true;
+     * pelaajat.anna(3) === pelimies1; #THROWS IndexOutOfBoundsException 
+     * </pre>
+     */
+    public void lisaaPelaaja(Pelaaja pelaaja) throws SailoException {
+        pelaajat.lisaa(pelaaja);
     }
     
     /**
@@ -90,16 +116,14 @@ public class Lentopallotilastotyokalu {
         Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu();
 
         try {
-            // kerho.lueTiedostosta("kelmit");
-
             Joukkue tiimi1 = new Joukkue(), tiimi2 = new Joukkue();
             tiimi1.rekisteroi();
             tiimi1.taytaPuulaakiTiedoilla();
             tiimi2.rekisteroi();
             tiimi2.taytaPuulaakiTiedoilla();
 
-            lentopallotilastotyokalu.lisaa(tiimi1);
-            lentopallotilastotyokalu.lisaa(tiimi2);
+            lentopallotilastotyokalu.lisaaJoukkue(tiimi1);
+            lentopallotilastotyokalu.lisaaJoukkue(tiimi2);
 
             System.out.println("============= Lentopallotilastotyokalun testi =================");
 

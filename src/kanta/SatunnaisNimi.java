@@ -23,6 +23,15 @@ public class SatunnaisNimi {
         return (int)Math.round(n);
     }
     
+    /** arpoo satunnaisesti pelipaikan
+     * @return pelipaikan nimi
+     */
+    public static String arvoPeliPaikka() {
+        String[] pelipaikat = {"passari", "libero", "keskitorjuja", "yleispelaaja", "hakkuri"};
+        int i = rand(0, 4);
+        return pelipaikat[i];
+    }
+    
     /**
      * @param args ei käytössä
      */

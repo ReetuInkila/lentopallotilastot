@@ -86,7 +86,7 @@ public class Joukkue {
         nimi = "Puulaaki " + rand(1000, 9999);    
     }
 
-    /**
+    /** Testataan Joukkue luokkaa
      * @param args ei käytössä
      */
     public static void main(String[] args) {
