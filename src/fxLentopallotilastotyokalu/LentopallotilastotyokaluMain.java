@@ -1,6 +1,7 @@
 package fxLentopallotilastotyokalu;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import lentopallotilastotyokalu.Lentopallotilastotyokalu;
 import javafx.scene.Scene;
@@ -31,14 +32,12 @@ public class LentopallotilastotyokaluMain extends Application {
             primaryStage.setOnCloseRequest((event) -> {
                     if ( !LentopallotilastotyokaluGUIController.voikoSulkea() ) event.consume();
                 });
-            
-            String joukkueenNimi = JoukkueenValintaController.valitseNimi(null, "");
-            System.out.println(joukkueenNimi);
-            Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu();  
+            Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu(); 
+            JoukkueenValintaController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
             tyokaluCtrl.setLentopallotilastotyokalu(lentopallotilastotyokalu);
+            
             primaryStage.show();
-
-
+            if ( !tyokaluCtrl.avaa() ) Platform.exit();
         } catch(Exception e) {
             e.printStackTrace();
         }        

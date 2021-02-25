@@ -12,6 +12,7 @@ import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -30,16 +31,22 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     @FXML private TextField hakuehto;
     @FXML private ComboBoxChooser<String> cbKentat;
-    private static String joukkueennimi = "Puulaaki";
+    @FXML private Label labelVirhe;
     @FXML private ScrollPane panelPelaaja;
     @FXML private ListChooser<Pelaaja> chooserPelaajat;
     
-    @FXML void handleLisaaPelaaja() {
-        uusiPelaaja();
-        // TODO: korvaa muokkauksella 
+    private String joukkueennimi = "";
+    
+    @Override
+    public void initialize(URL url, ResourceBundle bundle) {
+        alusta();   
     }
     
-
+    @FXML void handleLisaaPelaaja() {
+        uusiPelaaja();
+        // TODO: korvaa muokkattavalla pelaajalla 
+    }
+    
     @FXML void handlePoistaPelaaja() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko pelaaja: ....", "Kyllä", "Ei"); 
@@ -101,6 +108,36 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
     }
+    
+    private void setTitle(String title) {
+        ModalController.getStage(hakuehto).setTitle(title);
+    }
+
+    
+    /**
+     * Alustaa kerhon lukemalla sen valitun nimisestä tiedostosta
+     * @param nimi tiedosto josta kerhon tiedot luetaan
+     */
+    protected void lueTiedosto(String nimi) {
+        joukkueennimi = nimi;
+        setTitle("Lentopallo tilastotyökalu - " + joukkueennimi);
+        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
+        // if (virhe != null) 
+            Dialogs.showMessageDialog(virhe);
+    }
+
+    
+    /**
+     * Avaa joukkueen valinta dialogin
+     * @return true jos onnistui, false jos ei
+     */
+    public boolean avaa() {
+        String uusinimi = JoukkueenValintaController.valitseNimi(null, joukkueennimi);
+        if (uusinimi == null) return false;
+        lueTiedosto(uusinimi);
+        return true;
+    }
+
 
    
     /**
@@ -128,12 +165,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     }
 
     /**
-     *  Avaa joukkueen valinta dialogin
-     */
-    public static void avaa() {
-        ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("JoukkueenValintaView.fxml"), "Valitse joukkue", null, "");   
-    }
-    /**
      * Lisätään työkaluun uusi pelaaja
      */
     private void uusiPelaaja() {
@@ -149,7 +180,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         
     }
     
-    /**Asetetaan käytettävä kerho
+    /**Asetetaan käytettävä lentopallotilastotyokalu
      * @param lentopallotilastotyokalu jota käytetään tässä käyttöliittymässä
      */
     public void setLentopallotilastotyokalu(Lentopallotilastotyokalu lentopallotilastotyokalu) {
@@ -171,12 +202,4 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         }
 
     }
-
-
-    
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub   
-    }
- 
 }

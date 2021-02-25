@@ -18,12 +18,11 @@ import fi.jyu.mit.fxgui.ModalController;
 public class JoukkueenValintaController implements ModalControllerInterface<String> {
 
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
-    private Joukkue joukkue = null;
-
+    private String vastaus = null;
     
     @FXML void handleAvaa() {
-        //vastaus = joukkue.getNimi();
-        Dialogs.showMessageDialog("Avataan esimerkkijoukkue");
+        valitseJoukkue();
+        vastaus = joukkueKohdalla.getNimi();
         ModalController.closeStage(chooserJoukkueet);
         // TODO: korvaa joukkueen valitsemisella
     }
@@ -33,31 +32,38 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     }
 
     @FXML void handlePoistaJoukkue() {
-        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
+        boolean poistetaanko = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko joukkue: ....", "Kyll‰", "Ei"); 
-        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
+        if (poistetaanko == true ) Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
         // TODO: korvaa joukkueen poistamisella
     }   
 
-    @Override
-    public String getResult() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void handleShown() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void setDefault(String oletus) {  
-        // TODO Auto-generated method stub
-    }
-
-//===================================================================================================================================================================
+///==================================================================================================================================================================
 // Ei suoraan k‰yttˆliittym‰‰n liittyv‰‰ koodia
+    
+    private static Lentopallotilastotyokalu lentopallotilastotyokalu;
+    private Joukkue joukkueKohdalla;
+    
+    
+    /**
+     * Tekee tarvittavat alustukset
+     */
+    protected void alusta() {
+        chooserJoukkueet.clear();
+        chooserJoukkueet.addSelectionListener(e -> valitseJoukkue());
+    }
+
+    
+    /**
+     * N‰ytt‰‰ listasta valitun j‰senen tiedot, tilap‰isesti yhteen isoon edit-kentt‰‰n
+     */
+    protected void valitseJoukkue() {
+        joukkueKohdalla = chooserJoukkueet.getSelectedObject();
+        if (joukkueKohdalla == null) return;
+    }
+
+
+
     
     /**
      * Lis‰t‰‰n tilastotyˆkaluun uusi juokkue
@@ -66,12 +72,37 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
         Joukkue uusi = new Joukkue();
         uusi.rekisteroi();
         uusi.taytaPuulaakiTiedoilla();//TODO: dialogista joukkueen nimi
-        ///try {
-            //lentopallotilastotyokalu.lisaaJoukkue(uusi);
-        ///} catch (SailoException e) {
-        ///    Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
-        ///    return;
-        ///}
+        try {
+            lentopallotilastotyokalu.lisaaJoukkue(uusi);
+         } catch (SailoException e) {
+             Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+             return;
+         }
+        hae(uusi.getTunnusNro());
+    }
+    
+    /**
+     * Hakee joukkueiden tiedot listaan
+     * @param jnro joukkueen numero, joka aktivoidaan haun j‰lkeen
+     */
+    protected void hae(int jnro) {
+        chooserJoukkueet.clear();
+
+        int index = 0;
+        for (int i = 0; i < lentopallotilastotyokalu.getJoukkueita(); i++) {
+            Joukkue joukkue = lentopallotilastotyokalu.annaJoukkue(i);
+            if (joukkue.getTunnusNro() == jnro) index = i;
+            chooserJoukkueet.add(joukkue.getNimi(), joukkue);
+        }
+        chooserJoukkueet.setSelectedIndex(index); // t‰st‰ tulee muutosviesti joka n‰ytt‰‰ j‰senen
+    }
+
+    
+    /**Asetetaan k‰ytett‰v‰ lentopallotilastotyokalu
+     * @param tyokalu jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
+     */
+    public static void setLentopallotilastotyokalu(Lentopallotilastotyokalu tyokalu) {
+        lentopallotilastotyokalu = tyokalu;
     }
     
     /**
@@ -82,7 +113,27 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
      */
     public static String valitseNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);
-    
-}
+    }
 
+    @Override
+    public String getResult() {
+        return vastaus;
+    }
+
+    /**
+     * Mit‰ tehd‰‰n kun dialogi on n‰ytetty
+     */
+    @Override
+    public void handleShown() {
+        chooserJoukkueet.requestFocus();
+        
+    }
+
+    @Override
+    public void setDefault(String oletus) {
+        chooserJoukkueet.setRivit(oletus);
+        
+    }
+
+    
 }
