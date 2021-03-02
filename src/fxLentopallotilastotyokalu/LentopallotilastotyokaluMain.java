@@ -34,6 +34,7 @@ public class LentopallotilastotyokaluMain extends Application {
                 });
             Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu(); 
             JoukkueenValintaController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
+            OtteluController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
             tyokaluCtrl.setLentopallotilastotyokalu(lentopallotilastotyokalu);
             
             primaryStage.show();

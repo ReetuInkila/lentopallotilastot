@@ -1,10 +1,13 @@
 package fxLentopallotilastotyokalu;
 
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import lentopallotilastotyokalu.Lentopallotilastotyokalu;
+import lentopallotilastotyokalu.Pelaaja;
 
 /**
  * Luokka ottelu ikkunan toimintojen toteuttamiseksi
@@ -14,6 +17,7 @@ import javafx.scene.control.TextField;
  */
 public class OtteluController implements ModalControllerInterface<String>  {
 
+    @FXML private ListChooser<Pelaaja> chooserPelaajat;
     @FXML private TextField textVastustaja;
     
     @FXML void HandlePoistaViimeisin() {
@@ -36,20 +40,50 @@ public class OtteluController implements ModalControllerInterface<String>  {
 
     @Override
     public String getResult() {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    /**
+     * Mit‰ tehd‰‰n kun dialogi on n‰ytetty
+     */
     @Override
     public void handleShown() {
-        // TODO Auto-generated method stub
+        chooserPelaajat.requestFocus();
         
     }
 
     @Override
-    public void setDefault(String arg0) {
-        // TODO Auto-generated method stub
-        
+    public void setDefault(String oletus) {
+        chooserPelaajat.setRivit(oletus);  
     }
-
+    
+///=================================================================================================================================================================
+/// T‰st‰ eteenp‰in ei suoraan k‰yttˆliittym‰‰n liittyv‰‰ koodia
+    
+    private static Lentopallotilastotyokalu lentopallotilastotyokalu;
+    private Pelaaja pelaajaKohdalla;
+    //private Tilasto tilastokohdalla;
+    
+    
+    /**
+     * Hakee pelaajien tiedot listaan
+     * @param jnro joukkueen numero, joka aktivoidaan haun j‰lkeen
+     */
+    protected void hae(int jnro) {
+        chooserPelaajat.clear();
+        int index = 0;
+        for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
+            Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
+            if (pelaaja.getTunnusNro() == jnro) index = i;
+            chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+        }
+        chooserPelaajat.setSelectedIndex(index); // t‰st‰ tulee muutosviesti joka n‰ytt‰‰ j‰senen
+    }
+    
+    /**Asetetaan k‰ytett‰v‰ lentopallotilastotyokalu
+     * @param tyokalu lentopallotilastotyokalu jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
+     */
+    public static void setLentopallotilastotyokalu(Lentopallotilastotyokalu tyokalu) {
+        lentopallotilastotyokalu = tyokalu;
+    }
 }

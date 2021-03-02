@@ -18,15 +18,17 @@ import static kanta.SatunnaisNimi.*;
 public class Joukkue {
     
     private int tunnusNro;
+    private int jId;
     private String nimi = "";
     
     private static int seuraavaNro = 1;
+    private static int seuraavaid = 1;
 
     /** Tulostetaan joukkueen tiedot
      * @param out tietovirta mihin tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", tunnusNro) + " " + nimi);
+        out.println(String.format("%03d", tunnusNro) + " " + String.format("%03d", jId) + " " + nimi);
     }
     
     /**
@@ -55,6 +57,8 @@ public class Joukkue {
     public int rekisteroi() {
         this.tunnusNro = seuraavaNro;
         seuraavaNro++;
+        this.jId = seuraavaid;
+        seuraavaid++;
         return this.tunnusNro;
     }
     
@@ -64,6 +68,14 @@ public class Joukkue {
      */
     public int getTunnusNro() {
         return tunnusNro;
+    }
+    
+    /**
+     * Palauttaa joukkueen id-numeron.
+     * @return joukkueen id numero
+     */
+    public int getId() {
+        return jId;
     }
     
     /**
@@ -96,11 +108,9 @@ public class Joukkue {
         tiimi.rekisteroi();
         tiimi2.rekisteroi();
         
-        tiimi.tulosta(System.out);
         tiimi.taytaPuulaakiTiedoilla();
         tiimi.tulosta(System.out);
         
-        tiimi2.tulosta(System.out);
         tiimi2.taytaPuulaakiTiedoilla();
         tiimi2.tulosta(System.out);
     }

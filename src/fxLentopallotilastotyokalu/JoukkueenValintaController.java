@@ -21,10 +21,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     private String vastaus = null;
     
     @FXML void handleAvaa() {
-        valitseJoukkue();
-        vastaus = joukkueKohdalla.getNimi();
-        ModalController.closeStage(chooserJoukkueet);
-        // TODO: korvaa joukkueen valitsemisella
+        avaaJoukkue();
     }
 
     @FXML void handleLisaaJoukkue() {
@@ -32,10 +29,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     }
 
     @FXML void handlePoistaJoukkue() {
-        boolean poistetaanko = Dialogs.showQuestionDialog("Poisto?",
-                "Poistetaanko joukkue: ....", "Kyllä", "Ei"); 
-        if (poistetaanko == true ) Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
-        // TODO: korvaa joukkueen poistamisella
+        poistaJoukkue();
     }   
 
 ///==================================================================================================================================================================
@@ -44,26 +38,24 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     private static Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Joukkue joukkueKohdalla;
     
-    
     /**
-     * Tekee tarvittavat alustukset
-     */
-    protected void alusta() {
-        chooserJoukkueet.clear();
-        chooserJoukkueet.addSelectionListener(e -> valitseJoukkue());
-    }
-
-    
-    /**
-     * Näyttää listasta valitun jäsenen tiedot, tilapäisesti yhteen isoon edit-kenttään
+     * Valitsee klikatun joukkueen
      */
     protected void valitseJoukkue() {
+        chooserJoukkueet.addSelectionListener(null);
         joukkueKohdalla = chooserJoukkueet.getSelectedObject();
         if (joukkueKohdalla == null) return;
     }
-
-
-
+    
+    /**
+     * Avaa valitun joukkueen tilastotyökalussa
+     */
+    private void avaaJoukkue() {
+        valitseJoukkue();
+        vastaus = joukkueKohdalla.getNimi();
+        LentopallotilastotyokaluGUIController.joukkueId = joukkueKohdalla.getId();
+        ModalController.closeStage(chooserJoukkueet);
+    }
     
     /**
      * Lisätään tilastotyökaluun uusi juokkue
@@ -82,6 +74,18 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     }
     
     /**
+     * Avaa varmistus dialogin ja poistaa valittuna olevan joukkeen 
+     */
+    private void poistaJoukkue() {
+        valitseJoukkue();
+        boolean poistetaanko = Dialogs.showQuestionDialog("Poisto?",
+                "Poistetaanko joukkue: " + joukkueKohdalla.getNimi(), "Kyllä", "Ei"); 
+        if (poistetaanko == true ) Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
+        // TODO: lisää joukkueen poistaminen
+    }
+    
+    
+    /**
      * Hakee joukkueiden tiedot listaan
      * @param jnro joukkueen numero, joka aktivoidaan haun jälkeen
      */
@@ -94,7 +98,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
             if (joukkue.getTunnusNro() == jnro) index = i;
             chooserJoukkueet.add(joukkue.getNimi(), joukkue);
         }
-        chooserJoukkueet.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää jäsenen
+        chooserJoukkueet.setSelectedIndex(index);
     }
 
     
@@ -112,7 +116,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
      * @return null jos painetaan Cancel, muuten kirjoitettu nimi
      */
     public static String valitseNimi(Stage modalityStage, String oletus) {
-        return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);
+        return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);   
     }
 
     @Override
@@ -131,9 +135,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
 
     @Override
     public void setDefault(String oletus) {
-        chooserJoukkueet.setRivit(oletus);
-        
+        chooserJoukkueet.setRivit(oletus);  
     }
 
-    
 }

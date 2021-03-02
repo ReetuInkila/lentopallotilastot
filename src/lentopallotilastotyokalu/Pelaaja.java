@@ -17,17 +17,20 @@ import java.io.PrintStream;
  */
 public class Pelaaja {
     private int tunnusNro;
+    private int jId;
+    private int pId;
     private String nimi = "";
     private String pelipaikka = "";
     private int pelinumero = 0;
     
     private static int seuraavaNro = 1;
+    private static int seuraavaId = 1;
     
     /** Tulostetaan pelaajan tiedot
      * @param out tietovirta mihin tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", tunnusNro) + " " + nimi + " " + String.format("%02d", pelinumero) + " " + pelipaikka);
+        out.println(String.format("%03d", tunnusNro) + " " + String.format("%02d", pId) + " " + String.format("%02d", jId) + " " + nimi + " " + String.format("%02d", pelinumero) + " " + pelipaikka);
     }
     
     /**
@@ -56,7 +59,16 @@ public class Pelaaja {
     public int rekisteroi() {
         this.tunnusNro = seuraavaNro;
         seuraavaNro++;
+        this.pId = seuraavaId;
+        seuraavaId++;
         return this.tunnusNro;
+    }
+    
+    /** Asetataan pelaajalle joukkeeseen viittaava id
+     * @param id pelaajalle asetettava joukkue id numero
+     */
+    public void asetaJId(int id) {
+        this.jId = id; 
     }
     
     /**
@@ -65,6 +77,22 @@ public class Pelaaja {
      */
     public int getTunnusNro() {
         return tunnusNro;
+    }
+    
+    /**
+     * Palauttaa pelaajan id:n.
+     * @return pelaajan jId
+     */
+    public int getpId() {
+        return pId;
+    }
+    
+    /**
+     * Palauttaa pelaajan joukkue id:n.
+     * @return pelaajan joukkue numero
+     */
+    public int getJId() {
+        return jId;
     }
     
     /**
@@ -80,21 +108,6 @@ public class Pelaaja {
         return nimi;
     }
     
-    /**
-     * Palauttaa pelaajan pelinumeron.
-     * @return pelaajan pelinumero
-     */
-    public int getPelinumero() {
-        return pelinumero;
-    }
-    
-    /**
-     * Palauttaa pelaajan pelipaikan.
-     * @return pelaajan pelipaikka
-     */
-    public String getPelipaikka() {
-        return pelipaikka;
-    }
     
     /**
      * Apumetodi, jolla saadaan täytettyä testiarvot jäsenelle.
@@ -118,11 +131,9 @@ public class Pelaaja {
         peluri.rekisteroi();
         peluri2.rekisteroi();
         
-        peluri.tulosta(System.out);
         peluri.taytaEsimerkkiTiedoilla();
         peluri.tulosta(System.out);
         
-        peluri2.tulosta(System.out);
         peluri2.taytaEsimerkkiTiedoilla();
         peluri2.tulosta(System.out);
 

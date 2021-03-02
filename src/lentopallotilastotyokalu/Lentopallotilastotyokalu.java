@@ -24,6 +24,14 @@ public class Lentopallotilastotyokalu {
     }
     
     /**
+     * Palautaa pelaajien m‰‰r‰n
+     * @return pelaaja
+     */
+    public int getPelaajia() {
+        return pelaajat.getLkm();
+    }
+    
+    /**
      * Lis‰‰ uuden joukkueen tietorakenteeseen.  Ottaa joukkueen omistukseensa.
      * @param joukkue lis‰t‰‰v‰n joukkueen viite.  Huom tietorakenne muuttuu omistajaksi
      * @throws SailoException jos tietorakenne on jo t‰ynn‰
@@ -89,6 +97,16 @@ public class Lentopallotilastotyokalu {
      */
     public Joukkue annaJoukkue(int i) throws IndexOutOfBoundsException {
         return joukkueet.anna(i);
+    }
+    
+    /**
+     * Palauttaa i:n pelaajan
+     * @param i monesko pelaaja palautetaan
+     * @return viite i:teen pelaajaan
+     * @throws IndexOutOfBoundsException jos i v‰‰rin
+     */
+    public Pelaaja annaPelaaja(int i) throws IndexOutOfBoundsException {
+        return pelaajat.anna(i);
     }
     
     /**
