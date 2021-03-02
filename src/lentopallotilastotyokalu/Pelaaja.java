@@ -30,7 +30,13 @@ public class Pelaaja {
      * @param out tietovirta mihin tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", tunnusNro) + " " + String.format("%02d", pId) + " " + String.format("%02d", jId) + " " + nimi + " " + String.format("%02d", pelinumero) + " " + pelipaikka);
+        out.println(String.format("%03d", tunnusNro) + " " + String.format("%02d", pId) + " " + String.format("%02d", jId));
+        out.println();
+        out.println(nimi);
+        out.println();
+        out.println(String.format("%02d", pelinumero));
+        out.println();
+        out.println(pelipaikka);
     }
     
     /**

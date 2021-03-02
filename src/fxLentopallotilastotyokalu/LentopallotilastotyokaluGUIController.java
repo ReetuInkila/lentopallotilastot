@@ -96,7 +96,10 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Pelaaja pelaajaKohdalla;
     private TextArea areaPelaaja = new TextArea();
-    static int joukkueId;
+    /**
+     *  Avatun joukkueen Id 
+     */
+    protected static int joukkueId;
     
     /**
      * Tekee tarvittavat alustukset, nyt vaihdetaan GridPanen tilalle
@@ -139,7 +142,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         String uusinimi = JoukkueenValintaController.valitseNimi(null, joukkueenNimi);
         if (uusinimi == null) return false;
         lueTiedosto(uusinimi);
-        joukkueenNimi = uusinimi;
         labelJoukkue.setText(uusinimi);
         return true;
     }
@@ -196,7 +198,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
             if (pelaaja.getTunnusNro() == jnro) index = i;
-            if (pelaaja.getjId() == joukkueId )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+            if (pelaaja.getJId() == joukkueId )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
         chooserPelaajat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää Pelaajan
     }
