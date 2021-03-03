@@ -61,6 +61,7 @@ public class OtteluController implements ModalControllerInterface<String>  {
 /// Tästä eteenpäin ei suoraan käyttöliittymään liittyvää koodia
     
     private static Lentopallotilastotyokalu lentopallotilastotyokalu;
+    @SuppressWarnings("unused")
     private Pelaaja pelaajaKohdalla;
     //private Tilasto tilastokohdalla;
     
