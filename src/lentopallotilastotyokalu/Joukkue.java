@@ -11,7 +11,7 @@ import static kanta.SatunnaisNimi.*;
  *  joukkueen tiedoiksi                              
  * -osaa antaa merkkijonona i:n kentän tiedot        
  * -osaa laittaa merkkijonon i:neksi kentäksi        
- * @author RInkila
+ * @author Reetu Inkilä
  * @version Feb 18, 2021
  *
  */

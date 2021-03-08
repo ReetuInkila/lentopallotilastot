@@ -4,7 +4,7 @@ package lentopallotilastotyokalu;
  * -pit‰‰ yll‰ varsinaista joukkuerekisteri‰, eli osaa lis‰t‰ ja poistaa joukkueen                
  * -lukee ja kirjoittaa joukkueiden tiedostoon      
  * -osaa etsi‰ ja lajitella                         
- * @author RInkila
+ * @author Reetu Inkil‰
  * @version Feb 22, 2021
  *
  */
@@ -68,6 +68,19 @@ public class Joukkueet {
             throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
         return alkiot[i];
     }
+    
+    /**
+     * Palauttaa viitteen joukkueeseen.
+     * @param jId id mink‰ joukkueen viite halutaan
+     * @return viite joukkueeseen, jonka indeksi on id jid on 
+     */
+    public Joukkue annaId(int jId){
+        for( int i = 0; i < alkiot.length; i++) {
+            if (alkiot[i].getId() == jId)return alkiot[i];
+        }
+        return null;
+    }
+
     
     /**
      * Lukee joukkueiston tiedostosta.  KESKEN

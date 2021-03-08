@@ -17,13 +17,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
+import lentopallotilastotyokalu.Joukkue;
 import lentopallotilastotyokalu.Lentopallotilastotyokalu;
 import lentopallotilastotyokalu.Pelaaja;
 
 
 /**
  * Luokka lentopallotilastotyökalun käyttöliittymän tapahtumien hoitamiseksi.
- * @author RInkila
+ * @author Reetu Inkilä
  * @version Feb 9, 2021
  *
  */
@@ -96,10 +97,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Pelaaja pelaajaKohdalla;
     private TextArea areaPelaaja = new TextArea();
-    /**
-     *  Avatun joukkueen Id 
-     */
-    protected static int joukkueId;
+    private Joukkue joukkue;
     
     /**
      * Tekee tarvittavat alustukset, nyt vaihdetaan GridPanen tilalle
@@ -123,26 +121,26 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     /**
      * Alustaa kerhon lukemalla sen valitun nimisestä tiedostosta
-     * @param nimi tiedosto josta kerhon tiedot luetaan
+     * @param uusiJid joukkueen numero minkä tietoja haetaan
      */
-    protected void lueTiedosto(String nimi) {
+    protected void lueTiedosto(int uusiJid) {
+        String nimi = lentopallotilastotyokalu.getJNimi(uusiJid);
+        labelJoukkue.setText(nimi);
         joukkueenNimi = nimi;
-        setTitle("Lentopallo tilastotyökalu - " + joukkueenNimi);
-        String virhe = "Ei osata lukea vielä";  // TODO: tähän oikea tiedoston lukeminen
-        // if (virhe != null) 
-            Dialogs.showMessageDialog(virhe);
+        setTitle("Lentopallo tilastotyökalu - " + nimi);
+        Dialogs.showMessageDialog("Ei osata lukea vielä"); // TODO: Pelaajien haku tiedostosta
     }
 
     
     /**
      * Avaa joukkueen valinta dialogin
-     * @return true jos onnistui, false jos ei
+     * @return true jos joukkueen löytyy muuten false
      */
     public boolean avaa() {
-        String uusinimi = JoukkueenValintaController.valitseNimi(null, joukkueenNimi);
-        if (uusinimi == null) return false;
-        lueTiedosto(uusinimi);
-        labelJoukkue.setText(uusinimi);
+        JoukkueenValintaController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
+        Joukkue avattava = JoukkueenValintaController.valitseJoukkue(null, joukkue);
+        if (avattava == null) return false;
+        lueTiedosto(avattava.getId());
         return true;
     }
 
@@ -169,6 +167,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * Avaa ottelu dialogin
      */
     private void ottelu() {
+        OtteluController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
         ModalController.showModal(JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, "");
     }
 
@@ -179,7 +178,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         Pelaaja uusi = new Pelaaja();
         uusi.rekisteroi();
         uusi.taytaEsimerkkiTiedoilla();// TODO: omien tietojen syöttäminen
-        uusi.asetaJId(joukkueId);  
+        //uusi.asetaJId(joukkueId);  
         try {
             lentopallotilastotyokalu.lisaaPelaaja(uusi);
         } catch (Exception e) {
@@ -198,12 +197,12 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
             if (pelaaja.getTunnusNro() == jnro) index = i;
-            if (pelaaja.getJId() == joukkueId )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+            //if (pelaaja.getJId() == joukkueId )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
         chooserPelaajat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää Pelaajan
     }
     
-    /**Asetetaan käytettävä lentopallotilastotyokalu
+    /** Asetetaan käytettävä lentopallotilastotyokalu
      * @param lentopallotilastotyokalu jota käytetään tässä käyttöliittymässä
      */
     public void setLentopallotilastotyokalu(Lentopallotilastotyokalu lentopallotilastotyokalu) {

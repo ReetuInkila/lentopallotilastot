@@ -11,7 +11,7 @@ import java.io.PrintStream;
  * - osaa muuttaa 1|Ankka Aku|..| - merkkijonon pelaajan tiedoiksi                             
  * - osaa antaa merkkijonona i:n kentän tiedot      
  * - osaa laittaa merkkijonon i:neksi kentäksi      
- * @author RInkila
+ * @author Reetu Inkilä
  * @version Feb 23, 2021
  *
  */

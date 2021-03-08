@@ -11,14 +11,14 @@ import lentopallotilastotyokalu.SailoException;
 import fi.jyu.mit.fxgui.ModalController;
 /**
  * Luokka joukkuuen valinta ikkunan toimintojen toteuttamiseksi 
- * @author RInkila
+ * @author Reetu Inkilä
  * @version Feb 12, 2021
  *
  */
-public class JoukkueenValintaController implements ModalControllerInterface<String> {
+public class JoukkueenValintaController implements ModalControllerInterface<Joukkue> {
 
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
-    private String vastaus = null;
+    private Joukkue vastaus;
     
     @FXML void handleAvaa() {
         avaaJoukkue();
@@ -42,7 +42,6 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
      * Valitsee klikatun joukkueen
      */
     protected void valitseJoukkue() {
-        chooserJoukkueet.addSelectionListener(null);
         joukkueKohdalla = chooserJoukkueet.getSelectedObject();
         if (joukkueKohdalla == null) return;
     }
@@ -52,13 +51,12 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
      */
     private void avaaJoukkue() {
         valitseJoukkue();
-        vastaus = joukkueKohdalla.getNimi();
-        LentopallotilastotyokaluGUIController.joukkueId = joukkueKohdalla.getId();
+        vastaus = joukkueKohdalla;
         ModalController.closeStage(chooserJoukkueet);
     }
     
     /**
-     * Lisätään tilastotyökaluun uusi juokkue
+     * Lisätään tilastotyökaluun uusi joukkue
      */
     private void uusiJoukkue() {
         Joukkue uusi = new Joukkue();
@@ -70,7 +68,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
              Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
              return;
          }
-        hae(uusi.getTunnusNro());
+        hae();
     }
     
     /**
@@ -87,41 +85,33 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
     
     /**
      * Hakee joukkueiden tiedot listaan
-     * @param jnro joukkueen numero, joka aktivoidaan haun jälkeen
-     */
-    protected void hae(int jnro) {
-        chooserJoukkueet.clear();
 
-        int index = 0;
+     */
+    private void hae() {
+        chooserJoukkueet.clear();
         for (int i = 0; i < lentopallotilastotyokalu.getJoukkueita(); i++) {
             Joukkue joukkue = lentopallotilastotyokalu.annaJoukkue(i);
-            if (joukkue.getTunnusNro() == jnro) index = i;
             chooserJoukkueet.add(joukkue.getNimi(), joukkue);
         }
-        chooserJoukkueet.setSelectedIndex(index);
     }
 
     
-    /**Asetetaan käytettävä lentopallotilastotyokalu
+    /** Asetetaan käytettävä lentopallotilastotyokalu
      * @param tyokalu jota käytetään tässä käyttöliittymässä
      */
     public static void setLentopallotilastotyokalu(Lentopallotilastotyokalu tyokalu) {
         lentopallotilastotyokalu = tyokalu;
     }
     
+    
     /**
      * Luodaan joukkueenvalinta dialogi ja palautetaan siellä valittu nimi tai null
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
-     * @param oletus mitä nimeä näytetään oletuksena
-     * @return null jos painetaan Cancel, muuten kirjoitettu nimi
+     * @param oletus joukkue null.
+     * @return null jos painetaan Cancel, muuten valittu joukkue
      */
-    public static String valitseNimi(Stage modalityStage, String oletus) {
+    public static Joukkue valitseJoukkue(Stage modalityStage, Joukkue oletus) {
         return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);   
-    }
-
-    @Override
-    public String getResult() {
-        return vastaus;
     }
 
     /**
@@ -129,13 +119,23 @@ public class JoukkueenValintaController implements ModalControllerInterface<Stri
      */
     @Override
     public void handleShown() {
-        chooserJoukkueet.requestFocus();
-        
+        hae();
+    }
+    
+    /**
+     * Mahdollinen alustustieto dialogin sisälle
+     */
+    @Override
+    public void setDefault(Joukkue oletus) {
+        //       
     }
 
+    /**
+     *Kutsuu tätä kun dialogi on piilotettu ja tulos pitää palauttaa
+     */
     @Override
-    public void setDefault(String oletus) {
-        chooserJoukkueet.setRivit(oletus);  
+    public Joukkue getResult() {
+        return vastaus;
     }
 
 }

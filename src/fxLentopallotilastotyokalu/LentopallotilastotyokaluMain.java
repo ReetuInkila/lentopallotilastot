@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * P‰‰ohjelma Lentopallotilastotyokalu-ohjelman k‰ytt‰miseksi
- * @author RInkila
+ * @author Reetu Inkil‰
  * @version 29.1.2021
  *
  */
@@ -33,8 +33,7 @@ public class LentopallotilastotyokaluMain extends Application {
                     if ( !LentopallotilastotyokaluGUIController.voikoSulkea() ) event.consume();
                 });
             Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu(); 
-            JoukkueenValintaController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
-            OtteluController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
+
             tyokaluCtrl.setLentopallotilastotyokalu(lentopallotilastotyokalu);
             
             primaryStage.show();

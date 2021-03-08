@@ -3,8 +3,8 @@
  */
 package kanta;
 
-/**
- * @author RInkila
+/** Luokka satunnaisten numeroiden ja pelipaikkojen luomiseen
+ * @author Reetu Inkilä
  * @version Feb 23, 2021
  *
  */

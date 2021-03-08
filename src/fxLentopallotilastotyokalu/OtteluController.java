@@ -11,7 +11,7 @@ import lentopallotilastotyokalu.Pelaaja;
 
 /**
  * Luokka ottelu ikkunan toimintojen toteuttamiseksi
- * @author RInkila
+ * @author Reetu Inkilä
  * @version 29.1.2021
  *
  */

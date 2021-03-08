@@ -6,7 +6,7 @@ package lentopallotilastotyokalu;
 /**
  * -huolehtii joukkueet, Pelaajat ja Tilastot luokkien välisestä yhteistyöstä ja välittää näitä tietoja  pyydettäessä                            
  * -lukee ja kirjoittaa joukkueet, pelaajat ja tilastot tiedostoon pyytämällä apua avustajiltaan                    
- * @author RInkila
+ * @author Reetu Inkilä
  * @version Feb 23, 2021
  *
  */
@@ -107,6 +107,15 @@ public class Lentopallotilastotyokalu {
      */
     public Pelaaja annaPelaaja(int i) throws IndexOutOfBoundsException {
         return pelaajat.anna(i);
+    }
+    
+    /** Hakee joukkueen nimen
+     * @param jId joukkueen numero minkä nimeä haetaan
+     * @return joukkueen nimi
+     */
+    public String getJNimi(int jId) {
+        Joukkue joukkue = joukkueet.annaId(jId);
+        return joukkue.getNimi();
     }
     
     /**

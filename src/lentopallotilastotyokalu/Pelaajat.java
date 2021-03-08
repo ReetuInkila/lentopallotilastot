@@ -4,7 +4,7 @@
 package lentopallotilastotyokalu;
 
 /**
- * @author RInkila
+ * @author Reetu Inkilä
  * @version Feb 23, 2021
  *
  */
