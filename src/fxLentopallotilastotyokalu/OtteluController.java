@@ -1,13 +1,19 @@
 package fxLentopallotilastotyokalu;
 
+
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import lentopallotilastotyokalu.Joukkue;
 import lentopallotilastotyokalu.Lentopallotilastotyokalu;
 import lentopallotilastotyokalu.Pelaaja;
+import lentopallotilastotyokalu.SailoException;
+import lentopallotilastotyokalu.Tilasto;
 
 /**
  * Luokka ottelu ikkunan toimintojen toteuttamiseksi
@@ -15,20 +21,23 @@ import lentopallotilastotyokalu.Pelaaja;
  * @version 29.1.2021
  *
  */
-public class OtteluController implements ModalControllerInterface<String>  {
+public class OtteluController implements ModalControllerInterface<Joukkue>  {
 
     @FXML private ListChooser<Pelaaja> chooserPelaajat;
+    @FXML private ListChooser<String> chooserTilastot;
     @FXML private TextField textVastustaja;
+    @FXML private Label labelViimeisin;
+    @FXML private DatePicker pickPaiva;
     
     @FXML void HandlePoistaViimeisin() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
-                "Poistetaanko viimeisin tilasto: Sauli Sinkkonen, Ässä", "Kyllä", "Ei"); 
+                "Poistetaanko viimeisin tilasto: " + labelViimeisin.getText(), "Kyllä", "Ei"); 
         if (vastaus == true ) Dialogs.showMessageDialog("Ei osata vielä poistaa tilastoja");
         // TODO: korvaa tilaston poistamisella
     }
 
-    @FXML void handleTallenna() {
-        Dialogs.showMessageDialog("Ei osata vielä tallentaa");
+    @FXML void handleTallenna() throws SailoException {
+        tallennaTilasto();
         // TODO: korvaa tilaston tallentamisella
     }
 
@@ -38,47 +47,64 @@ public class OtteluController implements ModalControllerInterface<String>  {
 
     }
 
-    @Override
-    public String getResult() {
-        return null;
-    }
 
-    /**
-     * Mitä tehdään kun dialogi on näytetty
-     */
-    @Override
-    public void handleShown() {
-        chooserPelaajat.requestFocus();
-        
-    }
-
-    @Override
-    public void setDefault(String oletus) {
-        chooserPelaajat.setRivit(oletus);  
-    }
+ 
     
 ///=================================================================================================================================================================
 /// Tästä eteenpäin ei suoraan käyttöliittymään liittyvää koodia
     
     private static Lentopallotilastotyokalu lentopallotilastotyokalu;
-    @SuppressWarnings("unused")
-    private Pelaaja pelaajaKohdalla;
-    //private Tilasto tilastokohdalla;
+    private static Joukkue joukkue;
+    private static Pelaaja pelaajaKohdalla;
+    private String suorite;
+
     
     
     /**
      * Hakee pelaajien tiedot listaan
-     * @param jnro joukkueen numero, joka aktivoidaan haun jälkeen
      */
-    protected void hae(int jnro) {
+    private void hae() {
         chooserPelaajat.clear();
-        int index = 0;
         for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
-            if (pelaaja.getTunnusNro() == jnro) index = i;
-            chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+            if (pelaaja.getJId() == joukkue.getId() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
-        chooserPelaajat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää jäsenen
+    }
+    
+    /**
+     * Lisätään valittu tilasto
+     * @throws SailoException jos tilaston lisäämisessä ongelmia
+     */
+    private void tallennaTilasto() throws SailoException {
+        int pId;
+        String vastustaja;
+        try {
+            pId = pelaajaKohdalla.getpId();
+            vastustaja = textVastustaja.getText();
+            if (vastustaja.contains(""))return;
+        }catch ( java.lang.NullPointerException e) {
+            return;
+        }
+        
+        Tilasto uusi = new Tilasto(pId, vastustaja, suorite);
+        lentopallotilastotyokalu.lisaaTilasto(uusi);
+        labelViimeisin.setText(uusi.toString());
+    }
+    
+    /**
+     * Valitsee chooserissa klikatun pelaajan
+     */
+    private void valitsePelaaja() {
+        pelaajaKohdalla = chooserPelaajat.getSelectedObject();
+        if (pelaajaKohdalla == null) return;
+    }
+    
+    /**
+     * Valitsee chooserissa klikatun tilastotyypin 
+     */
+    private void valitseSuorite() {
+        suorite = chooserTilastot.getSelectedObject();
+        if (suorite == null) return;
     }
     
     /**Asetetaan käytettävä lentopallotilastotyokalu
@@ -86,5 +112,37 @@ public class OtteluController implements ModalControllerInterface<String>  {
      */
     public static void setLentopallotilastotyokalu(Lentopallotilastotyokalu tyokalu) {
         lentopallotilastotyokalu = tyokalu;
+    }
+
+    /**
+     * Kun dialogi on avattu lisätään kuuntelijat list choosereille ja lisätään String oliot suorite listaan
+     */
+    @Override
+    public void handleShown() {
+        hae();
+        chooserPelaajat.addSelectionListener(e -> valitsePelaaja());
+        chooserTilastot.clear();
+        chooserTilastot.add("Syöttö");
+        chooserTilastot.add("Ässä");
+        chooserTilastot.add("Nosto");
+        chooserTilastot.add("Piste");
+        chooserTilastot.add("Virhe");
+        chooserTilastot.addSelectionListener(e -> valitseSuorite());
+    }
+    
+    /**
+     * Mitä palautetaan dialogista GUIControllerille
+     */
+    @Override
+    public Joukkue getResult() {
+        return null;
+    }
+
+    /**
+     * Mitä tehdään tuodulla parametrilla
+     */
+    @Override
+    public void setDefault(Joukkue avattuJoukkue) {
+        joukkue = avattuJoukkue;     
     }
 }

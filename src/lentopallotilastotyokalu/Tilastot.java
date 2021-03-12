@@ -98,7 +98,7 @@ public class Tilastot {
      * <pre name="test">
      * #import java.util.*;
      * 
-    *  Tilastot tilastoidut = new Tilastot();
+     *  Tilastot tilastoidut = new Tilastot();
      *  Tilasto tilasto21 = new Tilasto(2); tilastoidut.lisaa(tilasto21);
      *  Tilasto tilasto11 = new Tilasto(1); tilastoidut.lisaa(tilasto11);
      *  Tilasto tilasto22 = new Tilasto(2); tilastoidut.lisaa(tilasto22);

@@ -52,6 +52,8 @@ public class Joukkue {
      *   int n1 = tiimi1.getTunnusNro();
      *   int n2 = tiimi2.getTunnusNro();
      *   n1 === n2-1;
+     *   tiimi1.getId() === 1;
+     *   tiimi2.getId() === 2;
      * </pre>
      */
     public int rekisteroi() {
@@ -78,7 +80,7 @@ public class Joukkue {
         return jId;
     }
     
-    /**
+    /** Palauttaa joukkeen nimen merkkijonona
      * @return joukkueen nimi
      * @example
      * <pre name="test">

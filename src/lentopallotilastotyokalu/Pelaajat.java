@@ -3,6 +3,8 @@
  */
 package lentopallotilastotyokalu;
 
+import java.util.Arrays;
+
 /**
  * @author Reetu Inkil‰
  * @version Feb 23, 2021
@@ -24,7 +26,7 @@ public class Pelaajat {
     
     /**
      * Lis‰‰ uuden pelaajan tietorakenteeseen.  Ottaa pelaajan omistukseensa.
-     * @param pelaaja lis‰t‰‰v‰n joukkueen viite.  Huom tietorakenne muuttuu omistajaksi
+     * @param pelaaja lis‰tt‰v‰n pelaajan viite.  Huom tietorakenne muuttuu omistajaksi
      * @throws SailoException jos tietorakenne on jo t‰ynn‰
      * @example
      * <pre name="test">
@@ -40,11 +42,10 @@ public class Pelaajat {
      * pelaajat.anna(2) === pelimies1;
      * pelaajat.anna(1) == pelimies1 === false;
      * pelaajat.anna(1) == pelimies2 === true;
-     * pelaajat.anna(3) === pelimies1; #THROWS IndexOutOfBoundsException 
      * </pre>
      */
     public void lisaa(Pelaaja pelaaja) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
+        if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm + 20);
         this.alkiot[this.lkm] = pelaaja;
         lkm++;
     }
@@ -111,12 +112,10 @@ public class Pelaajat {
                 Joukkue joukkue = joukkueet.anna(i);
                 System.out.println("Joukkue nro: " + i);
                 joukkue.tulosta(System.out);
-            }
-                
+            }          
          } catch (SailoException ex) {
              System.out.println(ex.getMessage());
-         }
-        
+         }      
     }
 
 }

@@ -51,6 +51,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
      */
     private void avaaJoukkue() {
         valitseJoukkue();
+        if (joukkueKohdalla == null)return;
         vastaus = joukkueKohdalla;
         ModalController.closeStage(chooserJoukkueet);
     }

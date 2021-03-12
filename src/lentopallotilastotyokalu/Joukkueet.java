@@ -1,5 +1,7 @@
 package lentopallotilastotyokalu;
 
+import java.util.Arrays;
+
 /** Luokka Joukkueet
  * -pit‰‰ yll‰ varsinaista joukkuerekisteri‰, eli osaa lis‰t‰ ja poistaa joukkueen                
  * -lukee ja kirjoittaa joukkueiden tiedostoon      
@@ -48,12 +50,11 @@ public class Joukkueet {
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 8;
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 9;
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 10;
-     * joukkueet.lisaa(tiimi1);  #THROWS SailoException
      * </pre>
      */
     public void lisaa(Joukkue joukkue) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Liikaa alkioita");
-        this.alkiot[this.lkm] = joukkue;
+        if (lkm >= alkiot.length) alkiot = Arrays.copyOf(alkiot, lkm + 10);
+        alkiot[this.lkm] = joukkue;
         lkm++;
     }
     
@@ -69,18 +70,6 @@ public class Joukkueet {
         return alkiot[i];
     }
     
-    /**
-     * Palauttaa viitteen joukkueeseen.
-     * @param jId id mink‰ joukkueen viite halutaan
-     * @return viite joukkueeseen, jonka indeksi on id jid on 
-     */
-    public Joukkue annaId(int jId){
-        for( int i = 0; i < alkiot.length; i++) {
-            if (alkiot[i].getId() == jId)return alkiot[i];
-        }
-        return null;
-    }
-
     
     /**
      * Lukee joukkueiston tiedostosta.  KESKEN

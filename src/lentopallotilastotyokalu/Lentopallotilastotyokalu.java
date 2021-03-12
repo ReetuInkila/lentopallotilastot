@@ -3,6 +3,8 @@
  */
 package lentopallotilastotyokalu;
 
+import java.util.List;
+
 /**
  * -huolehtii joukkueet, Pelaajat ja Tilastot luokkien v‰lisest‰ yhteistyˆst‰ ja v‰litt‰‰ n‰it‰ tietoja  pyydett‰ess‰                            
  * -lukee ja kirjoittaa joukkueet, pelaajat ja tilastot tiedostoon pyyt‰m‰ll‰ apua avustajiltaan                    
@@ -14,6 +16,9 @@ public class Lentopallotilastotyokalu {
 
     private final Joukkueet joukkueet = new Joukkueet();
     private final Pelaajat pelaajat = new Pelaajat();
+    private final Tilastot tilastot = new Tilastot();
+    
+    
     
     /**
      * Palautaa joukkueiden m‰‰r‰n
@@ -29,6 +34,14 @@ public class Lentopallotilastotyokalu {
      */
     public int getPelaajia() {
         return pelaajat.getLkm();
+    }
+    
+    /**
+     * Palautaa tilastojen m‰‰r‰n
+     * @return tilastoja
+     */
+    public int getTilastoja() {
+        return tilastot.getLkm();
     }
     
     /**
@@ -57,7 +70,6 @@ public class Lentopallotilastotyokalu {
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 8;
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 9;
      * joukkueet.lisaa(tiimi1); joukkueet.getLkm() === 10;
-     * joukkueet.lisaa(tiimi1);  #THROWS SailoException
      * </pre>
      */
     public void lisaaJoukkue(Joukkue joukkue) throws SailoException {
@@ -66,7 +78,7 @@ public class Lentopallotilastotyokalu {
     
     /**
      * Lis‰‰ uuden pelaajan tietorakenteeseen.  Ottaa pelaajan omistukseensa.
-     * @param pelaaja lis‰t‰‰v‰n joukkueen viite.  Huom tietorakenne muuttuu omistajaksi
+     * @param pelaaja lis‰t‰‰v‰n pelaajan viite.  Huom tietorakenne muuttuu omistajaksi
      * @throws SailoException jos tietorakenne on jo t‰ynn‰
      * @example
      * <pre name="test">
@@ -90,6 +102,38 @@ public class Lentopallotilastotyokalu {
     }
     
     /**
+     * Lis‰‰ uuden tilaston tietorakenteeseen.
+     * @param tilasto lis‰t‰‰v‰n tilastoon viite
+     * @throws SailoException jos tietorakenne on jo t‰ynn‰
+     * @example
+     * <pre name="test">
+     *  #import java.util.*;
+     *  
+     *  #THROWS SailoException 
+     *  Tilastot tilastot = new Tilastot();
+     *  Tilasto suorite1 = new Tilasto(5), suorite2 = new Tilasto(8);
+     *  tilastot.getLkm() === 0;
+     *  tilastot.lisaa(suorite1); tilastot.getLkm() === 1;
+     *  tilastot.lisaa(suorite2); tilastot.getLkm() === 2;
+     *  tilastot.lisaa(suorite1); tilastot.getLkm() === 3;
+     *  
+     *  List<Tilasto> loytyneet;
+     *  loytyneet = tilastot.annaTilastot(0);
+     *  loytyneet.size() === 0;
+     *  loytyneet = tilastot.annaTilastot(5);
+     *  loytyneet.size() === 2; 
+     *  loytyneet.get(0) == suorite1 === true;
+     *  loytyneet.get(1) == suorite1 === true;
+     *  loytyneet = tilastot.annaTilastot(8);
+     *  loytyneet.size() === 1; 
+     *  loytyneet.get(0) == suorite2 === true;
+     * </pre>
+     */
+    public void lisaaTilasto(Tilasto tilasto) throws SailoException {
+        tilastot.lisaa(tilasto);
+    }
+    
+    /**
      * Palauttaa i:n joukkueen
      * @param i monesko joukkue palautetaan
      * @return viite i:teen j‰seneen
@@ -109,13 +153,13 @@ public class Lentopallotilastotyokalu {
         return pelaajat.anna(i);
     }
     
-    /** Hakee joukkueen nimen
-     * @param jId joukkueen numero mink‰ nime‰ haetaan
-     * @return joukkueen nimi
+    /** Palautetaan pelaajan tilastot
+     * @param pelaaja pelaaja jonka tilastoja haetaan
+     * @return pelaajan tilastot listana
      */
-    public String getJNimi(int jId) {
-        Joukkue joukkue = joukkueet.annaId(jId);
-        return joukkue.getNimi();
+    public List<Tilasto> annaTilastot(Pelaaja pelaaja){
+        return tilastot.annaTilastot(pelaaja.getpId());
+        
     }
     
     /**
@@ -128,12 +172,23 @@ public class Lentopallotilastotyokalu {
     }
     
     /**
-     * Tallettaa joukkueiden nimet tiedostoon
+     * Tallettaa joukkueiden nimet, pelaajat ja tilastot tiedostoon
      * @throws SailoException jos tallettamisessa ongelmia
      */
     public void talleta() throws SailoException {
         joukkueet.talleta();
-        // TODO: yrit‰ tallettaa toinen vaikka toinen ep‰onnistuisi
+        pelaajat.talleta();
+        tilastot.talleta();
+        //TODO: kannattaako kaikkia k‰sitell‰ samalla??
+    }
+    
+    /**
+     * Poistaa pelaajista ja tilastoista ne joilla on pid. Kesken.
+     * @param pid viitenumero, jonka mukaan poistetaan
+     * @return montako j‰sent‰ poistettiin
+     */
+    public int poista(@SuppressWarnings("unused") int pid) {
+        return 0;
     }
 
     /**

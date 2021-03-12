@@ -26,6 +26,7 @@ public class Pelaaja {
     private static int seuraavaNro = 1;
     private static int seuraavaId = 1;
     
+    
     /** Tulostetaan pelaajan tiedot
      * @param out tietovirta mihin tulostetaan
      */
@@ -60,6 +61,8 @@ public class Pelaaja {
      *   int n1 = peluri1.getTunnusNro();
      *   int n2 = peluri2.getTunnusNro();
      *   n1 === n2-1;
+     *   peluri1.getpId() === 1;
+     *   peluri2.getpId() === 2;
      * </pre>
      */
     public int rekisteroi() {
@@ -95,7 +98,7 @@ public class Pelaaja {
     
     /**
      * Palauttaa pelaajan joukkue id:n.
-     * @return pelaajan joukkue numero
+     * @return pelaajan jId
      */
     public int getJId() {
         return jId;

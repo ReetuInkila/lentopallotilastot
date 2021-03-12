@@ -5,8 +5,8 @@ import java.io.PrintStream;
 
 /**
  * tietää tilaston kentät, osaa tarkistaa tietyn kentän oikeellisuuden, osaa muuttaa 3|26.1.2021|Karvapallot|0|1|... merkkijonon tilaston tiedoiksi, 
- * osaa antaa merkkijonona i:n kentän tiedot ja osaa laittaa merkkijonon i:neksi kentäksi
- * @author Reetu Inkila
+ * osaa antaa merkkijonona i:n kentän tiedot ja TODO: osaa laittaa merkkijonon i:neksi kentäksi
+ * @author Reetu Inkilä
  * @version Mar 8, 2021
  *
  */
@@ -34,6 +34,30 @@ public class Tilasto {
      */
     public Tilasto(int pId) {
         this.pId= pId;
+    }
+    
+    /**
+     * Alustetaan tietyn pelaajan tilasto.  
+     * @param pId pelaajan id numero 
+     * @param vastus Vastustaja joukkueen nimi
+     * @param suorite 1 jos syöttö, 2 jos ässä, 3 jos nosto, 4 jos piste, 5, jos virhe
+     * @example
+     * <pre name="test">
+     * Tilasto suorite = new Tilasto(1, "Puulaaki", "Ässä");
+     * Tilasto suorite2 = new Tilasto(3, "VaLePa", "Piste");
+     * suorite.toString() === "1 null Puulaaki 0 1 0 0 0";
+     * suorite2.toString() === "3 null VaLePa 0 0 0 1 0";
+     * </pre>
+     */
+    public Tilasto(int pId, String vastus, String suorite) {
+        this.pId= pId;
+        this.vastustaja = vastus;
+        if (suorite.equals("Syöttö")) syotto = 1;
+        if (suorite.equals("Ässä")) assa= 1;
+        if (suorite.equals("Nosto")) nosto = 1;
+        if (suorite.equals("Piste")) piste = 1;
+        if (suorite.equals("Virhe")) virhe = 1;
+        
     }
 
 
@@ -75,7 +99,14 @@ public class Tilasto {
     public int getPelaajaId() {
         return pId;
     }
-
+    
+    /**
+     * Muuttaa tilaston tekstimuotoon
+     */
+    @Override
+    public String toString() {
+        return pId + " " + paiva + " " + vastustaja + " " + syotto + " " + assa + " " + nosto + " " + piste + " " + virhe;
+    }
 
     
     /** Testiohjelma tilastolle

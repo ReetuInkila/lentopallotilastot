@@ -2,6 +2,7 @@ package fxLentopallotilastotyokalu;
 
 import java.io.PrintStream;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
@@ -20,6 +21,7 @@ import javafx.scene.text.Font;
 import lentopallotilastotyokalu.Joukkue;
 import lentopallotilastotyokalu.Lentopallotilastotyokalu;
 import lentopallotilastotyokalu.Pelaaja;
+import lentopallotilastotyokalu.Tilasto;
 
 
 /**
@@ -35,14 +37,14 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML private TextField hakuehto;
     @FXML private ComboBoxChooser<String> cbKentat;
     @FXML private ScrollPane panelPelaaja;
+    @FXML private ScrollPane panelTilastot;
     @FXML private ListChooser<Pelaaja> chooserPelaajat;
 
     
-    private String joukkueenNimi = "";
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        alusta();   
+        alusta();
     }
     
     @FXML void handleLisaaPelaaja() {
@@ -97,6 +99,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Pelaaja pelaajaKohdalla;
     private TextArea areaPelaaja = new TextArea();
+    private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
     
     /**
@@ -104,11 +107,16 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * yksi iso tekstikenttä, johon voidaan tulostaa jäsenten tiedot.
      * Alustetaan myös jäsenlistan kuuntelija 
      */
-    protected void alusta() {
+    private void alusta() {
         panelPelaaja.setContent(areaPelaaja);
         areaPelaaja.setFont(new Font("Courier New", 12));
         panelPelaaja.setFitToHeight(true);
-        labelJoukkue.setText(joukkueenNimi);
+        panelPelaaja.setFitToWidth(true);
+        
+        panelTilastot.setContent(areaTilastot);
+        areaTilastot.setFont(new Font("Courier New", 12));
+        panelTilastot.setFitToHeight(true);
+        panelTilastot.setFitToWidth(true);
         
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
@@ -121,14 +129,13 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     /**
      * Alustaa kerhon lukemalla sen valitun nimisestä tiedostosta
-     * @param uusiJid joukkueen numero minkä tietoja haetaan
+
      */
-    protected void lueTiedosto(int uusiJid) {
-        String nimi = lentopallotilastotyokalu.getJNimi(uusiJid);
+    private void lueTiedosto() {
+        String nimi = joukkue.getNimi();
         labelJoukkue.setText(nimi);
-        joukkueenNimi = nimi;
         setTitle("Lentopallo tilastotyökalu - " + nimi);
-        Dialogs.showMessageDialog("Ei osata lukea vielä"); // TODO: Pelaajien haku tiedostosta
+        hae(); // TODO: Pelaajien haku tiedostosta
     }
 
     
@@ -140,10 +147,10 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         JoukkueenValintaController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
         Joukkue avattava = JoukkueenValintaController.valitseJoukkue(null, joukkue);
         if (avattava == null) return false;
-        lueTiedosto(avattava.getId());
+        joukkue = avattava;
+        lueTiedosto();
         return true;
     }
-
 
    
     /**
@@ -168,7 +175,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      */
     private void ottelu() {
         OtteluController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
-        ModalController.showModal(JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, "");
+        ModalController.showModal(JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, joukkue);
     }
 
     /**
@@ -178,28 +185,50 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         Pelaaja uusi = new Pelaaja();
         uusi.rekisteroi();
         uusi.taytaEsimerkkiTiedoilla();// TODO: omien tietojen syöttäminen
-        //uusi.asetaJId(joukkueId);  
+        uusi.asetaJId(joukkue.getId());  
         try {
             lentopallotilastotyokalu.lisaaPelaaja(uusi);
         } catch (Exception e) {
             Dialogs.showMessageDialog("ongelmia pelaajan lisäämisessä");
         }
-        hae(uusi.getTunnusNro());   
+        hae();   
     }
     
     /**
      * Hakee pelaajien tiedot listaan
-     * @param jnro pelaajan numero, joka aktivoidaan haun jälkeen
      */
-    private void hae(int jnro) {
+    private void hae() {
         chooserPelaajat.clear();
-        int index = 0;
         for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
-            if (pelaaja.getTunnusNro() == jnro) index = i;
-            //if (pelaaja.getJId() == joukkueId )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+            if (pelaaja.getJId() == joukkue.getId() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
-        chooserPelaajat.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää Pelaajan
+    }
+
+    
+    /**
+     * Näyttää listasta valitun jäsenen tiedot, tilapäisesti yhteen isoon teksti-kenttään
+     */
+    private void naytaPelaaja() {
+        areaPelaaja.setText("");
+        areaTilastot.setText("");
+        pelaajaKohdalla = chooserPelaajat.getSelectedObject();
+        if (pelaajaKohdalla == null) return;
+
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPelaaja)) {
+            pelaajaKohdalla.tulosta(os);
+        }
+        naytaTilastot(pelaajaKohdalla);
+    }
+    
+    /**
+     * Näyttää listasta valitun jäsenen tilastot, tilapäisesti yhteen isoon teksti-kenttään
+     */
+    @SuppressWarnings("resource")
+    private void naytaTilastot(Pelaaja valittu) {
+        List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(valittu);
+        for (Tilasto til: tilastot)
+            til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));
     }
     
     /** Asetetaan käytettävä lentopallotilastotyokalu
@@ -207,19 +236,5 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      */
     public void setLentopallotilastotyokalu(Lentopallotilastotyokalu lentopallotilastotyokalu) {
         this.lentopallotilastotyokalu = lentopallotilastotyokalu;
-    }
-    
-    /**
-     * Näyttää listasta valitun jäsenen tiedot, tilapäisesti yhteen isoon teksti-kenttään
-     */
-    private void naytaPelaaja() {
-        pelaajaKohdalla = chooserPelaajat.getSelectedObject();
-
-        if (pelaajaKohdalla == null) return;
-
-        areaPelaaja.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPelaaja)) {
-            pelaajaKohdalla.tulosta(os);
-        }
     }
 }
