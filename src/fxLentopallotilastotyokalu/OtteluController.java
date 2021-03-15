@@ -1,6 +1,8 @@
 package fxLentopallotilastotyokalu;
 
 
+import java.time.format.DateTimeFormatter;
+
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
@@ -55,10 +57,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     
     private static Lentopallotilastotyokalu lentopallotilastotyokalu;
     private static Joukkue joukkue;
-    private static Pelaaja pelaajaKohdalla;
-    private String suorite;
-
-    
+    private static Pelaaja pelaajaKohdalla;  
     
     /**
      * Hakee pelaajien tiedot listaan
@@ -78,15 +77,19 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     private void tallennaTilasto() throws SailoException {
         int pId;
         String vastustaja;
+        String paiva;
+        String suorite;
         try {
             pId = pelaajaKohdalla.getpId();
             vastustaja = textVastustaja.getText();
-            if (vastustaja.contains(""))return;
+            paiva = pickPaiva.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            suorite = chooserTilastot.getSelectedObject();
+            if (vastustaja.equals("") || paiva.equals("") || suorite.equals(""))return;
         }catch ( java.lang.NullPointerException e) {
             return;
         }
         
-        Tilasto uusi = new Tilasto(pId, vastustaja, suorite);
+        Tilasto uusi = new Tilasto(pId, paiva, vastustaja, suorite);
         lentopallotilastotyokalu.lisaaTilasto(uusi);
         labelViimeisin.setText(uusi.toString());
     }
@@ -99,13 +102,6 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         if (pelaajaKohdalla == null) return;
     }
     
-    /**
-     * Valitsee chooserissa klikatun tilastotyypin 
-     */
-    private void valitseSuorite() {
-        suorite = chooserTilastot.getSelectedObject();
-        if (suorite == null) return;
-    }
     
     /**Asetetaan käytettävä lentopallotilastotyokalu
      * @param tyokalu lentopallotilastotyokalu jota käytetään tässä käyttöliittymässä
@@ -127,7 +123,6 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         chooserTilastot.add("Nosto");
         chooserTilastot.add("Piste");
         chooserTilastot.add("Virhe");
-        chooserTilastot.addSelectionListener(e -> valitseSuorite());
     }
     
     /**

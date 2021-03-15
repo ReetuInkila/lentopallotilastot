@@ -74,7 +74,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     }
 
     @FXML void handlePoistu() {
-        Dialogs.showMessageDialog("Ei osata tallentaa, mutta poistutaan.");
+        tallenna();
         Platform.exit();
         // TODO: korvaa tallenna ja poistu ominaisuudella
     }
@@ -90,7 +90,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     @FXML void handleTietoja() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("AboutView.fxml"), "Lentopallo tilastotyökalu", null, "");
-        // TODO: tarkenna tietoja ikkuna
+        // TODO: tarkenna tietoja ikkunaan
     }
 
 //=================================================================================================================================================================
@@ -105,7 +105,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     /**
      * Tekee tarvittavat alustukset, nyt vaihdetaan GridPanen tilalle
      * yksi iso tekstikenttä, johon voidaan tulostaa jäsenten tiedot.
-     * Alustetaan myös jäsenlistan kuuntelija 
+     * Alustetaan myös pelaajalistan kuuntelija 
      */
     private void alusta() {
         panelPelaaja.setContent(areaPelaaja);
@@ -128,8 +128,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     
     /**
-     * Alustaa kerhon lukemalla sen valitun nimisestä tiedostosta
-
+     * Alustaa lentopallotilastotyokalun lukemalla joukkueeseen kuuluvat pelaajat tiedostosta
      */
     private void lueTiedosto() {
         String nimi = joukkue.getNimi();
@@ -207,8 +206,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     
     /**
-     * Näyttää listasta valitun jäsenen tiedot, tilapäisesti yhteen isoon teksti-kenttään
+     * Näyttää listasta valitun pelaajan tiedot ja tilastot, tilapäisesti kahteen isoon teksti-kenttään
      */
+    @SuppressWarnings("resource")
     private void naytaPelaaja() {
         areaPelaaja.setText("");
         areaTilastot.setText("");
@@ -218,19 +218,13 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPelaaja)) {
             pelaajaKohdalla.tulosta(os);
         }
-        naytaTilastot(pelaajaKohdalla);
-    }
-    
-    /**
-     * Näyttää listasta valitun jäsenen tilastot, tilapäisesti yhteen isoon teksti-kenttään
-     */
-    @SuppressWarnings("resource")
-    private void naytaTilastot(Pelaaja valittu) {
-        List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(valittu);
+        List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(pelaajaKohdalla);
         for (Tilasto til: tilastot)
             til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));
+        //TODO: pelaajien tiedot omiin kenttiin
     }
     
+
     /** Asetetaan käytettävä lentopallotilastotyokalu
      * @param lentopallotilastotyokalu jota käytetään tässä käyttöliittymässä
      */

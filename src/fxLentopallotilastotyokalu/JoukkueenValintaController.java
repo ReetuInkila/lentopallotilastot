@@ -64,7 +64,6 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         if ( uusiNimi == null ) return;
         Joukkue uusi = new Joukkue(uusiNimi);
         uusi.rekisteroi();
-        //uusi.taytaPuulaakiTiedoilla();//TODO: dialogista joukkueen nimi
         try {
             lentopallotilastotyokalu.lisaaJoukkue(uusi);
          } catch (SailoException e) {

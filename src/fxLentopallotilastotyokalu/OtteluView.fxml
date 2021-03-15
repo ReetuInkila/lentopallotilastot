@@ -34,7 +34,7 @@
                         <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <DatePicker fx:id="pickPaiva"prefHeight="26.0" prefWidth="487.0" promptText="Lisää Päivä">
+                  <DatePicker fx:id="pickPaiva" prefHeight="26.0" prefWidth="487.0" promptText="Lisää Päivä">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>

@@ -39,18 +39,20 @@ public class Tilasto {
     /**
      * Alustetaan tietyn pelaajan tilasto.  
      * @param pId pelaajan id numero 
+     * @param paiva tilastoon asetettu päivä
      * @param vastus Vastustaja joukkueen nimi
      * @param suorite 1 jos syöttö, 2 jos ässä, 3 jos nosto, 4 jos piste, 5, jos virhe
      * @example
      * <pre name="test">
-     * Tilasto suorite = new Tilasto(1, "Puulaaki", "Ässä");
-     * Tilasto suorite2 = new Tilasto(3, "VaLePa", "Piste");
-     * suorite.toString() === "1 null Puulaaki 0 1 0 0 0";
-     * suorite2.toString() === "3 null VaLePa 0 0 0 1 0";
+     * Tilasto suorite = new Tilasto(1, "22.12.2121", "Puulaaki", "Ässä");
+     * Tilasto suorite2 = new Tilasto(3, "22.12.2121","VaLePa", "Piste");
+     * suorite.toString() === "1 22.12.2121 Puulaaki 0 1 0 0 0";
+     * suorite2.toString() === "3 22.12.2121 VaLePa 0 0 0 1 0";
      * </pre>
      */
-    public Tilasto(int pId, String vastus, String suorite) {
+    public Tilasto(int pId, String paiva, String vastus, String suorite) {
         this.pId= pId;
+        this.paiva = paiva;
         this.vastustaja = vastus;
         if (suorite.equals("Syöttö")) syotto = 1;
         if (suorite.equals("Ässä")) assa= 1;
