@@ -60,9 +60,11 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
      * Lisätään tilastotyökaluun uusi joukkue
      */
     private void uusiJoukkue() {
-        Joukkue uusi = new Joukkue();
+        String uusiNimi = Dialogs.showInputDialog("Anna joukkueen nimi", "");
+        if ( uusiNimi == null ) return;
+        Joukkue uusi = new Joukkue(uusiNimi);
         uusi.rekisteroi();
-        uusi.taytaPuulaakiTiedoilla();//TODO: dialogista joukkueen nimi
+        //uusi.taytaPuulaakiTiedoilla();//TODO: dialogista joukkueen nimi
         try {
             lentopallotilastotyokalu.lisaaJoukkue(uusi);
          } catch (SailoException e) {

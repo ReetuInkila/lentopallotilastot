@@ -24,6 +24,21 @@ public class Joukkue {
     private static int seuraavaNro = 1;
     private static int seuraavaid = 1;
 
+    
+    /** Alustetaan joukkue jolla on valitu nimi
+     * @param joukkueenNimi Alustettavan joukkeen nimi
+     */
+    public Joukkue(String joukkueenNimi) {
+        this.nimi = joukkueenNimi;
+    }
+    
+    /**
+     * Parametriton muodostaja
+     */
+    public Joukkue() {
+        //
+    }
+
     /** Tulostetaan joukkueen tiedot
      * @param out tietovirta mihin tulostetaan
      */
