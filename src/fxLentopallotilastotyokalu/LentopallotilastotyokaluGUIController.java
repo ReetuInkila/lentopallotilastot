@@ -53,10 +53,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     }
     
     @FXML void handlePoistaPelaaja() {
-        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
-                "Poistetaanko pelaaja: ....", "Kyllä", "Ei"); 
-        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata poistaa pelaajaa");
-        // TODO: pelaajan poistaminen
+        poistaPelaaja();
     }
     
     @FXML void handleApua() {
@@ -102,6 +99,11 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
     
+    
+    private void setTitle(String title) {
+        ModalController.getStage(hakuehto).setTitle(title);
+    }
+
     /**
      * Tekee tarvittavat alustukset, nyt vaihdetaan GridPanen tilalle
      * yksi iso tekstikenttä, johon voidaan tulostaa jäsenten tiedot.
@@ -121,11 +123,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
     }
-    
-    private void setTitle(String title) {
-        ModalController.getStage(hakuehto).setTitle(title);
-    }
-
     
     /**
      * Alustaa lentopallotilastotyokalun lukemalla joukkueeseen kuuluvat pelaajat tiedostosta
@@ -202,6 +199,13 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
             if (pelaaja.getJId() == joukkue.getId() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
+    }
+    
+    private void poistaPelaaja() {
+        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
+                "Poistetaanko pelaaja: " + pelaajaKohdalla.getNimi(), "Kyllä", "Ei"); 
+        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata poistaa pelaajaa");
+        // TODO: pelaajan poistaminen
     }
 
     
