@@ -32,10 +32,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     @FXML private DatePicker pickPaiva;
     
     @FXML void HandlePoistaViimeisin() {
-        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
-                "Poistetaanko viimeisin tilasto: " + labelViimeisin.getText(), "Kyll‰", "Ei"); 
-        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata viel‰ poistaa tilastoja");
-        // TODO: korvaa tilaston poistamisella
+        poistaTilasto();
     }
 
     @FXML void handleTallenna() throws SailoException {
@@ -91,7 +88,26 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         
         Tilasto uusi = new Tilasto(pId, paiva, vastustaja, suorite);
         lentopallotilastotyokalu.lisaaTilasto(uusi);
-        labelViimeisin.setText(uusi.toString());
+        labelViimeisin.setText(uusi.toString()); //TODO: Vain nimi ja tilasto n‰ytett‰v‰ksi tekstiksi
+    }
+    
+    /**
+     * Avataan varmistus ikkuna tilaston poistamiselle ja siirryt‰‰n tilaston poistamiseen jos poistaminen valittu
+     */
+    private void poistaTilasto() {
+        String tilasto = labelViimeisin.getText();
+        if ( tilasto == "") return;
+        boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
+                "Poistetaanko viimeisin tilasto: " + tilasto, "Kyll‰", "Ei"); 
+        if (vastaus == true ) poista();   
+    }
+    
+    /**
+     * Poistetaan viimeinen tilasto
+     */
+    private void poista() {
+        Dialogs.showMessageDialog("Ei osata viel‰ poistaa tilastoja");
+        // TODO: korvaa tilaston poistamisella
     }
     
     /**
