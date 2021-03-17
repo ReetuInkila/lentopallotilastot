@@ -225,7 +225,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(pelaajaKohdalla);
         for (Tilasto til: tilastot)
             til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));
-        //TODO: pelaajien tiedot omiin kenttiin
+        //TODO: pelaajien tiedot niille tarkoitettuihin kenttiin
     }
     
 

@@ -57,6 +57,15 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     private static Pelaaja pelaajaKohdalla;  
     
     /**
+     * Tilaston tallentamiseen k‰ytett‰v‰t muuttujat
+     */
+    private int pId;
+    private String paiva;
+    private String vastustaja;
+    private String suorite;
+
+    
+    /**
      * Hakee pelaajien tiedot listaan
      */
     private void hae() {
@@ -71,11 +80,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
      * Lis‰t‰‰n valittu tilasto
      * @throws SailoException jos tilaston lis‰‰misess‰ ongelmia
      */
-    private void tallennaTilasto() throws SailoException {
-        int pId;
-        String vastustaja;
-        String paiva;
-        String suorite;
+    private void tallennaTilasto() throws SailoException { 
         try {
             pId = pelaajaKohdalla.getpId();
             vastustaja = textVastustaja.getText();
@@ -84,8 +89,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
             if (vastustaja.equals("") || paiva.equals("") || suorite.equals(""))return;
         }catch ( java.lang.NullPointerException e) {
             return;
-        }
-        
+        }        
         Tilasto uusi = new Tilasto(pId, paiva, vastustaja, suorite);
         lentopallotilastotyokalu.lisaaTilasto(uusi);
         labelViimeisin.setText(uusi.toString()); //TODO: Vain nimi ja tilasto n‰ytett‰v‰ksi tekstiksi
