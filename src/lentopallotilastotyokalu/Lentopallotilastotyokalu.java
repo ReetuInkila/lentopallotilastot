@@ -179,7 +179,6 @@ public class Lentopallotilastotyokalu {
         joukkueet.talleta();
         pelaajat.talleta();
         tilastot.talleta();
-        //TODO: kannattaako kaikkia käsitellä samalla??
     }
     
     /**

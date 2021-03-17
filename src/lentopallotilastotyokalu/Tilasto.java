@@ -119,7 +119,5 @@ public class Tilasto {
         til.taytaEsimerkkiTiedoilla(2);
         til.tulosta(System.out);
     }
-
-
-   
+ 
 }
