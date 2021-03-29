@@ -18,20 +18,18 @@ import java.io.PrintStream;
 public class Pelaaja {
     private int tunnusNro;
     private int jId;
-    private int pId;
     private String nimi = "";
     private String pelipaikka = "";
     private int pelinumero = 0;
     
     private static int seuraavaNro = 1;
-    private static int seuraavaId = 1;
     
     
     /** Tulostetaan pelaajan tiedot
      * @param out tietovirta mihin tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", tunnusNro) + " " + String.format("%02d", pId) + " " + String.format("%02d", jId));
+        out.println(String.format("%03d", tunnusNro) + " " + String.format("%02d", jId));
         out.println();
         out.println(nimi);
         out.println();
@@ -61,15 +59,11 @@ public class Pelaaja {
      *   int n1 = peluri1.getTunnusNro();
      *   int n2 = peluri2.getTunnusNro();
      *   n1 === n2-1;
-     *   peluri1.getpId() === 1;
-     *   peluri2.getpId() === 2;
      * </pre>
      */
     public int rekisteroi() {
         this.tunnusNro = seuraavaNro;
         seuraavaNro++;
-        this.pId = seuraavaId;
-        seuraavaId++;
         return this.tunnusNro;
     }
     
@@ -89,14 +83,6 @@ public class Pelaaja {
     }
     
     /**
-     * Palauttaa pelaajan id:n.
-     * @return pelaajan jId
-     */
-    public int getpId() {
-        return pId;
-    }
-    
-    /**
      * Palauttaa pelaajan joukkue id:n.
      * @return pelaajan jId
      */
@@ -104,7 +90,7 @@ public class Pelaaja {
         return jId;
     }
     
-    /**
+    /** Palauttaa pelaajan nimen
      * @return pelaajan nimi
      * @example
      * <pre name="test">

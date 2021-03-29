@@ -30,7 +30,7 @@ public class LentopallotilastotyokaluMain extends Application {
            
 
             primaryStage.setOnCloseRequest((event) -> {
-                    if ( !LentopallotilastotyokaluGUIController.voikoSulkea() ) event.consume();
+                    if ( !tyokaluCtrl.voikoSulkea() ) event.consume();
                 });
             Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu(); 
 
@@ -43,6 +43,7 @@ public class LentopallotilastotyokaluMain extends Application {
         }        
     }
 
+    
     /**Käynnistetään käyttöliittymä
      * @param args Komentorivin parametrit ei käytössä
      */

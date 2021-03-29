@@ -1,6 +1,7 @@
 package lentopallotilastotyokalu;
 
 import java.io.OutputStream;
+import fi.jyu.mit.ohj2.Mjonot;
 import java.io.PrintStream;
 import static kanta.SatunnaisNimi.*;
 
@@ -18,19 +19,18 @@ import static kanta.SatunnaisNimi.*;
 public class Joukkue {
     
     private int tunnusNro;
-    private int jId;
     private String nimi = "";
     
     private static int seuraavaNro = 1;
-    private static int seuraavaid = 1;
 
     
     /** Alustetaan joukkue jolla on valitu nimi
      * @param joukkueenNimi Alustettavan joukkeen nimi
      */
     public Joukkue(String joukkueenNimi) {
-        this.nimi = joukkueenNimi;
+        nimi = joukkueenNimi;
     }
+    
     
     /**
      * Parametriton muodostaja
@@ -39,12 +39,14 @@ public class Joukkue {
         //
     }
 
+    
     /** Tulostetaan joukkueen tiedot
      * @param out tietovirta mihin tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println(String.format("%03d", tunnusNro) + " " + String.format("%03d", jId) + " " + nimi);
+        out.println(String.format("%03d", tunnusNro) + " " + nimi);
     }
+
     
     /**
      * Tulostetaan Joukkueen tiedot
@@ -53,6 +55,7 @@ public class Joukkue {
     public void tulosta(OutputStream os) {
         tulosta(new PrintStream(os));
     }
+
     
     /**
      * Antaa joukkueelle seuraavan rekisterinumeron.
@@ -67,33 +70,72 @@ public class Joukkue {
      *   int n1 = tiimi1.getTunnusNro();
      *   int n2 = tiimi2.getTunnusNro();
      *   n1 === n2-1;
-     *   tiimi1.getId() === 1;
-     *   tiimi2.getId() === 2;
      * </pre>
      */
     public int rekisteroi() {
-        this.tunnusNro = seuraavaNro;
+        tunnusNro = seuraavaNro;
         seuraavaNro++;
-        this.jId = seuraavaid;
-        seuraavaid++;
-        return this.tunnusNro;
+        return tunnusNro;
     }
+
     
     /**
      * Palauttaa joukkueen tunnusnumeron.
-     * @return jäsenen tunnusnumero
+     * @return joukkueen tunnusnumero
      */
     public int getTunnusNro() {
         return tunnusNro;
     }
+
     
     /**
-     * Palauttaa joukkueen id-numeron.
-     * @return joukkueen id numero
+     * Asettaa joukkueelle tunnusnumeron ja varmistaa että seuraava tunnusnumero on isompi
+     * @param numero joukkueelle asetettava numero
      */
-    public int getId() {
-        return jId;
+    private void setTunnusNro(int numero) {
+        tunnusNro = numero;
+        if (tunnusNro >= seuraavaNro) seuraavaNro = tunnusNro + 1;
+
     }
+
+    
+    /**
+     * Palauttaa joukkueen tiedot merkkijonona jonka voi tallettaa tiedostoon
+     * @example
+     * <pre name="test">
+     *  Joukkue joukkue = new Joukkue();
+     *  joukkue.parse("   8  |  Oulun Etta  |");
+     *  joukkue.toString() === "8|Oulun Etta|";
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return getTunnusNro() + "|" + nimi + "|";
+      
+    }
+
+    
+    /** Selvitää joukkueen tiedot | erotellusta merkkijonosta
+     * @param tiedot joukkueen tiedostosta luettu rivi merkkijonona
+     * @example
+     * <pre name="test">
+     *  Joukkue joukkue = new Joukkue();
+     *  joukkue.parse("   8  |  Oulun Etta  |");
+     *  joukkue.toString() === "8|Oulun Etta|";
+     *
+     *  joukkue.rekisteroi();
+     *  int n = joukkue.getTunnusNro();
+     *  joukkue.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
+     *  joukkue.rekisteroi();           // ja tarkistetaan että seuraavalla kertaa tulee yhtä isompi
+     *  joukkue.getTunnusNro() === n+20+1;
+     * </pre>
+     */
+    public void parse(String tiedot) {
+      StringBuilder sb = new StringBuilder(tiedot);
+      setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+      nimi = Mjonot.erota(sb, '|', nimi);
+    }
+
     
     /** Palauttaa joukkeen nimen merkkijonona
      * @return joukkueen nimi
@@ -108,6 +150,7 @@ public class Joukkue {
         return nimi;
     }
 
+    
     /**
      * Apumetodi jolla saadaan täytettyä testausta varten arvot joukkueelle
      */
@@ -115,6 +158,7 @@ public class Joukkue {
         nimi = "Puulaaki " + rand(1000, 9999);    
     }
 
+    
     /** Testataan Joukkue luokkaa
      * @param args ei käytössä
      */

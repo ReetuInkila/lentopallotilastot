@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import lentopallotilastotyokalu.Joukkue;
 import lentopallotilastotyokalu.Lentopallotilastotyokalu;
 import lentopallotilastotyokalu.Pelaaja;
+import lentopallotilastotyokalu.SailoException;
 import lentopallotilastotyokalu.Tilasto;
 
 
@@ -110,6 +111,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * Alustetaan myös pelaajalistan kuuntelija 
      */
     private void alusta() {
+                
         panelPelaaja.setContent(areaPelaaja);
         areaPelaaja.setFont(new Font("Courier New", 12));
         panelPelaaja.setFitToHeight(true);
@@ -140,6 +142,11 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * @return true jos joukkueen löytyy muuten false
      */
     public boolean avaa() {
+        try {
+            lentopallotilastotyokalu.lueTiedostosta();
+        } catch (SailoException e) {
+            e.printStackTrace();
+        }
         JoukkueenValintaController.setLentopallotilastotyokalu(lentopallotilastotyokalu);
         Joukkue avattava = JoukkueenValintaController.valitseJoukkue(null, joukkue);
         if (avattava == null) return false;
@@ -151,17 +158,24 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
    
     /**
      * Tietojen tallennus
+     * @return null jos onnistuu, muuten virhe tekstinä
      */
-    private static void tallenna() {
-        Dialogs.showMessageDialog("Tallennetetaan! Mutta ei toimi vielä");
-        // TODO: korvaa tallentamisella
+    private String tallenna() {
+        try {
+            lentopallotilastotyokalu.tallenna();
+            return null;
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
+            return ex.getMessage();
+        }
     }
+
 
     /**
      * tallentaa ja onnistuessaan palauttaa true
      * @return true jos tallennus onnistuu
      */
-    public static boolean voikoSulkea() {
+    public boolean voikoSulkea() {
         tallenna();
         return true;
     }
@@ -181,7 +195,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         Pelaaja uusi = new Pelaaja();
         uusi.rekisteroi();
         uusi.taytaEsimerkkiTiedoilla();// TODO: omien tietojen syöttäminen
-        uusi.asetaJId(joukkue.getId());  
+        uusi.asetaJId(joukkue.getTunnusNro());  
         try {
             lentopallotilastotyokalu.lisaaPelaaja(uusi);
         } catch (Exception e) {
@@ -197,7 +211,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         chooserPelaajat.clear();
         for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
-            if (pelaaja.getJId() == joukkue.getId() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+            if (pelaaja.getJId() == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
     }
     

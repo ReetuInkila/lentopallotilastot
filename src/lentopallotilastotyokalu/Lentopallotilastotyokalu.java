@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class Lentopallotilastotyokalu {
 
-    private final Joukkueet joukkueet = new Joukkueet();
-    private final Pelaajat pelaajat = new Pelaajat();
-    private final Tilastot tilastot = new Tilastot();
+    private Joukkueet joukkueet = new Joukkueet();
+    private Pelaajat pelaajat = new Pelaajat();
+    private Tilastot tilastot = new Tilastot();
     
     
     
@@ -158,25 +158,24 @@ public class Lentopallotilastotyokalu {
      * @return pelaajan tilastot listana
      */
     public List<Tilasto> annaTilastot(Pelaaja pelaaja){
-        return tilastot.annaTilastot(pelaaja.getpId());
-        
+        return tilastot.annaTilastot(pelaaja.getTunnusNro());       
     }
     
     /**
      * Lukee Joukkueiden nimet tiedostosta
-     * @param nimi jota k‰yte‰‰n lukemisessa
      * @throws SailoException jos lukeminen ep‰onnistuu
      */
-    public void lueTiedostosta(String nimi) throws SailoException {
-        joukkueet.lueTiedostosta(nimi);
+    public void lueTiedostosta() throws SailoException {
+        joukkueet = new Joukkueet();
+        joukkueet.lueTiedostosta();
     }
     
     /**
      * Tallettaa joukkueiden nimet, pelaajat ja tilastot tiedostoon
      * @throws SailoException jos tallettamisessa ongelmia
      */
-    public void talleta() throws SailoException {
-        joukkueet.talleta();
+    public void tallenna() throws SailoException {
+        joukkueet.tallenna();
         pelaajat.talleta();
         tilastot.talleta();
     }

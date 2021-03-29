@@ -72,7 +72,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         chooserPelaajat.clear();
         for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
             Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
-            if (pelaaja.getJId() == joukkue.getId() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+            if (pelaaja.getJId() == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
     }
     
@@ -82,7 +82,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
      */
     private void tallennaTilasto() throws SailoException { 
         try {
-            pId = pelaajaKohdalla.getpId();
+            pId = pelaajaKohdalla.getTunnusNro();
             vastustaja = textVastustaja.getText();
             paiva = pickPaiva.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             suorite = chooserTilastot.getSelectedObject();
