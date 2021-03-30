@@ -186,7 +186,7 @@ public class Joukkueet implements Iterable<Joukkue>{
 
 
     /**
-     * Asettaa tiedoston perusnimen ilan tarkenninta
+     * Asettaa tiedoston perusnimen ilman tarkenninta
      * @param nimi tallennustiedoston perusnimi
      */
     public void setTiedostonPerusNimi(String nimi) {
@@ -285,7 +285,7 @@ public class Joukkueet implements Iterable<Joukkue>{
          */
         @Override
         public Joukkue next() throws NoSuchElementException {
-            if ( !hasNext() ) throw new NoSuchElementException("Ei oo");
+            if ( !hasNext() ) throw new NoSuchElementException("Ei seuraavaa");
             return anna(kohdalla++);
         }
 

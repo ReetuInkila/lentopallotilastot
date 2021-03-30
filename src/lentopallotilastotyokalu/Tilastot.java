@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Tilastot {
     
-    private String tiedostonNimi = "";
+    private String tiedostonNimi = "tilastot";
     
     /** Taulukko tilastoista */
     private final ArrayList<Tilasto> alkiot = new ArrayList<Tilasto>();

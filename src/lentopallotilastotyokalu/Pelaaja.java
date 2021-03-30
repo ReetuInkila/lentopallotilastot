@@ -5,6 +5,8 @@ import static kanta.SatunnaisNimi.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /** Luokka Pelaaja
  * - tiet‰‰ pelaajan kent‰t (joukkue id, nimi, jne.)
  * - osaa tarkistaa tietyn kent‰n oikeellisuuden (syntaksin)                                    
@@ -20,8 +22,7 @@ public class Pelaaja {
     private int jId;
     private String nimi = "";
     private String pelipaikka = "";
-    private int pelinumero = 0;
-    
+    private int pelinumero = 0;    
     private static int seuraavaNro = 1;
     
     
@@ -38,6 +39,7 @@ public class Pelaaja {
         out.println(pelipaikka);
     }
     
+    
     /**
      * Tulostetaan pelaajan tiedot
      * @param os tietovirta johon tulostetaan
@@ -45,6 +47,7 @@ public class Pelaaja {
     public void tulosta(OutputStream os) {
         tulosta(new PrintStream(os));
     }
+    
     
     /**
      * Antaa pelaajalle seuraavan rekisterinumeron.
@@ -67,12 +70,25 @@ public class Pelaaja {
         return this.tunnusNro;
     }
     
+    
     /** Asetataan pelaajalle joukkeeseen viittaava id
      * @param id pelaajalle asetettava joukkue id numero
      */
     public void asetaJId(int id) {
         this.jId = id; 
     }
+    
+    
+    /**
+     * Asettaa pelaajalle tunnusnumeron ja varmistaa ett‰ seuraava tunnusnumero on isompi
+     * @param numero pelaajalle asetettava numero
+     */
+    private void setTunnusNro(int numero) {
+        tunnusNro = numero;
+        if (tunnusNro >= seuraavaNro) seuraavaNro = tunnusNro + 1;
+
+    }
+    
     
     /**
      * Palauttaa pelaajan tunnusnumeron.
@@ -82,6 +98,7 @@ public class Pelaaja {
         return tunnusNro;
     }
     
+    
     /**
      * Palauttaa pelaajan joukkue id:n.
      * @return pelaajan jId
@@ -89,6 +106,7 @@ public class Pelaaja {
     public int getJId() {
         return jId;
     }
+    
     
     /** Palauttaa pelaajan nimen
      * @return pelaajan nimi
@@ -112,8 +130,46 @@ public class Pelaaja {
         pelipaikka = arvoPeliPaikka();
         pelinumero = rand(1,40);
     }
-
-
+    
+    
+    /** Selvit‰‰ pelaajan tiedot | erotellusta merkkijonosta
+     * @param tiedot pelaajien tiedostosta luettu rivi merkkijonona
+     * @example
+     * <pre name="test">
+     *  Pelaaja pelaaja = new Pelaaja();
+     *  pelaaja.parse("1   |1     |2          |Eemil Tervaportti |Passari        | ");
+     *  pelaaja.toString() === "1|1|2|Eemil Tervaportti|Passari|";
+     *
+     *  pelaaja.rekisteroi();
+     *  int n = pelaaja.getTunnusNro();
+     *  pelaaja.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
+     *  pelaaja.rekisteroi();           // ja tarkistetaan ett‰ seuraavalla kertaa tulee yht‰ isompi
+     *  pelaaja.getTunnusNro() === n+20+1;
+     * </pre>
+     */
+    public void parse(String tiedot) {
+      StringBuilder sb = new StringBuilder(tiedot);
+      setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+      jId = Mjonot.erota(sb, '|', jId);
+      pelinumero = Mjonot.erota(sb, '|', pelinumero);
+      nimi = Mjonot.erota(sb, '|', nimi);
+      pelipaikka = Mjonot.erota(sb, '|', pelipaikka);
+    }
+    
+    
+    /**
+     * Palauttaa pelaajan tiedot merkkijonona jonka voi tallettaa tiedostoon
+     * @example
+     * <pre name="test">
+     *  Pelaaja pelaaja = new Pelaaja();
+     *  pelaaja.parse("1   |1     |2          |Eemil Tervaportti |Passari        | ");
+     *  pelaaja.toString() === "1|1|2|Eemil Tervaportti|Passari|";
+     * </pre>
+     */
+    @Override
+    public String toString() {
+        return tunnusNro + "|" + jId + "|" + pelinumero + "|" + nimi + "|" + pelipaikka + "|";    
+    }
     
 
     /** Testataan pelaaja luokkaa
@@ -131,7 +187,5 @@ public class Pelaaja {
         
         peluri2.taytaEsimerkkiTiedoilla();
         peluri2.tulosta(System.out);
-
     }
-
 }

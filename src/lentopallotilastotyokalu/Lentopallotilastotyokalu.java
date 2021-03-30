@@ -17,8 +17,7 @@ public class Lentopallotilastotyokalu {
     private Joukkueet joukkueet = new Joukkueet();
     private Pelaajat pelaajat = new Pelaajat();
     private Tilastot tilastot = new Tilastot();
-    
-    
+       
     
     /**
      * Palautaa joukkueiden m‰‰r‰n
@@ -28,6 +27,7 @@ public class Lentopallotilastotyokalu {
         return joukkueet.getLkm();
     }
     
+    
     /**
      * Palautaa pelaajien m‰‰r‰n
      * @return pelaaja
@@ -36,6 +36,7 @@ public class Lentopallotilastotyokalu {
         return pelaajat.getLkm();
     }
     
+    
     /**
      * Palautaa tilastojen m‰‰r‰n
      * @return tilastoja
@@ -43,6 +44,7 @@ public class Lentopallotilastotyokalu {
     public int getTilastoja() {
         return tilastot.getLkm();
     }
+    
     
     /**
      * Lis‰‰ uuden joukkueen tietorakenteeseen.  Ottaa joukkueen omistukseensa.
@@ -76,6 +78,7 @@ public class Lentopallotilastotyokalu {
         joukkueet.lisaa(joukkue);
     }
     
+    
     /**
      * Lis‰‰ uuden pelaajan tietorakenteeseen.  Ottaa pelaajan omistukseensa.
      * @param pelaaja lis‰t‰‰v‰n pelaajan viite.  Huom tietorakenne muuttuu omistajaksi
@@ -100,6 +103,7 @@ public class Lentopallotilastotyokalu {
     public void lisaaPelaaja(Pelaaja pelaaja) throws SailoException {
         pelaajat.lisaa(pelaaja);
     }
+    
     
     /**
      * Lis‰‰ uuden tilaston tietorakenteeseen.
@@ -133,6 +137,7 @@ public class Lentopallotilastotyokalu {
         tilastot.lisaa(tilasto);
     }
     
+    
     /**
      * Palauttaa i:n joukkueen
      * @param i monesko joukkue palautetaan
@@ -142,6 +147,7 @@ public class Lentopallotilastotyokalu {
     public Joukkue annaJoukkue(int i) throws IndexOutOfBoundsException {
         return joukkueet.anna(i);
     }
+    
     
     /**
      * Palauttaa i:n pelaajan
@@ -153,6 +159,7 @@ public class Lentopallotilastotyokalu {
         return pelaajat.anna(i);
     }
     
+    
     /** Palautetaan pelaajan tilastot
      * @param pelaaja pelaaja jonka tilastoja haetaan
      * @return pelaajan tilastot listana
@@ -161,14 +168,18 @@ public class Lentopallotilastotyokalu {
         return tilastot.annaTilastot(pelaaja.getTunnusNro());       
     }
     
+    
     /**
-     * Lukee Joukkueiden nimet tiedostosta
+     * Lukee Joukkueiden ja pelaajien tiedot tiedostosta
      * @throws SailoException jos lukeminen ep‰onnistuu
      */
     public void lueTiedostosta() throws SailoException {
         joukkueet = new Joukkueet();
+        pelaajat = new Pelaajat();
         joukkueet.lueTiedostosta();
+        pelaajat.lueTiedostosta();
     }
+    
     
     /**
      * Tallettaa joukkueiden nimet, pelaajat ja tilastot tiedostoon
@@ -176,9 +187,10 @@ public class Lentopallotilastotyokalu {
      */
     public void tallenna() throws SailoException {
         joukkueet.tallenna();
-        pelaajat.talleta();
+        pelaajat.tallenna();
         tilastot.talleta();
     }
+    
     
     /**
      * Poistaa pelaajista ja tilastoista ne joilla on pid. Kesken.
@@ -189,6 +201,7 @@ public class Lentopallotilastotyokalu {
         return 0;
     }
 
+    
     /**
      * @param args ei k‰ytˆss‰
      */
