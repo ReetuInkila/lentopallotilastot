@@ -176,8 +176,10 @@ public class Lentopallotilastotyokalu {
     public void lueTiedostosta() throws SailoException {
         joukkueet = new Joukkueet();
         pelaajat = new Pelaajat();
+        tilastot = new Tilastot();
         joukkueet.lueTiedostosta();
         pelaajat.lueTiedostosta();
+        tilastot.lueTiedostosta();
     }
     
     
@@ -188,7 +190,7 @@ public class Lentopallotilastotyokalu {
     public void tallenna() throws SailoException {
         joukkueet.tallenna();
         pelaajat.tallenna();
-        tilastot.talleta();
+        tilastot.tallenna();
     }
     
     

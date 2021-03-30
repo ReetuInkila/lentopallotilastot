@@ -1,5 +1,12 @@
 package lentopallotilastotyokalu;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,12 +17,13 @@ import java.util.List;
  * @version Mar 8, 2021
  *
  */
-public class Tilastot {
+public class Tilastot implements Iterable<Tilasto>{
     
-    private String tiedostonNimi = "tilastot";
-    
+    private String tiedostonPerusNimi = "tilastot";
+    private boolean muutettu = false;
     /** Taulukko tilastoista */
     private final ArrayList<Tilasto> alkiot = new ArrayList<Tilasto>();
+    
     
     /**
      * Tilastojen alustaminen
@@ -24,34 +32,17 @@ public class Tilastot {
         // toistaiseksi ei tarvitse tehd‰ mit‰‰n
     }
 
+    
     /**
      * Lis‰‰ uuden tilaston tietorakenteeseen.
      * @param tilasto lis‰tt‰v‰ tilasto.  Huom tietorakenne muuttuu omistajaksi
      */
     public void lisaa(Tilasto tilasto) {
-        alkiot.add(tilasto);   
-    }
-    
-    /**
-     * Lukee tilastot tiedostosta.  
-     * TODO Kesken.
-     * @param hakemisto tiedoston hakemisto
-     * @throws SailoException jos lukeminen ep‰onnistuu
-     */
-    public void lueTiedostosta(String hakemisto) throws SailoException {
-        tiedostonNimi = hakemisto + ".har";
-        throw new SailoException("Ei osata viel‰ lukea tiedostoa " + tiedostonNimi);
-    }
-    
-    /**
-     * Tallentaa tilastot tiedostoon.  
-     * TODO Kesken.
-     * @throws SailoException jos talletus ep‰onnistuu
-     */
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata viel‰ tallettaa tiedostoa " + tiedostonNimi);
+        alkiot.add(tilasto);  
+        muutettu = true;
     }
 
+    
     /**
      * Palauttaa lentopallotilastotyokalun tilastojen lukum‰‰r‰n
      * @return tilastojen lukum‰‰r‰
@@ -59,6 +50,131 @@ public class Tilastot {
     public int getLkm() {
         return alkiot.size();
     }
+    
+    
+    /**
+     * Lukee tilastot tiedostosta. 
+     * @param tiedosto josta luetaan
+     * @throws SailoException jos lukeminen ep‰onnistuu
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     * 
+     *  Tilastot tilastot = new Tilastot();
+     *  Tilasto tilasto1 = new Tilasto(), tilasto2 = new Tilasto(); 
+     *  tilasto1.taytaEsimerkkiTiedoilla(5);
+     *  tilasto2.taytaEsimerkkiTiedoilla(5);
+     *  String testiTiedosto = "testitilastot";
+     *  File ftied = new File(testiTiedosto+".dat");
+     *  ftied.delete();
+     *  tilastot.lueTiedostosta(testiTiedosto); #THROWS SailoException
+     *  tilastot.lisaa(tilasto1);
+     *  tilastot.lisaa(tilasto2);
+     *  tilastot.tallenna();
+     *  tilastot = new Tilastot();            // Poistetaan vanhat luomalla uusi
+     *  tilastot.lueTiedostosta(testiTiedosto);  // johon ladataan tiedot tiedostosta.
+     *  Iterator<Tilasto> i = tilastot.iterator();
+     *  i.next().toString() === tilasto1.toString();
+     *  i.next().toString() === tilasto2.toString();
+     *  i.hasNext() === false;
+     *  tilastot.lisaa(tilasto2);
+     *  tilastot.tallenna();
+     *  ftied.delete() === true;
+     *  File fbak = new File(testiTiedosto+".bak");
+     *  fbak.delete() === true;
+     * </pre>
+     */
+    public void lueTiedostosta(String tiedosto) throws SailoException {
+        setTiedostonPerusNimi(tiedosto);
+        
+        try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
+            String rivi = "";
+            while ( (rivi = fi.readLine()) != null ) {
+                rivi = rivi.trim();
+                if ( rivi.charAt(0) == ';' ) continue;
+                Tilasto tilasto = new Tilasto();
+                tilasto.parse(rivi);
+                lisaa(tilasto);
+            }
+            muutettu = false;
+        } catch ( FileNotFoundException e ) {
+            throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
+        } catch ( IOException e ) {
+            throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * Luetaan aikaisemmin annetun nimisest‰ tiedostosta
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void lueTiedostosta() throws SailoException {
+        lueTiedostosta(getTiedostonPerusNimi());
+    }
+
+    
+    /**
+     * Tallentaa joukkueiston tiedostoon.
+     * @throws SailoException jos talletus ep‰onnistuu
+     */
+    public void tallenna() throws SailoException {
+        if ( !muutettu ) return;
+        
+        File fbak = new File(getBakNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete();
+        ftied.renameTo(fbak);
+
+        try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
+            for (Tilasto tilasto: this) {
+                fo.println(tilasto.toString());
+            }
+        } catch ( FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto " + ftied.getName() + " ei aukea");
+        } catch ( IOException ex ) {
+            throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
+        }
+        muutettu = false;
+    }
+    
+    
+    /**
+     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+
+
+    /**
+     * Asettaa tiedoston perusnimen ilman tarkenninta
+     * @param nimi tallennustiedoston perusnimi
+     */
+    public void setTiedostonPerusNimi(String nimi) {
+        tiedostonPerusNimi = nimi;
+    }
+
+
+    /**
+     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return getTiedostonPerusNimi() + ".dat";
+    }
+
+
+    /**
+     * Palauttaa varakopiotiedoston nimen
+     * @return varakopiotiedoston nimi
+     */
+    public String getBakNimi() {
+        return tiedostonPerusNimi + ".bak";
+    }
+    
     
     /**
      * Iteraattori kaikkien tilastojen l‰pik‰ymiseen
@@ -86,10 +202,12 @@ public class Tilastot {
      *  
      * </pre>
      */
+    @Override
     public Iterator<Tilasto> iterator() {
         return alkiot.iterator();
     }
 
+    
     /**
      * Haetaan kaikki pelaajan tilastot
      * @param id pelaajan id numero jonka tilastoja haetaan
@@ -125,8 +243,6 @@ public class Tilastot {
         return loydetyt;
     }
 
- 
-
 
     /** Testi p‰‰ohjelma tilastot luokalle
      * @param args ei k‰ytˆss‰
@@ -146,6 +262,4 @@ public class Tilastot {
         til.tulosta(System.out);
         }
     }
-
-
 }
