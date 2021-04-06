@@ -99,6 +99,14 @@ public class Pelaajat implements Iterable<Pelaaja> {
     }
     
     
+    /**Asetetaan muutettu haluttuun arvoon
+     * @param onkoMuutettu boolean arvo onko muokattu
+     */
+    public void setMuutettu(boolean onkoMuutettu) {
+        muutettu = onkoMuutettu;
+    }
+    
+    
     /**
      * Lukee pelaajat tiedostosta. 
      * @throws SailoException jos lukeminen epäonnistuu

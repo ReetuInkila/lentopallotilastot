@@ -108,6 +108,14 @@ public class Pelaaja {
     }
     
     
+    /** Asetetaan pelaajalle uusi pelipaikka
+     * @param uusipaikka pelipaikka merkkijonona
+     */
+    public void setPelipaikka(String uusipaikka) {
+        pelipaikka = uusipaikka;
+    }
+    
+    
     /**
      * Palauttaa pelaajan joukkue id:n.
      * @return pelaajan jId
@@ -132,11 +140,29 @@ public class Pelaaja {
     
     
     /**
+     * Asetetaan pelaajalle nimi
+     * @param uusinimi asetettava nimi
+     */
+    public void setNimi(String uusinimi) {
+        nimi = uusinimi;
+    }
+    
+    
+    /**
      * Palauttaa pelaajan pelinumeron.
      * @return pelaajan pelinumero
      */
     public int getPelinumero() {
         return pelinumero;
+    }
+    
+    
+    /**
+     * Asetetaan pelaajalle pelinumero
+     * @param uusinumero pelaajan uusi numero
+     */
+    public void setPelinumero(int uusinumero) {
+        pelinumero = uusinumero;
     }
     
     

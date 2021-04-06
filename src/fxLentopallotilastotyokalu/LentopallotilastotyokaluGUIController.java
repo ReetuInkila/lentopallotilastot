@@ -32,7 +32,6 @@ import lentopallotilastotyokalu.Tilasto;
  */
 public class LentopallotilastotyokaluGUIController implements Initializable  {
 
-
     @FXML private Label labelJoukkue;
     @FXML private TextField hakuehto;
     @FXML private ComboBoxChooser<String> cbKentat;
@@ -44,55 +43,73 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML private TextField pelipaikka;
 
     
-    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         alusta();
     }
+    
     
     @FXML void handleLisaaPelaaja() {
         uusiPelaaja();
         // TODO: korvaa muokkattavalla pelaajalla 
     }
     
+    
+    @FXML void handleMuokkaaPelaajaa() {
+        muokkaaPelaajaa();
+    }
+    
+    
     @FXML void handlePoistaPelaaja() {
         poistaPelaaja();
     }
+    
+    
+    @FXML void handleTallennaPelaaja() {
+        tallennaMuutokset();
+    }
+    
     
     @FXML void handleApua() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("HelpView.fxml"), "Lentopallo tilastotyökalu", null, "");
         // TODO: tarkenna ohjeita tai linkitä sivulle
     }
 
+    
     @FXML void handleLisaaOttelu() {
         ottelu();
     }
 
+    
     @FXML void handlePoistaOttelu() {
         Dialogs.showMessageDialog("Ei osata poistaa ottelua");
         // TODO: korvaa ottelun poistolla 
     }
 
+    
     @FXML void handlePoistu() {
         tallenna();
         Platform.exit();
         // TODO: korvaa tallenna ja poistu ominaisuudella
     }
     
+    
     @FXML void handleAvaa() {
         avaa();
     }
 
+    
     @FXML void handleTallenna() {
-        tallenna();
-        
+        tallenna();    
     }
+    
     
     @FXML void handleTietoja() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("AboutView.fxml"), "Lentopallo tilastotyökalu", null, "");
         // TODO: tarkenna tietoja ikkunaan
     }
 
+    
 //=================================================================================================================================================================
 // Tästä eteenpäin ei suoraan käyttöliittymään liittyvää koodia
     
@@ -106,6 +123,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         ModalController.getStage(hakuehto).setTitle(title);
     }
 
+    
     /**
      * Tekee tarvittavat alustukset, nyt vaihdetaan GridPanen tilalle
      * yksi iso tekstikenttä, johon voidaan tulostaa jäsenten tiedot.
@@ -120,6 +138,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
     }
+    
     
     /**
      * Alustaa lentopallotilastotyokalun lukemalla joukkueeseen kuuluvat pelaajat tiedostosta
@@ -174,6 +193,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         return true;
     }
 
+    
     /**
      * Avaa ottelu dialogin
      */
@@ -182,6 +202,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         ModalController.showModal(JoukkueenValintaController.class.getResource("OtteluView.fxml"), "Ottelu", null, joukkue);
     }
 
+    
     /**
      * Lisätään työkaluun uusi pelaaja
      */
@@ -198,6 +219,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         hae();   
     }
     
+    
     /**
      * Hakee pelaajien tiedot listaan
      */
@@ -208,6 +230,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             if (pelaaja.getJId() == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
         }
     }
+    
     
     private void poistaPelaaja() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
@@ -234,6 +257,33 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         for (Tilasto til: tilastot)
             til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));
         //TODO: pelaajien tiedot niille tarkoitettuihin kenttiin
+    }
+    
+    
+    /**
+     * Mahdollistetaan pelaajan tietojen muokkaus
+     */
+    private void muokkaaPelaajaa() {
+        nimi.setEditable(true);
+        numero.setEditable(true);
+        pelipaikka.setEditable(true);
+    }
+    
+    
+    /**
+     * Tallentaa pelaajan tietoihin tehdyt muutokset
+     */
+    private void tallennaMuutokset() {
+        pelaajaKohdalla = chooserPelaajat.getSelectedObject();
+        pelaajaKohdalla.setNimi(nimi.getText());
+        nimi.setEditable(false);
+        pelaajaKohdalla.setPelinumero(Integer.valueOf(numero.getText()));
+        numero.setEditable(false);
+        pelaajaKohdalla.setPelipaikka(pelipaikka.getText());
+        pelipaikka.setEditable(false);
+        lentopallotilastotyokalu.pelaajiaMuokattu();
+        tallenna();
+        hae();
     }
     
 

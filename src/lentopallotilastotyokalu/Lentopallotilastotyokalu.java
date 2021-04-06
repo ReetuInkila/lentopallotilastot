@@ -205,6 +205,14 @@ public class Lentopallotilastotyokalu {
     
     
     /**
+     * Asetetaan pelaajien muokattu parametri arvoon true 
+     */
+    public void pelaajiaMuokattu() {
+        pelaajat.setMuutettu(true);
+    }
+    
+    
+    /**
      * Poistaa viimeisimpänä talletetun tilaston
      */
     public void poistaViimeisinTilasto() {
