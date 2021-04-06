@@ -24,7 +24,7 @@ public class Joukkueet implements Iterable<Joukkue>{
     
     private static final int Max_JOUKKUEITA = 10;
     private int lkm = 0;
-    private String tiedostonPerusNimi = "joukkueet";
+    private String tiedostonNimi = "joukkueet";
     private Joukkue[] alkiot = new Joukkue[Max_JOUKKUEITA];
     private boolean muutettu = false;
  
@@ -88,7 +88,6 @@ public class Joukkueet implements Iterable<Joukkue>{
     
     /**
      * Lukee joukkueet tiedostosta. 
-     * @param tiedosto josta luetaan
      * @throws SailoException jos lukeminen ep‰onnistuu
      * @example
      * <pre name="test">
@@ -117,13 +116,9 @@ public class Joukkueet implements Iterable<Joukkue>{
      *  joukkueet.lisaa(joukkue2);
      *  joukkueet.tallenna();
      *  ftied.delete() === true;
-     *  File fbak = new File(testiTiedosto+".bak");
-     *  fbak.delete() === true;
      * </pre>
      */
-    public void lueTiedostosta(String tiedosto) throws SailoException {
-        setTiedostonPerusNimi(tiedosto);
-        
+    public void lueTiedostosta() throws SailoException {
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
             String rivi = "";
             while ( (rivi = fi.readLine()) != null ) {
@@ -135,7 +130,7 @@ public class Joukkueet implements Iterable<Joukkue>{
             }
             muutettu = false;
         } catch ( FileNotFoundException e ) {
-            throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
+            throw new SailoException("Tiedosto " + tiedostonNimi + " ei aukea");
         } catch ( IOException e ) {
             throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
         }
@@ -143,11 +138,31 @@ public class Joukkueet implements Iterable<Joukkue>{
     
     
     /**
-     * Luetaan aikaisemmin annetun nimisest‰ tiedostosta
+     * Luetaan aikaisemmin annetun nimisest tiedostosta
+     * @param nimi uusi nimi tiedostolle mit‰ luetaan
      * @throws SailoException jos tulee poikkeus
      */
-    public void lueTiedostosta() throws SailoException {
-        lueTiedostosta(getTiedostonPerusNimi());
+    public void lueTiedostosta(String nimi) throws SailoException {
+        setTiedostonNimi(nimi);
+        lueTiedostosta();
+    }
+
+
+    /**
+     * Asettaa tiedoston nimen ilman tarkenninta
+     * @param nimi tallennustiedoston perusnimi
+     */
+    public void setTiedostonNimi(String nimi) {
+        tiedostonNimi = nimi;
+    }
+    
+    
+    /**
+     * Palauttaa tiedoston nimen, jota kytetn tallennukseen
+     * @return tallennustiedoston nimi
+     */
+    public String getTiedostonNimi() {
+        return tiedostonNimi + ".dat";
     }
 
     
@@ -158,10 +173,7 @@ public class Joukkueet implements Iterable<Joukkue>{
     public void tallenna() throws SailoException {
         if ( !muutettu ) return;
         
-        File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
-        fbak.delete();
-        ftied.renameTo(fbak);
 
         try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
             for (Joukkue joukkue: this) {
@@ -175,42 +187,6 @@ public class Joukkueet implements Iterable<Joukkue>{
         muutettu = false;
     }
     
-    
-    /**
-     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
-     * @return tallennustiedoston nimi
-     */
-    public String getTiedostonPerusNimi() {
-        return tiedostonPerusNimi;
-    }
-
-
-    /**
-     * Asettaa tiedoston perusnimen ilman tarkenninta
-     * @param nimi tallennustiedoston perusnimi
-     */
-    public void setTiedostonPerusNimi(String nimi) {
-        tiedostonPerusNimi = nimi;
-    }
-
-
-    /**
-     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
-     * @return tallennustiedoston nimi
-     */
-    public String getTiedostonNimi() {
-        return getTiedostonPerusNimi() + ".dat";
-    }
-
-
-    /**
-     * Palauttaa varakopiotiedoston nimen
-     * @return varakopiotiedoston nimi
-     */
-    public String getBakNimi() {
-        return tiedostonPerusNimi + ".bak";
-    }
-
 
     /**
      * Palauttaa tilastotyˆkalun joukkueiden lukum‰‰r‰n

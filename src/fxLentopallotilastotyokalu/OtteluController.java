@@ -41,7 +41,12 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     }
 
     @FXML void handleTallennaPoistu() {
-        Dialogs.showMessageDialog("Ei osata vielä tallentaa, mutta poistutaan");
+        try {
+            tallenna();
+        } catch (SailoException e) {
+            boolean vastaus = Dialogs.showQuestionDialog("poistutaanko?" ,"Tallentaminen epäonnistui. Poistutaanko?", "Kyllä", "Ei");
+            if (vastaus == false) return;
+        }
         ModalController.closeStage(textVastustaja);
 
     }
@@ -122,6 +127,14 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         if (pelaajaKohdalla == null) return;
     }
     
+    /**
+     * Tallentaa tilastot
+     * @throws SailoException jos tallentaminen ei onnistu
+     */
+    private void tallenna() throws SailoException {
+        lentopallotilastotyokalu.tallenna();
+    }
+    
     
     /**Asetetaan käytettävä lentopallotilastotyokalu
      * @param tyokalu lentopallotilastotyokalu jota käytetään tässä käyttöliittymässä
@@ -144,6 +157,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         chooserTilastot.add("Piste");
         chooserTilastot.add("Virhe");
     }
+    
     
     /**
      * Mitä palautetaan dialogista GUIControllerille

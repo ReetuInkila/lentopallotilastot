@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Tilastot implements Iterable<Tilasto>{
     
-    private String tiedostonPerusNimi = "tilastot";
+    private String tiedostonNimi = "tilastot";
     private boolean muutettu = false;
     /** Taulukko tilastoista */
     private final ArrayList<Tilasto> alkiot = new ArrayList<Tilasto>();
@@ -54,7 +54,6 @@ public class Tilastot implements Iterable<Tilasto>{
     
     /**
      * Lukee tilastot tiedostosta. 
-     * @param tiedosto josta luetaan
      * @throws SailoException jos lukeminen ep‰onnistuu
      * @example
      * <pre name="test">
@@ -81,12 +80,9 @@ public class Tilastot implements Iterable<Tilasto>{
      *  tilastot.lisaa(tilasto2);
      *  tilastot.tallenna();
      *  ftied.delete() === true;
-     *  File fbak = new File(testiTiedosto+".bak");
-     *  fbak.delete() === true;
      * </pre>
      */
-    public void lueTiedostosta(String tiedosto) throws SailoException {
-        setTiedostonPerusNimi(tiedosto);
+    public void lueTiedostosta() throws SailoException {
         
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
             String rivi = "";
@@ -107,11 +103,13 @@ public class Tilastot implements Iterable<Tilasto>{
     
     
     /**
-     * Luetaan aikaisemmin annetun nimisest‰ tiedostosta
+     * Luetaan annetun nimisest‰ tiedostosta
+     * @param tiedosto josta luetaan
      * @throws SailoException jos tulee poikkeus
      */
-    public void lueTiedostosta() throws SailoException {
-        lueTiedostosta(getTiedostonPerusNimi());
+    public void lueTiedostosta(String tiedosto) throws SailoException {
+        setTiedostonNimi(tiedosto);
+        lueTiedostosta();
     }
 
     
@@ -122,10 +120,7 @@ public class Tilastot implements Iterable<Tilasto>{
     public void tallenna() throws SailoException {
         if ( !muutettu ) return;
         
-        File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
-        fbak.delete();
-        ftied.renameTo(fbak);
 
         try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
             for (Tilasto tilasto: this) {
@@ -139,22 +134,13 @@ public class Tilastot implements Iterable<Tilasto>{
         muutettu = false;
     }
     
-    
-    /**
-     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
-     * @return tallennustiedoston nimi
-     */
-    public String getTiedostonPerusNimi() {
-        return tiedostonPerusNimi;
-    }
-
 
     /**
      * Asettaa tiedoston perusnimen ilman tarkenninta
      * @param nimi tallennustiedoston perusnimi
      */
-    public void setTiedostonPerusNimi(String nimi) {
-        tiedostonPerusNimi = nimi;
+    public void setTiedostonNimi(String nimi) {
+        tiedostonNimi = nimi;
     }
 
 
@@ -163,16 +149,7 @@ public class Tilastot implements Iterable<Tilasto>{
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return getTiedostonPerusNimi() + ".dat";
-    }
-
-
-    /**
-     * Palauttaa varakopiotiedoston nimen
-     * @return varakopiotiedoston nimi
-     */
-    public String getBakNimi() {
-        return tiedostonPerusNimi + ".bak";
+        return tiedostonNimi + ".dat";
     }
     
     

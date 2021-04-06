@@ -24,7 +24,7 @@ public class Pelaajat implements Iterable<Pelaaja> {
 
     private static final int Max_PELAAJIA = 20;
     private int lkm = 0;
-    private String tiedostonPerusNimi = "pelaajat";
+    private String tiedostonNimi = "pelaajat";
     private Pelaaja[] alkiot = new Pelaaja[Max_PELAAJIA];
     private boolean muutettu = false;
     
@@ -89,7 +89,6 @@ public class Pelaajat implements Iterable<Pelaaja> {
     
     /**
      * Lukee pelaajat tiedostosta. 
-     * @param tiedosto josta luetaan
      * @throws SailoException jos lukeminen ep‰onnistuu
      * @example
      * <pre name="test">
@@ -102,7 +101,7 @@ public class Pelaajat implements Iterable<Pelaaja> {
      *  pelaaja2.rekisteroi(); 
      *  pelaaja1.taytaEsimerkkiTiedoilla();
      *  pelaaja2.taytaEsimerkkiTiedoilla();
-     *  String testiTiedosto = "testijoukkueet";
+     *  String testiTiedosto = "testipelaajat";
      *  File ftied = new File(testiTiedosto+".dat");
      *  ftied.delete();
      *  pelaajat.lueTiedostosta(testiTiedosto); #THROWS SailoException
@@ -118,12 +117,10 @@ public class Pelaajat implements Iterable<Pelaaja> {
      *  pelaajat.lisaa(pelaaja2);
      *  pelaajat.tallenna();
      *  ftied.delete() === true;
-     *  File fbak = new File(testiTiedosto+".bak");
-     *  fbak.delete() === true;
      * </pre>
      */
-    public void lueTiedostosta(String tiedosto) throws SailoException {
-        setTiedostonPerusNimi(tiedosto);
+    public void lueTiedostosta() throws SailoException {
+
         
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
             String rivi = "";
@@ -150,10 +147,7 @@ public class Pelaajat implements Iterable<Pelaaja> {
     public void tallenna() throws SailoException {
         if ( !muutettu ) return;
         
-        File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
-        fbak.delete();
-        ftied.renameTo(fbak);
 
         try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
             for (Pelaaja pelaaja: this) {
@@ -170,28 +164,21 @@ public class Pelaajat implements Iterable<Pelaaja> {
     
     /**
      * Luetaan aikaisemmin annetun nimisest‰ tiedostosta
+     * @param tiedosto luettavalle tiedostolle nimi
      * @throws SailoException jos tulee poikkeus
      */
-    public void lueTiedostosta() throws SailoException {
-        lueTiedostosta(getTiedostonPerusNimi());
+    public void lueTiedostosta(String tiedosto) throws SailoException {
+        setTiedostonPerusNimi(tiedosto);
+        lueTiedostosta();
     }
     
-    
-    /**
-     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
-     * @return tallennustiedoston nimi
-     */
-    public String getTiedostonPerusNimi() {
-        return tiedostonPerusNimi;
-    }
-
 
     /**
      * Asettaa tiedoston perusnimen ilman tarkenninta
-     * @param nimi tallennustiedoston perusnimi
+     * @param nimi tallennustiedoston nimi
      */
     public void setTiedostonPerusNimi(String nimi) {
-        tiedostonPerusNimi = nimi;
+        tiedostonNimi = nimi;
     }
 
 
@@ -200,18 +187,9 @@ public class Pelaajat implements Iterable<Pelaaja> {
      * @return tallennustiedoston nimi
      */
     public String getTiedostonNimi() {
-        return getTiedostonPerusNimi() + ".dat";
+        return tiedostonNimi + ".dat";
     }
 
-
-    /**
-     * Palauttaa varakopiotiedoston nimen
-     * @return varakopiotiedoston nimi
-     */
-    public String getBakNimi() {
-        return tiedostonPerusNimi + ".bak";
-    }
-    
     
     /**
      * Luokka joukkueiden iteroimiseksi.
