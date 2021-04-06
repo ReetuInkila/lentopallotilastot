@@ -1,6 +1,5 @@
 package fxLentopallotilastotyokalu;
 
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,6 +39,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML private ScrollPane panelPelaaja;
     @FXML private ScrollPane panelTilastot;
     @FXML private ListChooser<Pelaaja> chooserPelaajat;
+    @FXML private TextField nimi;
+    @FXML private TextField numero;
+    @FXML private TextField pelipaikka;
 
     
     
@@ -96,7 +98,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     private Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Pelaaja pelaajaKohdalla;
-    private TextArea areaPelaaja = new TextArea();
     private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
     
@@ -111,12 +112,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * Alustetaan myös pelaajalistan kuuntelija 
      */
     private void alusta() {
-                
-        panelPelaaja.setContent(areaPelaaja);
-        areaPelaaja.setFont(new Font("Courier New", 12));
-        panelPelaaja.setFitToHeight(true);
-        panelPelaaja.setFitToWidth(true);
-        
         panelTilastot.setContent(areaTilastot);
         areaTilastot.setFont(new Font("Courier New", 12));
         panelTilastot.setFitToHeight(true);
@@ -130,10 +125,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * Alustaa lentopallotilastotyokalun lukemalla joukkueeseen kuuluvat pelaajat tiedostosta
      */
     private void lueTiedosto() {
-        String nimi = joukkue.getNimi();
-        labelJoukkue.setText(nimi);
+        labelJoukkue.setText(joukkue.getNimi());
         setTitle("Lentopallo tilastotyökalu - " + nimi);
-        hae(); // TODO: Pelaajien haku tiedostosta
+        hae();
     }
 
     
@@ -228,14 +222,14 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      */
     @SuppressWarnings("resource")
     private void naytaPelaaja() {
-        areaPelaaja.setText("");
         areaTilastot.setText("");
         pelaajaKohdalla = chooserPelaajat.getSelectedObject();
         if (pelaajaKohdalla == null) return;
-
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPelaaja)) {
-            pelaajaKohdalla.tulosta(os);
-        }
+        
+        nimi.setText(pelaajaKohdalla.getNimi());
+        numero.setText(String.valueOf(pelaajaKohdalla.getPelinumero()));
+        pelipaikka.setText(pelaajaKohdalla.getPelipaikka());
+        
         List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(pelaajaKohdalla);
         for (Tilasto til: tilastot)
             til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));

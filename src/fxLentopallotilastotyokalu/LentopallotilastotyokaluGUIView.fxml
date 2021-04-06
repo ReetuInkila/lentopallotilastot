@@ -78,9 +78,9 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField editable="false" text="Sauli Sinkkonen" GridPane.columnIndex="1" />
-                              <TextField editable="false" text="11" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField editable="false" text="Keskitorjuja" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="nimi" editable="false" text="Sauli Sinkkonen" GridPane.columnIndex="1" />
+                              <TextField fx:id="numero" editable="false" text="11" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="pelipaikka" editable="false" text="Keskitorjuja" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label text="Nimi" />
                               <Label text="Pelinumero" GridPane.rowIndex="1" />
                               <Label text="Pelipaikka" GridPane.rowIndex="2" />

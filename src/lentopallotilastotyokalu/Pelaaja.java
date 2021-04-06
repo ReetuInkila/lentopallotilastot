@@ -100,6 +100,15 @@ public class Pelaaja {
     
     
     /**
+     * Palauttaa pelaajan pelipaikan.
+     * @return pelaajan pelipaikka merkkijonona
+     */
+    public String getPelipaikka() {
+        return pelipaikka;
+    }
+    
+    
+    /**
      * Palauttaa pelaajan joukkue id:n.
      * @return pelaajan jId
      */
