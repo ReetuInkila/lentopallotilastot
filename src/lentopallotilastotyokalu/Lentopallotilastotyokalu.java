@@ -205,6 +205,14 @@ public class Lentopallotilastotyokalu {
     
     
     /**
+     * Poistaa viimeisimpänä talletetun tilaston
+     */
+    public void poistaViimeisinTilasto() {
+        tilastot.poistaViimeisin();
+    }
+    
+    
+    /**
      * Poistaa pelaajista ja tilastoista ne joilla on pid. Kesken.
      * @param pid viitenumero, jonka mukaan poistetaan
      * @return montako jäsentä poistettiin

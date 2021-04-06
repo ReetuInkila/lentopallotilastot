@@ -41,6 +41,28 @@ public class Tilastot implements Iterable<Tilasto>{
         alkiot.add(tilasto);  
         muutettu = true;
     }
+    
+    
+    /** 
+     * Poistaa tilaston jolla on valittu tunnusnumero  
+     * @example 
+     * <pre name="test">  
+     * Tilastot tilastot = new Tilastot(); 
+     * Tilasto tilasto1 = new Tilasto(), tilasto2 = new Tilasto(), tilasto3 = new Tilasto(); 
+     * tilasto1.taytaEsimerkkiTiedoilla(1); tilasto2.taytaEsimerkkiTiedoilla(1); tilasto3.taytaEsimerkkiTiedoilla(1); 
+     * tilastot.lisaa(tilasto1); tilastot.lisaa(tilasto2); tilastot.lisaa(tilasto3); 
+     * tilastot.getLkm() === 3;
+     * tilastot.poistaViimeisin(); tilastot.getLkm() === 2;
+     * tilastot.poistaViimeisin(); tilastot.getLkm() === 1; 
+     * tilastot.poistaViimeisin(); tilastot.getLkm() === 0; 
+     * </pre> 
+     *  
+     */ 
+    public void poistaViimeisin() { 
+        int viimeinen = getLkm() - 1;
+        alkiot.remove(viimeinen);
+        muutettu = true;
+    } 
 
     
     /**
@@ -48,7 +70,7 @@ public class Tilastot implements Iterable<Tilasto>{
      * @return tilastojen lukum‰‰r‰
      */
     public int getLkm() {
-        return alkiot.size();
+        return alkiot.size(); 
     }
     
     

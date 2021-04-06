@@ -121,8 +121,8 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
      * Poistetaan viimeinen tilasto
      */
     private void poista() {
-        Dialogs.showMessageDialog("Ei osata vielä poistaa tilastoja");
-        // TODO: korvaa tilaston poistamisella
+        lentopallotilastotyokalu.poistaViimeisinTilasto();
+        labelViimeisin.setText("");
     }
     
     
