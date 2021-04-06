@@ -109,6 +109,19 @@ public class Tilasto {
     }
     
     
+    /** Palauttaa tilastoon talletetun suoritteen merkkijonona
+     * @return Suorite kuten Nosto tai Ässä
+     */
+    public String getSuorite() {
+        if (syotto == 1 ) return "Syöttö";
+        if (assa == 1 ) return "Ässä";
+        if (nosto == 1 ) return "Nosto";
+        if (piste == 1 ) return "Piste";
+        if (virhe == 1 ) return "Virhe";
+        return null;
+    }
+    
+    
     /**
      * Palauttaa tilaston tiedot merkkijonona jonka voi tallettaa tiedostoon
      * @example

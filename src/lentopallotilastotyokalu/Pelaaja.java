@@ -123,6 +123,15 @@ public class Pelaaja {
     
     
     /**
+     * Palauttaa pelaajan pelinumeron.
+     * @return pelaajan pelinumero
+     */
+    public int getPelinumero() {
+        return pelinumero;
+    }
+    
+    
+    /**
      * Apumetodi, jolla saadaan täytettyä testiarvot jäsenelle.
      */
     public void taytaEsimerkkiTiedoilla() {

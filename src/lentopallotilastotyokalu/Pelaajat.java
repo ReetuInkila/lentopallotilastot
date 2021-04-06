@@ -77,6 +77,18 @@ public class Pelaajat implements Iterable<Pelaaja> {
         return alkiot[i];
     }
     
+    /**
+     * Palauttaa viitteen id:n omaavaan pelaajaan.
+     * @param id minkä pelaajan viite halutaan
+     * @return viite pelaajaan, jonka id on i 
+     */
+    public Pelaaja annaId(int id) {
+        for (Pelaaja pelaaja: this) {
+            if (pelaaja.getTunnusNro() == id) return pelaaja;
+        }
+        return null;       
+    }
+    
     
     /**
      * Palauttaa tilastotyökalun pelaajien lukumäärän

@@ -31,15 +31,18 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     @FXML private Label labelViimeisin;
     @FXML private DatePicker pickPaiva;
     
+    
     @FXML void HandlePoistaViimeisin() {
         poistaTilasto();
     }
 
+    
     @FXML void handleTallenna() throws SailoException {
         tallennaTilasto();
         // TODO: korvaa tilaston tallentamisella
     }
 
+    
     @FXML void handleTallennaPoistu() {
         try {
             tallenna();
@@ -48,11 +51,8 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
             if (vastaus == false) return;
         }
         ModalController.closeStage(textVastustaja);
-
     }
 
-
- 
     
 ///=================================================================================================================================================================
 /// T‰st‰ eteenp‰in ei suoraan k‰yttˆliittym‰‰n liittyv‰‰ koodia
@@ -60,6 +60,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     private static Lentopallotilastotyokalu lentopallotilastotyokalu;
     private static Joukkue joukkue;
     private static Pelaaja pelaajaKohdalla;  
+    
     
     /**
      * Tilaston tallentamiseen k‰ytett‰v‰t muuttujat
@@ -81,6 +82,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         }
     }
     
+    
     /**
      * Lis‰t‰‰n valittu tilasto
      * @throws SailoException jos tilaston lis‰‰misess‰ ongelmia
@@ -93,12 +95,15 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
             suorite = chooserTilastot.getSelectedObject();
             if (vastustaja.equals("") || paiva.equals("") || suorite.equals(""))return;
         }catch ( java.lang.NullPointerException e) {
+            Dialogs.showMessageDialog("Tilastoa ei voitu tallentaa.");
             return;
         }        
         Tilasto uusi = new Tilasto(pId, paiva, vastustaja, suorite);
         lentopallotilastotyokalu.lisaaTilasto(uusi);
-        labelViimeisin.setText(uusi.toString()); //TODO: Vain nimi ja tilasto n‰ytett‰v‰ksi tekstiksi
+        String viimeisin = lentopallotilastotyokalu.annaIdPelaaja(uusi.getPelaajaId()).getPelinumero() + " " + lentopallotilastotyokalu.annaIdPelaaja(uusi.getPelaajaId()).getNimi() + " " + uusi.getSuorite();
+        labelViimeisin.setText(viimeisin);
     }
+    
     
     /**
      * Avataan varmistus ikkuna tilaston poistamiselle ja siirryt‰‰n tilaston poistamiseen jos poistaminen valittu
@@ -111,6 +116,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         if (vastaus == true ) poista();   
     }
     
+    
     /**
      * Poistetaan viimeinen tilasto
      */
@@ -119,6 +125,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         // TODO: korvaa tilaston poistamisella
     }
     
+    
     /**
      * Valitsee chooserissa klikatun pelaajan
      */
@@ -126,6 +133,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         pelaajaKohdalla = chooserPelaajat.getSelectedObject();
         if (pelaajaKohdalla == null) return;
     }
+    
     
     /**
      * Tallentaa tilastot
@@ -143,6 +151,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         lentopallotilastotyokalu = tyokalu;
     }
 
+    
     /**
      * Kun dialogi on avattu lis‰t‰‰n kuuntelijat list choosereille ja lis‰t‰‰n String oliot suorite listaan
      */
@@ -167,6 +176,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
         return null;
     }
 
+    
     /**
      * Mit‰ tehd‰‰n tuodulla parametrilla
      */

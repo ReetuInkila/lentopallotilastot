@@ -160,6 +160,16 @@ public class Lentopallotilastotyokalu {
     }
     
     
+    /**
+     * Palauttaa id:n omaava pelaajan
+     * @param id jonka omaava pelaaja palautetaan
+     * @return viite id:n pelaajaan
+     */
+    public Pelaaja annaIdPelaaja(int id){
+        return pelaajat.annaId(id);
+    }
+    
+    
     /** Palautetaan pelaajan tilastot
      * @param pelaaja pelaaja jonka tilastoja haetaan
      * @return pelaajan tilastot listana
