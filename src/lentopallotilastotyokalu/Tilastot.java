@@ -21,8 +21,7 @@ public class Tilastot implements Iterable<Tilasto>{
     
     private String tiedostonNimi = "tilastot";
     private boolean muutettu = false;
-    /** Taulukko tilastoista */
-    private final ArrayList<Tilasto> alkiot = new ArrayList<Tilasto>();
+    private final List<Tilasto> alkiot = new ArrayList<Tilasto>();
     
     
     /**
@@ -41,6 +40,47 @@ public class Tilastot implements Iterable<Tilasto>{
         alkiot.add(tilasto);  
         muutettu = true;
     }
+    
+    
+    /**
+     * Poistaa kaikki tietyn tietyn pelaajan tilastot
+     * @param tunnusNro tunnusnumero jonka tilastot poistetaan
+     * @return montako poistettiin 
+     * @example
+     * <pre name="test">
+     *  Tilastot tilastot = new Tilastot();
+     *  Tilasto suorite21 = new Tilasto(); suorite21.taytaEsimerkkiTiedoilla(2);
+     *  Tilasto suorite11 = new Tilasto(); suorite11.taytaEsimerkkiTiedoilla(1);
+     *  Tilasto suorite22 = new Tilasto(); suorite22.taytaEsimerkkiTiedoilla(2); 
+     *  Tilasto suorite12 = new Tilasto(); suorite12.taytaEsimerkkiTiedoilla(1); 
+     *  Tilasto suorite23 = new Tilasto(); suorite23.taytaEsimerkkiTiedoilla(2); 
+     *  tilastot.lisaa(suorite21);
+     *  tilastot.lisaa(suorite11);
+     *  tilastot.lisaa(suorite22);
+     *  tilastot.lisaa(suorite12);
+     *  tilastot.lisaa(suorite23);
+     *  tilastot.poistaPelaajanTilastot(2) === 3;  tilastot.getLkm() === 2;
+     *  tilastot.poistaPelaajanTilastot(3) === 0;  tilastot.getLkm() === 2;
+     *  List<Tilasto> h = tilastot.annaTilastot(2);
+     *  h.size() === 0; 
+     *  h = tilastot.annaTilastot(1);
+     *  h.get(0) === suorite11;
+     *  h.get(1) === suorite12;
+     * </pre>
+     */
+    public int poistaPelaajanTilastot(int tunnusNro) {
+        int n = 0;
+        for (Iterator<Tilasto> it = alkiot.iterator(); it.hasNext();) {
+            Tilasto tilasto = it.next();
+            if ( tilasto.getPelaajaId() == tunnusNro ) {
+                it.remove();
+                n++;
+            }
+        }
+        if (n > 0) muutettu = true;
+        return n;
+    }
+
     
     
     /** 

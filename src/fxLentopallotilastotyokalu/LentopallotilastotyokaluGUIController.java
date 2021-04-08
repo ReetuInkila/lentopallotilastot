@@ -117,6 +117,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private Pelaaja pelaajaKohdalla;
     private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
+    private String kansio = "tilastotyokalu";
     
     
     private void setTitle(String title) {
@@ -156,7 +157,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      */
     public boolean avaa() {
         try {
-            lentopallotilastotyokalu.lueTiedostosta();
+            lentopallotilastotyokalu.lueTiedostosta(kansio);
         } catch (SailoException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@
  */
 package lentopallotilastotyokalu;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -18,6 +19,20 @@ public class Lentopallotilastotyokalu {
     private Pelaajat pelaajat = new Pelaajat();
     private Tilastot tilastot = new Tilastot();
        
+    
+    /**
+     * Poistaa pelaajista ja tilastoista pelaajan tiedot 
+     * @param poistettava Pelaaja joka poistetaan
+     * @return montako pelaajaa poistettiin
+     */
+    public int poista(Pelaaja poistettava) {
+        if ( poistettava == null ) return 0;
+        int ret = pelaajat.poista(poistettava.getTunnusNro()); 
+        tilastot.poistaPelaajanTilastot(poistettava.getTunnusNro()); 
+        return ret; 
+    }
+
+    
     
     /**
      * Palautaa joukkueiden m‰‰r‰n
@@ -181,16 +196,75 @@ public class Lentopallotilastotyokalu {
     
     /**
      * Lukee Joukkueiden ja pelaajien tiedot tiedostosta
+     * @param nimi jota k‰yte‰‰n lukemisessa
      * @throws SailoException jos lukeminen ep‰onnistuu
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.*;
+     * #import java.util.*;
+     * #import lentopallotilastotyokalu.Pelaaja;
+     * #import lentopallotilastotyokalu.Tilasto;
+     * #import lentopallotilastotyokalu.Joukkue;
+     * 
+     *  String hakemisto = "testityokalu";
+     *  File dir = new File(hakemisto);
+     *  File fjtied  = new File(hakemisto+"/joukkueet.dat");
+     *  File fptied = new File(hakemisto+"/pelaajat.dat");
+     *  File fttied = new File(hakemisto+"/tilastot.dat");
+     *  dir.mkdir();  
+     *  fjtied.delete();
+     *  fptied.delete();
+     *  fttied.delete();
+     *  Lentopallotilastotyokalu tyokalu = new Lentopallotilastotyokalu();
+     *  tyokalu.setTiedosto(hakemisto); // nimi annettava koska uusi poisti sen
+     *  Joukkue tiimi = new Joukkue(); tiimi.taytaPuulaakiTiedoilla();
+     *  Pelaaja peluri = new Pelaaja(); peluri.rekisteroi();
+     *  Tilasto tilasto = new Tilasto(); tilasto.taytaEsimerkkiTiedoilla(peluri.getTunnusNro());
+     *  tyokalu.lisaaJoukkue(tiimi); tyokalu.lisaaPelaaja(peluri); tyokalu.lisaaTilasto(tilasto);
+     *  tyokalu.tallenna(); 
+     *  tyokalu = new Lentopallotilastotyokalu();
+     *  tyokalu.setTiedosto(hakemisto); // nimi annettava koska uusi poisti sen
+     *  tyokalu.lueTiedostosta(hakemisto);
+     *  tyokalu.getJoukkueita() === 1; 
+     *  tyokalu.getPelaajia() === 1; 
+     *  tyokalu.getTilastoja() === 1;
+     *  List<Tilasto> loytyneet = tyokalu.annaTilastot(peluri);
+     *  Iterator<Tilasto> ih = loytyneet.iterator();
+     *  ih.next().toString() === tilasto.toString();
+     *  ih.hasNext() === false;
+     *  tyokalu.tallenna();
+     *  fjtied.delete()  === true;
+     *  fptied.delete() === true;
+     *  fttied.delete() === true;
+     *  dir.delete() === true;
+     * </pre>
      */
-    public void lueTiedostosta() throws SailoException {
+    public void lueTiedostosta(String nimi) throws SailoException {
         joukkueet = new Joukkueet();
         pelaajat = new Pelaajat();
         tilastot = new Tilastot();
+        setTiedosto(nimi);
         joukkueet.lueTiedostosta();
         pelaajat.lueTiedostosta();
         tilastot.lueTiedostosta();
     }
+    
+    
+    /**
+     * Asettaa tiedostojen perusnimet
+     * @param nimi uusi nimi
+     */
+    public void setTiedosto(String nimi) {
+        File dir = new File(nimi);
+        dir.mkdirs();
+        String hakemistonNimi = "";
+        if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
+        joukkueet.setTiedostonNimi(hakemistonNimi + "joukkueet");
+        pelaajat.setTiedostonNimi(hakemistonNimi + "pelaajat");
+        tilastot.setTiedostonNimi(hakemistonNimi + "tilastot");
+    }
+
     
     
     /**

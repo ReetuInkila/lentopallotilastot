@@ -65,6 +65,37 @@ public class Pelaajat implements Iterable<Pelaaja> {
     }
     
     
+    /** 
+     * Poistaa pelaajan jolla on valittu tunnusnumero  
+     * @param id poistettavan pelaajan tunnusnumero 
+     * @return 1 jos poistettiin, 0 jos ei löydy 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Pelaajat pelaajat = new Pelaajat(); 
+     * Pelaaja peluri1 = new Pelaaja(), peluri2 = new Pelaaja(), peluri3 = new Pelaaja(); 
+     * peluri1.rekisteroi(); peluri2.rekisteroi(); peluri3.rekisteroi(); 
+     * int id1 = peluri1.getTunnusNro(); 
+     * pelaajat.lisaa(peluri1); pelaajat.lisaa(peluri2); pelaajat.lisaa(peluri3); 
+     * pelaajat.poista(id1+1) === 1; 
+     * pelaajat.annaId(id1+1) === null; pelaajat.getLkm() === 2; 
+     * pelaajat.poista(id1) === 1; pelaajat.getLkm() === 1; 
+     * pelaajat.poista(id1+3) === 0; pelaajat.getLkm() === 1; 
+     * </pre> 
+     *  
+     */ 
+    public int poista(int id) { 
+        int ind = etsiId(id); 
+        if (ind < 0) return 0; 
+        lkm--; 
+        for (int i = ind; i < lkm; i++) 
+            alkiot[i] = alkiot[i + 1]; 
+        alkiot[lkm] = null; 
+        muutettu = true; 
+        return 1; 
+    } 
+
+    
     /**
      * Palauttaa viitteen i:teen pelaajaan.
      * @param i monennenko pelaajan viite halutaan
@@ -76,6 +107,30 @@ public class Pelaajat implements Iterable<Pelaaja> {
             throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
         return alkiot[i];
     }
+    
+    
+    /** 
+     * Etsii pelaajan id:n perusteella 
+     * @param id tunnusnumero, jonka mukaan etsitään 
+     * @return löytyneen pelaajan indeksi tai -1 jos ei löydy 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     * Pelaajat pelaajat = new Pelaajat(); 
+     * Pelaaja peluri1 = new Pelaaja(), peluri2 = new Pelaaja(), peluri3 = new Pelaaja(); 
+     * peluri1.rekisteroi(); peluri2.rekisteroi(); peluri3.rekisteroi(); 
+     * int id1 = peluri1.getTunnusNro(); 
+     * pelaajat.lisaa(peluri1); pelaajat.lisaa(peluri2); pelaajat.lisaa(peluri3); 
+     * pelaajat.etsiId(id1+1) === 1; 
+     * pelaajat.etsiId(id1+2) === 2; 
+     * </pre> 
+     */ 
+    public int etsiId(int id) { 
+        for (int i = 0; i < lkm; i++) 
+            if (id == alkiot[i].getTunnusNro()) return i; 
+        return -1; 
+    }
+
+    
     
     /**
      * Palauttaa viitteen id:n omaavaan pelaajaan.
@@ -188,7 +243,7 @@ public class Pelaajat implements Iterable<Pelaaja> {
      * @throws SailoException jos tulee poikkeus
      */
     public void lueTiedostosta(String tiedosto) throws SailoException {
-        setTiedostonPerusNimi(tiedosto);
+        setTiedostonNimi(tiedosto);
         lueTiedostosta();
     }
     
@@ -197,7 +252,7 @@ public class Pelaajat implements Iterable<Pelaaja> {
      * Asettaa tiedoston perusnimen ilman tarkenninta
      * @param nimi tallennustiedoston nimi
      */
-    public void setTiedostonPerusNimi(String nimi) {
+    public void setTiedostonNimi(String nimi) {
         tiedostonNimi = nimi;
     }
 
