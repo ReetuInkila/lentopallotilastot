@@ -90,7 +90,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML void handlePoistu() {
         tallenna();
         Platform.exit();
-        // TODO: korvaa tallenna ja poistu ominaisuudella
     }
     
     
@@ -146,7 +145,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      */
     private void lueTiedosto() {
         labelJoukkue.setText(joukkue.getNimi());
-        setTitle("Lentopallo tilastotyökalu - " + nimi);
+        setTitle("Lentopallo tilastotyökalu - " + joukkue.getNimi());
         hae();
     }
 
@@ -236,8 +235,10 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private void poistaPelaaja() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko pelaaja: " + pelaajaKohdalla.getNimi(), "Kyllä", "Ei"); 
-        if (vastaus == true ) Dialogs.showMessageDialog("Ei osata poistaa pelaajaa");
-        // TODO: pelaajan poistaminen
+        if (vastaus == false ) return;
+        int poistettu = lentopallotilastotyokalu.poista(pelaajaKohdalla);
+        Dialogs.showMessageDialog("Poistettuja pelaajia:" + poistettu);
+        hae();
     }
 
     
@@ -257,7 +258,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(pelaajaKohdalla);
         for (Tilasto til: tilastot)
             til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));
-        //TODO: pelaajien tiedot niille tarkoitettuihin kenttiin
     }
     
     

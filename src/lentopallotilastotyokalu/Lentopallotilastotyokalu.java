@@ -295,16 +295,6 @@ public class Lentopallotilastotyokalu {
     
     
     /**
-     * Poistaa pelaajista ja tilastoista ne joilla on pid. Kesken.
-     * @param pid viitenumero, jonka mukaan poistetaan
-     * @return montako jäsentä poistettiin
-     */
-    public int poista(@SuppressWarnings("unused") int pid) {
-        return 0;
-    }
-
-    
-    /**
      * @param args ei käytössä
      */
     public static void main(String[] args) {
