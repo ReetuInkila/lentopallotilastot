@@ -20,15 +20,15 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
     private Joukkue vastaus;
     
-    @FXML void handleAvaa() {
+    @FXML private void handleAvaa() {
         avaaJoukkue();
     }
 
-    @FXML void handleLisaaJoukkue() {
+    @FXML private void handleLisaaJoukkue() {
         uusiJoukkue();       
     }
 
-    @FXML void handlePoistaJoukkue() {
+    @FXML private void handlePoistaJoukkue() {
         poistaJoukkue();
     }   
 
@@ -41,7 +41,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     /**
      * Valitsee klikatun joukkueen
      */
-    protected void valitseJoukkue() {
+    private void valitseJoukkue() {
         joukkueKohdalla = chooserJoukkueet.getSelectedObject();
         if (joukkueKohdalla == null) return;
     }

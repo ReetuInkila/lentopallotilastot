@@ -32,18 +32,18 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     @FXML private DatePicker pickPaiva;
     
     
-    @FXML void HandlePoistaViimeisin() {
+    @FXML private void HandlePoistaViimeisin() {
         poistaTilasto();
     }
 
     
-    @FXML void handleTallenna() throws SailoException {
+    @FXML private void handleTallenna() throws SailoException {
         tallennaTilasto();
         // TODO: korvaa tilaston tallentamisella
     }
 
     
-    @FXML void handleTallennaPoistu() {
+    @FXML private void handleTallennaPoistu() {
         try {
             tallenna();
         } catch (SailoException e) {

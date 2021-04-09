@@ -49,61 +49,61 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     }
     
     
-    @FXML void handleLisaaPelaaja() {
+    @FXML private void handleLisaaPelaaja() {
         uusiPelaaja();
         // TODO: korvaa muokkattavalla pelaajalla 
     }
     
     
-    @FXML void handleMuokkaaPelaajaa() {
+    @FXML private void handleMuokkaaPelaajaa() {
         muokkaaPelaajaa();
     }
     
     
-    @FXML void handlePoistaPelaaja() {
+    @FXML private void handlePoistaPelaaja() {
         poistaPelaaja();
     }
     
     
-    @FXML void handleTallennaPelaaja() {
+    @FXML private void handleTallennaPelaaja() {
         tallennaMuutokset();
     }
     
     
-    @FXML void handleApua() {
+    @FXML private void handleApua() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("HelpView.fxml"), "Lentopallo tilastotyökalu", null, "");
         // TODO: tarkenna ohjeita tai linkitä sivulle
     }
 
     
-    @FXML void handleLisaaOttelu() {
+    @FXML private void handleLisaaOttelu() {
         ottelu();
     }
 
     
-    @FXML void handlePoistaOttelu() {
+    @FXML private void handlePoistaOttelu() {
         Dialogs.showMessageDialog("Ei osata poistaa ottelua");
         // TODO: korvaa ottelun poistolla 
     }
 
     
-    @FXML void handlePoistu() {
+    @FXML private void handlePoistu() {
         tallenna();
         Platform.exit();
     }
     
     
-    @FXML void handleAvaa() {
+    @FXML private void handleAvaa() {
         avaa();
     }
 
     
-    @FXML void handleTallenna() {
+    @FXML private void handleTallenna() {
         tallenna();    
     }
     
     
-    @FXML void handleTietoja() {
+    @FXML private void handleTietoja() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("AboutView.fxml"), "Lentopallo tilastotyökalu", null, "");
         // TODO: tarkenna tietoja ikkunaan
     }
