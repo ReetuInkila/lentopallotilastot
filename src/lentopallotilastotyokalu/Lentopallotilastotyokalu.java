@@ -4,6 +4,7 @@
 package lentopallotilastotyokalu;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -292,6 +293,32 @@ public class Lentopallotilastotyokalu {
     public void poistaViimeisinTilasto() {
         tilastot.poistaViimeisin();
     }
+    
+    
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien pelaajien viitteet 
+     * @param hakuehto hakuehto  
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä pelaajista 
+     * @throws SailoException Jos jotakin menee väärin
+     * @example 
+     * <pre name="test">
+     *   #THROWS CloneNotSupportedException, SailoException
+     *   Lentopallotilastotyokalu tyokalu = new Lentopallotilastotyokalu();
+     *   Pelaaja pelaaja1 = new Pelaaja(), pelaaja2 = new Pelaaja();
+     *   pelaaja1.parse("1   |1     |2          |Eemil Tervaportti |Passari        | ");
+     *   pelaaja2.parse("5   |2     |26         |Pete Pelaaja      |Hakkuri        | ");
+     *   tyokalu.lisaaPelaaja(pelaaja1); tyokalu.lisaaPelaaja(pelaaja2);
+     *   Collection<Pelaaja> loytyneet = tyokalu.etsi("*Eemil*",3);
+     *   loytyneet.size() === 1;
+     *   Iterator<Pelaaja> it = loytyneet.iterator();
+     *   it.next() == pelaaja1 === true; 
+     * </pre>
+     */ 
+    public Collection<Pelaaja> etsi(String hakuehto, int k) throws SailoException { 
+        return pelaajat.etsi(hakuehto, k); 
+    } 
+
     
     
     /**

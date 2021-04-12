@@ -1,6 +1,7 @@
 package fxLentopallotilastotyokalu;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,6 +54,12 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         uusiPelaaja();
         // TODO: korvaa muokkattavalla pelaajalla 
     }
+    
+    
+    @FXML private void handleHakuehto() {
+        hae(0); 
+    }
+
     
     
     @FXML private void handleMuokkaaPelaajaa() {
@@ -114,6 +121,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     private Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Pelaaja pelaajaKohdalla;
+    private static Pelaaja apupelaaja = new Pelaaja();
     private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
     private String kansio = "tilastotyokalu";
@@ -137,6 +145,13 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
+        
+        cbKentat.clear(); 
+        for (int k = apupelaaja.ekaKentta(); k < apupelaaja.getKenttia(); k++) 
+            cbKentat.add(apupelaaja.getKysymys(k), null); 
+        cbKentat.getSelectionModel().select(1);
+
+
     }
     
     
@@ -146,7 +161,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private void lueTiedosto() {
         labelJoukkue.setText(joukkue.getNimi());
         setTitle("Lentopallo tilastotyˆkalu - " + joukkue.getNimi());
-        hae();
+        hae(-1);
     }
 
     
@@ -216,20 +231,44 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         } catch (Exception e) {
             Dialogs.showMessageDialog("ongelmia pelaajan lis‰‰misess‰");
         }
-        hae();   
+        hae(uusi.getTunnusNro());   
     }
     
     
     /**
      * Hakee pelaajien tiedot listaan
+     * @param id pelaajan id-numero, joka aktivoidaan haun j‰lkeen  
      */
-    private void hae() {
-        chooserPelaajat.clear();
-        for (int i = 0; i < lentopallotilastotyokalu.getPelaajia(); i++) {
-            Pelaaja pelaaja = lentopallotilastotyokalu.annaPelaaja(i);
-            if (pelaaja.getJId() == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+    protected void hae(int id) {
+        int pid = id;
+        if ( pid <= 0 ) { 
+            Pelaaja kohdalla = pelaajaKohdalla; 
+            if ( kohdalla != null ) pid = kohdalla.getTunnusNro(); 
         }
+        
+        int k = cbKentat.getSelectionModel().getSelectedIndex() + apupelaaja.ekaKentta();; 
+        String ehto = hakuehto.getText(); 
+        if (ehto.indexOf('*') < 0) ehto = "*" + ehto + "*"; 
+        
+        chooserPelaajat.clear();
+
+        int index = 0;
+        Collection<Pelaaja> pelaajat;
+        try {
+            pelaajat = lentopallotilastotyokalu.etsi(ehto, k);
+            int i = 0;
+            for (Pelaaja pelaaja:pelaajat) {
+                if (pelaaja.getTunnusNro() == pid) index = i;
+                if (pelaaja.getJId() == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+                i++;
+            }
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("J‰senen hakemisessa ongelmia! " + ex.getMessage());
+        }
+        chooserPelaajat.setSelectedIndex(index); // t‰st‰ tulee muutosviesti joka n‰ytt‰‰ j‰senen
     }
+
+        
     
     
     private void poistaPelaaja() {
@@ -238,7 +277,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         if (vastaus == false ) return;
         int poistettu = lentopallotilastotyokalu.poista(pelaajaKohdalla);
         Dialogs.showMessageDialog("Poistettuja pelaajia:" + poistettu);
-        hae();
+        hae(-1);
     }
 
     
@@ -284,7 +323,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         pelipaikka.setEditable(false);
         lentopallotilastotyokalu.pelaajiaMuokattu();
         tallenna();
-        hae();
+        hae(pelaajaKohdalla.getTunnusNro());
     }
     
 

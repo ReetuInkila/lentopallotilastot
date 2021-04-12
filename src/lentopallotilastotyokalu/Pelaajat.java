@@ -10,9 +10,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
+
+import fi.jyu.mit.ohj2.WildChars;
 
 
 /**
@@ -264,6 +270,45 @@ public class Pelaajat implements Iterable<Pelaaja> {
     public String getTiedostonNimi() {
         return tiedostonNimi + ".dat";
     }
+    
+    
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien pelaajien viitteet 
+     * @param hakuehto hakuehto 
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä jäsenistä 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *   Pelaajat pelaajat = new Pelaajat(); 
+     *   Pelaaja pelaaja1 = new Pelaaja(), pelaaja2 = new Pelaaja();
+     *   pelaaja1.parse("1   |1     |2          |Eemil Tervaportti |Passari        | ");
+     *   pelaaja2.parse("5   |2     |26         |Pete Pelaaja      |Hakkuri        | ");
+     *   pelaajat.lisaa(pelaaja1); pelaajat.lisaa(pelaaja2);
+     *   List<Pelaaja> loytyneet;  
+     *   loytyneet = (List<Pelaaja>)pelaajat.etsi("*s*",4);  
+     *   loytyneet.size() === 1;  
+     *   loytyneet.get(0) == pelaaja1 === true;   
+     *     
+     *   loytyneet = (List<Pelaaja>)pelaajat.etsi("*2*",2);  
+     *   loytyneet.size() === 2;  
+     *   loytyneet.get(0) == pelaaja1 === true;  
+     *   loytyneet.get(1) == pelaaja2 === true; 
+     * </pre> 
+     */ 
+    public Collection<Pelaaja> etsi(String hakuehto, int k) { 
+        String ehto = "*"; 
+        if ( hakuehto != null && hakuehto.length() > 0 ) ehto = hakuehto; 
+        int hk = k; 
+        if ( hk < 0 ) hk = 0; // jotta etsii id:n mukaan 
+        List<Pelaaja> loytyneet = new ArrayList<Pelaaja>(); 
+        for (Pelaaja pelaaja : this) { 
+            if (WildChars.onkoSamat(pelaaja.getKentta(hk), ehto)) loytyneet.add(pelaaja);   
+        } 
+        Collections.sort(loytyneet, new Pelaaja.Vertailija(hk)); 
+        return loytyneet; 
+    }
+
 
     
     /**

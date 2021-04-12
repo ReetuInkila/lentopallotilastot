@@ -39,12 +39,12 @@
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <ComboBoxChooser prefWidth="230.0" promptText="Nimi " rivit="Nimi&#10;Pelinumero&#10;Pelipaikka&#10;" selectFirst="false">
+            <ComboBoxChooser fx:id="cbKentat" prefWidth="230.0" promptText="Nimi " rivit="Nimi&#10;Pelinumero&#10;Pelipaikka&#10;" selectFirst="false">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </ComboBoxChooser>
-            <TextField fx:id="hakuehto">
+            <TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>

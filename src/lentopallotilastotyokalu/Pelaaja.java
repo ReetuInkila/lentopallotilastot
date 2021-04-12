@@ -4,6 +4,7 @@ import static kanta.SatunnaisNimi.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Comparator;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -20,10 +21,124 @@ import fi.jyu.mit.ohj2.Mjonot;
 public class Pelaaja {
     private int tunnusNro;
     private int jId;
+    private int pelinumero = 0;
     private String nimi = "";
-    private String pelipaikka = "";
-    private int pelinumero = 0;    
+    private String pelipaikka = "";       
     private static int seuraavaNro = 1;
+    
+    
+    /** 
+     * Antaa k:n kentän sisällön merkkijonona 
+     * @param k monenenko kentän sisältö palautetaan 
+     * @return kentän sisältö merkkijonona 
+     */ 
+    public String getKentta(int k) { 
+        switch ( k ) { 
+        case 0: return "" + tunnusNro; 
+        case 1: return "" + jId; 
+        case 2: return "" + pelinumero;
+        case 3: return "" + nimi;
+        case 4: return "" + pelipaikka;           
+        default: return "Ei toimi"; 
+        } 
+    }
+    
+    
+    /**
+     * Asettaa k:n kentän arvoksi parametrina tuodun merkkijonon arvon
+     * @param k kuinka monennen kentän arvo asetetaan
+     * @param jono jonoa joka asetetaan kentän arvoksi
+     * @return null jos asettaminen onnistuu, muuten vastaava virheilmoitus.
+     * @example
+     * <pre name="test">
+     *   Pelaaja pelaaja = new Pelaaja();
+     *   pelaaja.aseta(3,"Ankka Aku") === null;
+     *   pelaaja.aseta(1,"5") === null;
+     *   pelaaja.aseta(4,"passari") === null; 
+     *   pelaaja.aseta(2,"58") === null;
+     *   pelaaja.getKentta(1) === "5";
+     *   pelaaja.getKentta(3) === "Ankka Aku";
+     *   pelaaja.getKentta(4) === "passari";
+     *   pelaaja.getKentta(2) === "58"; 
+     * </pre>
+     */
+    public String aseta(int k, String jono) {
+        String tjono = jono.trim();
+        StringBuffer sb = new StringBuffer(tjono);
+        switch ( k ) {
+        case 0:
+            setTunnusNro(Mjonot.erotaInt(sb, getTunnusNro()));
+            return null;
+        case 1:
+            jId = Integer.valueOf(tjono);
+            return null;
+        case 2:
+            pelinumero = Integer.valueOf(tjono);;
+            return null;
+        case 3:
+            nimi = tjono;
+            return null;
+        case 4:
+            pelipaikka = tjono;
+            return null;
+        default:
+            return "Ei sovi";
+        }
+    }
+    
+    
+    /**
+     * Palauttaa k:tta jäsenen kenttää vastaavan kysymyksen
+     * @param k kuinka monennen kentän kysymys palautetaan (0-alkuinen)
+     * @return k:netta kenttää vastaava kysymys
+     */
+    public String getKysymys(int k) {
+        switch ( k ) {
+        case 0: return "Tunnus nro";
+        case 1: return "Joukkue id";
+        case 2: return "Pelinumero";
+        case 3: return "Nimi";
+        case 4: return "Pelipaikka";
+        default: return "Ei toimi";
+        }
+    }
+    
+    
+    /**
+     * Palauttaa jäsenen kenttien lukumäärän
+     * @return kenttien lukumäärä
+     */
+    public int getKenttia() {
+        return 5;
+    }
+
+
+    /**
+     * Eka kenttä joka on mielekäs kysyttäväksi
+     * @return ekan kentän indeksi
+     */
+    public int ekaKentta() {
+        return 2;
+    }
+
+
+    
+    /** 
+     * Pelaajien vertailija 
+     */ 
+    public static class Vertailija implements Comparator<Pelaaja> { 
+        private int k;  
+         
+        @SuppressWarnings("javadoc") 
+        public Vertailija(int k) { 
+            this.k = k; 
+        } 
+         
+        @Override 
+        public int compare(Pelaaja pelaaaja1, Pelaaja pelaaaja2) { 
+            return pelaaaja1.getKentta(k).compareToIgnoreCase(pelaaaja2.getKentta(k)); 
+        } 
+    } 
     
     
     /** Tulostetaan pelaajan tiedot
