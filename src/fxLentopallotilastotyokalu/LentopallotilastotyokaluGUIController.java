@@ -42,6 +42,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML private TextField nimi;
     @FXML private TextField numero;
     @FXML private TextField pelipaikka;
+    @FXML private Label labelHuomautus;
 
     
     @Override
@@ -224,14 +225,14 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private void uusiPelaaja() {
         Pelaaja uusi = new Pelaaja();
         uusi.rekisteroi();
-        uusi.taytaEsimerkkiTiedoilla();// TODO: omien tietojen syöttäminen
         uusi.asetaJId(joukkue.getTunnusNro());  
         try {
             lentopallotilastotyokalu.lisaaPelaaja(uusi);
         } catch (Exception e) {
             Dialogs.showMessageDialog("ongelmia pelaajan lisäämisessä");
         }
-        hae(uusi.getTunnusNro());   
+        hae(Integer.valueOf(uusi.getKentta(0)));
+        muokkaaPelaajaa();
     }
     
     
@@ -258,8 +259,8 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             pelaajat = lentopallotilastotyokalu.etsi(ehto, k);
             int i = 0;
             for (Pelaaja pelaaja:pelaajat) {
-                if (pelaaja.getTunnusNro() == pid) index = i;
-                if (pelaaja.getJId() == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
+                if (Integer.valueOf(pelaaja.getKentta(0)) == pid) index = i;
+                if (Integer.valueOf(pelaaja.getKentta(1)) == joukkue.getTunnusNro() )chooserPelaajat.add(pelaaja.getNimi(), pelaaja);
                 i++;
             }
         } catch (SailoException ex) {
@@ -307,6 +308,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         nimi.setEditable(true);
         numero.setEditable(true);
         pelipaikka.setEditable(true);
+        naytaHuomautus("Muista tallentaa pelaaja");
     }
     
     
@@ -315,16 +317,28 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      */
     private void tallennaMuutokset() {
         pelaajaKohdalla = chooserPelaajat.getSelectedObject();
-        pelaajaKohdalla.setNimi(nimi.getText());
+        pelaajaKohdalla.aseta(3, nimi.getText());
         nimi.setEditable(false);
-        pelaajaKohdalla.setPelinumero(Integer.valueOf(numero.getText()));
+        pelaajaKohdalla.aseta(2, numero.getText());
         numero.setEditable(false);
-        pelaajaKohdalla.setPelipaikka(pelipaikka.getText());
+        pelaajaKohdalla.aseta(4, pelipaikka.getText());
         pelipaikka.setEditable(false);
         lentopallotilastotyokalu.pelaajiaMuokattu();
         tallenna();
         hae(pelaajaKohdalla.getTunnusNro());
+        naytaHuomautus(null);
     }
+       
+    private void naytaHuomautus(String virhe) {
+        if ( virhe == null || virhe.isEmpty() ) {
+            labelHuomautus.setText("");
+            labelHuomautus.getStyleClass().add("normaali");
+            return;
+        }
+        labelHuomautus.setText(virhe);
+        labelHuomautus.getStyleClass().add("huomautus");
+    }
+
     
 
     /** Asetetaan käytettävä lentopallotilastotyokalu

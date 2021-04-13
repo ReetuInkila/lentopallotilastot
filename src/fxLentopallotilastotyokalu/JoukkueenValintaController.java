@@ -96,7 +96,6 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     
     /**
      * Hakee joukkueiden tiedot listaan
-
      */
     private void hae() {
         chooserJoukkueet.clear();
@@ -116,7 +115,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     
     
     /**
-     * Luodaan joukkueenvalinta dialogi ja palautetaan siellä valittu nimi tai null
+     * Luodaan joukkueenvalinta dialogi ja palautetaan siellä valittu joukkue tai null
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
      * @param oletus joukkue null.
      * @return null jos painetaan Cancel, muuten valittu joukkue
