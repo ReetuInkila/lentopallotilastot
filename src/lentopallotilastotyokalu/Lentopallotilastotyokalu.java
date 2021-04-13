@@ -4,6 +4,7 @@
 package lentopallotilastotyokalu;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +31,20 @@ public class Lentopallotilastotyokalu {
         if ( poistettava == null ) return 0;
         int ret = pelaajat.poista(poistettava.getTunnusNro()); 
         tilastot.poistaPelaajanTilastot(poistettava.getTunnusNro()); 
+        return ret; 
+    }
+    
+    
+    /**
+     * Poistaa pelaajista ja tilastoista pelaajan tiedot 
+     * @param poistettava Pelaaja joka poistetaan
+     * @return montako pelaajaa poistettiin
+     */
+    public int poista(Joukkue poistettava) {
+        if ( poistettava == null ) return 0;
+        Collection <Pelaaja> jPelaajat = annaJoukkueenPelaajat(poistettava.getTunnusNro());
+        for (Pelaaja poistettavaP: jPelaajat) poista(poistettavaP);
+        int ret = joukkueet.poista(poistettava.getTunnusNro());  
         return ret; 
     }
 
@@ -183,6 +198,22 @@ public class Lentopallotilastotyokalu {
      */
     public Pelaaja annaIdPelaaja(int id){
         return pelaajat.annaId(id);
+    }
+    
+    
+    /**
+     * Palauttaa Jid:n omaavat pelaajat
+     * @param jId jonka omaavat pelaaja palautetaan
+     * @return viite jId:n pelaajiin
+     */
+    public List<Pelaaja> annaJoukkueenPelaajat(int jId){
+        List<Pelaaja> joukkue = new ArrayList<Pelaaja>();
+        for(Pelaaja pelaaja: pelaajat) {
+            if (Integer.parseInt(pelaaja.getKentta(1)) == jId) {
+                joukkue.add(pelaaja);
+            }
+        }
+        return joukkue;
     }
     
     

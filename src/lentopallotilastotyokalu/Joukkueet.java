@@ -73,6 +73,65 @@ public class Joukkueet implements Iterable<Joukkue>{
     }
     
     
+    /** 
+     * Poistaa joukkueen jolla on valittu tunnusnumero  
+     * @param id poistettavan joukkueen tunnusnumero 
+     * @return 1 jos poistettiin, 0 jos ei löydy 
+     * @example 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *  Joukkueet joukkueet = new Joukkueet();
+     *  Joukkue joukkue1 = new Joukkue(), joukkue2 = new Joukkue();
+     *  joukkue1.rekisteroi();
+     *  joukkue2.rekisteroi(); 
+     *  joukkue1.taytaPuulaakiTiedoilla();
+     *  joukkue2.taytaPuulaakiTiedoilla();
+     *  joukkueet.lisaa(joukkue1); joukkueet.lisaa(joukkue2); 
+     *  int id1 = joukkue1.getTunnusNro(); 
+     *  joukkueet.poista(id1+1) === 1; 
+     *  joukkueet.etsiId(id1+1) === -1; joukkueet.getLkm() === 1; 
+     *  joukkueet.poista(id1) === 1; joukkueet.getLkm() === 0;  
+     * </pre> 
+     *  
+     */ 
+    public int poista(int id) { 
+        int ind = etsiId(id); 
+        if (ind < 0) return 0; 
+        lkm--; 
+        for (int i = ind; i < lkm; i++) 
+            alkiot[i] = alkiot[i + 1]; 
+        alkiot[lkm] = null; 
+        muutettu = true; 
+        return 1; 
+    }
+    
+    
+    /** 
+     * Etsii joukkueen id:n perusteella 
+     * @param id tunnusnumero, jonka mukaan etsitään 
+     * @return löytyneen joukkueen indeksi tai -1 jos ei löydy 
+     * <pre name="test"> 
+     * #THROWS SailoException  
+     *  Joukkueet joukkueet = new Joukkueet();
+     *  Joukkue joukkue1 = new Joukkue(), joukkue2 = new Joukkue();
+     *  joukkue1.rekisteroi();
+     *  joukkue2.rekisteroi(); 
+     *  joukkue1.taytaPuulaakiTiedoilla();
+     *  joukkue2.taytaPuulaakiTiedoilla(); 
+     *  joukkueet.lisaa(joukkue1); joukkueet.lisaa(joukkue2); 
+     *  int id1 = joukkue1.getTunnusNro();  
+     *  joukkueet.etsiId(id1+1) === 1; 
+     *  joukkueet.etsiId(id1+2) === -1;
+     *  joukkueet.etsiId(id1) === 0; 
+     * </pre> 
+     */ 
+    public int etsiId(int id) { 
+        for (int i = 0; i < lkm; i++) 
+            if (id == alkiot[i].getTunnusNro()) return i; 
+        return -1; 
+    }
+    
+    
     /**
      * Palauttaa viitteen i:teen joukkueeseen.
      * @param i monennenko joukkueen viite halutaan

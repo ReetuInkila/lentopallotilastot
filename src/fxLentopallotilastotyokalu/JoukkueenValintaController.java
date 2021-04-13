@@ -17,26 +17,32 @@ import fi.jyu.mit.fxgui.ModalController;
  */
 public class JoukkueenValintaController implements ModalControllerInterface<Joukkue> {
 
+    
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
     private Joukkue vastaus;
+    
     
     @FXML private void handleAvaa() {
         avaaJoukkue();
     }
 
+    
     @FXML private void handleLisaaJoukkue() {
         uusiJoukkue();       
     }
 
+    
     @FXML private void handlePoistaJoukkue() {
         poistaJoukkue();
     }   
 
+    
 ///==================================================================================================================================================================
 // Ei suoraan käyttöliittymään liittyvää koodia
     
     private static Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Joukkue joukkueKohdalla;
+    
     
     /**
      * Valitsee klikatun joukkueen
@@ -45,6 +51,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         joukkueKohdalla = chooserJoukkueet.getSelectedObject();
         if (joukkueKohdalla == null) return;
     }
+    
     
     /**
      * Avaa valitun joukkueen tilastotyökalussa
@@ -55,6 +62,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         vastaus = joukkueKohdalla;
         ModalController.closeStage(chooserJoukkueet);
     }
+    
     
     /**
      * Lisätään tilastotyökaluun uusi joukkue
@@ -73,6 +81,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         hae();
     }
     
+    
     /**
      * Avaa varmistus dialogin ja poistaa valittuna olevan joukkeen 
      */
@@ -80,8 +89,8 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         valitseJoukkue();
         boolean poistetaanko = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko joukkue: " + joukkueKohdalla.getNimi(), "Kyllä", "Ei"); 
-        if (poistetaanko == true ) Dialogs.showMessageDialog("Ei osata poistaa joukkuetta");
-        // TODO: lisää joukkueen poistaminen
+        if (poistetaanko == true ) lentopallotilastotyokalu.poista(joukkueKohdalla);
+        hae();
     }
     
     
@@ -116,6 +125,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         return ModalController.showModal(JoukkueenValintaController.class.getResource("JoukkueenValintaView.fxml"),"Valitse Joukkue", modalityStage, oletus);   
     }
 
+    
     /**
      * Mitä tehdään kun dialogi on näytetty
      */
@@ -123,6 +133,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     public void handleShown() {
         hae();
     }
+    
     
     /**
      * Mahdollinen alustustieto dialogin sisälle
@@ -132,6 +143,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         //       
     }
 
+    
     /**
      *Kutsuu tätä kun dialogi on piilotettu ja tulos pitää palauttaa
      */
@@ -139,5 +151,4 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     public Joukkue getResult() {
         return vastaus;
     }
-
 }
