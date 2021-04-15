@@ -65,7 +65,7 @@
          <children>
             <ScrollPane fx:id="panelPelaaja" hbarPolicy="NEVER" prefHeight="171.0" prefWidth="483.0" vbarPolicy="NEVER">
                <content>
-                  <TitledPane animated="false" collapsible="false" prefHeight="167.0" prefWidth="481.0" text="Pelaajan tiedot">
+                  <TitledPane animated="false" collapsible="false" prefHeight="155.0" prefWidth="481.0" text="Pelaajan tiedot">
                      <content>
                         <GridPane prefHeight="162.0" prefWidth="479.0">
                           <columnConstraints>
@@ -94,11 +94,11 @@
                </VBox.margin>
             </ScrollPane>
             <Label fx:id="labelHuomautus" prefHeight="17.0" prefWidth="483.0" />
-            <ScrollPane fx:id="panelTilastot" prefHeight="245.0" prefWidth="483.0">
+            <ScrollPane fx:id="panelTilastot" hbarPolicy="ALWAYS" prefHeight="245.0" prefWidth="483.0" vbarPolicy="NEVER">
                <content>
-                  <TitledPane animated="false" collapsible="false" prefHeight="243.0" prefWidth="481.0" text="Viimeisimmät tilastot">
+                  <TitledPane animated="false" collapsible="false" prefHeight="225.0" prefWidth="481.0" text="Viimeisimmät tilastot">
                      <content>
-                        <GridPane prefHeight="209.0" prefWidth="479.0">
+                        <GridPane fx:id="gridTilastot" prefHeight="209.0" prefWidth="479.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

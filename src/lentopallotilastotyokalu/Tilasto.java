@@ -40,6 +40,64 @@ public class Tilasto {
     }
     
     
+    /** 
+     * Antaa k:n kentän sisällön merkkijonona 
+     * @param k monenenko kentän sisältö palautetaan 
+     * @return kentän sisältö merkkijonona 
+     */ 
+    public String getKentta(int k) { 
+        switch ( k ) { 
+        case 0: return "" + pId; 
+        case 1: return "" + paiva; 
+        case 2: return "" + vastustaja;
+        case 3: return "" + syotto;
+        case 4: return "" + assa;
+        case 5: return "" + nosto;
+        case 6: return "" + piste;
+        case 7: return "" + virhe;
+        default: return "Ei toimi"; 
+        } 
+    }
+    
+    
+    /**
+     * Palauttaa k:tta jäsenen kenttää vastaavan kysymyksen
+     * @param k kuinka monennen kentän kysymys palautetaan (0-alkuinen)
+     * @return k:netta kenttää vastaava kysymys
+     */
+    public String getKysymys(int k) {
+        switch ( k ) {
+        case 0: return "pId";
+        case 1: return "Päivä"; 
+        case 2: return "Vastustaja";
+        case 3: return "Syötöt";
+        case 4: return "Ässät";
+        case 5: return "Nostot";
+        case 6: return "Pisteet";
+        case 7: return "Virheet";
+        default: return "Ei toimi";
+        }
+    }
+    
+    
+    /**
+     * Palauttaa tilaston kenttien lukumäärän
+     * @return kenttien lukumäärä
+     */
+    public int getKenttia() {
+        return 8;
+    }
+
+
+    /**
+     * Eka kenttä joka on mielekäs kysyttäväksi
+     * @return ekan kentän indeksi
+     */
+    public int ekaKentta() {
+        return 1;
+    }
+    
+    
     /**
      * Alustetaan tietyn pelaajan tilasto.  
      * @param pId pelaajan id numero 

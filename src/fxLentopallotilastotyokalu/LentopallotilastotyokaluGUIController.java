@@ -9,7 +9,6 @@ import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
-import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
+import javafx.scene.layout.GridPane;
 import lentopallotilastotyokalu.Joukkue;
 import lentopallotilastotyokalu.Lentopallotilastotyokalu;
 import lentopallotilastotyokalu.Pelaaja;
@@ -43,6 +42,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML private TextField numero;
     @FXML private TextField pelipaikka;
     @FXML private Label labelHuomautus;
+    @FXML private GridPane gridTilastot;
 
     
     @Override
@@ -52,8 +52,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     
     @FXML private void handleLisaaPelaaja() {
-        uusiPelaaja();
-        // TODO: korvaa muokkattavalla pelaajalla 
+        uusiPelaaja(); 
     }
     
     
@@ -123,6 +122,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private Lentopallotilastotyokalu lentopallotilastotyokalu;
     private Pelaaja pelaajaKohdalla;
     private static Pelaaja apupelaaja = new Pelaaja();
+    private static Tilasto aputilasto = new Tilasto();
     private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
     private String kansio = "tilastotyokalu";
@@ -134,15 +134,10 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     
     /**
-     * Tekee tarvittavat alustukset, nyt vaihdetaan GridPanen tilalle
-     * yksi iso tekstikenttä, johon voidaan tulostaa jäsenten tiedot.
+     * Tekee tarvittavat alustukset,
      * Alustetaan myös pelaajalistan kuuntelija 
      */
     private void alusta() {
-        panelTilastot.setContent(areaTilastot);
-        areaTilastot.setFont(new Font("Courier New", 12));
-        panelTilastot.setFitToHeight(true);
-        panelTilastot.setFitToWidth(true);
         
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
@@ -151,8 +146,11 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         for (int k = apupelaaja.ekaKentta(); k < apupelaaja.getKenttia(); k++) 
             cbKentat.add(apupelaaja.getKysymys(k), null); 
         cbKentat.getSelectionModel().select(1);
-
-
+        
+        gridTilastot.getChildren().clear();
+        for (int k = 0; k < aputilasto.getKenttia()-aputilasto.ekaKentta(); k++) 
+            gridTilastot.add(new Label(aputilasto.getKysymys(k+aputilasto.ekaKentta())), 0, k); 
+       
     }
     
     
@@ -283,9 +281,8 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     
     /**
-     * Näyttää listasta valitun pelaajan tiedot ja tilastot, tilapäisesti kahteen isoon teksti-kenttään
+     * Näyttää listasta valitun pelaajan tiedot 
      */
-    @SuppressWarnings("resource")
     private void naytaPelaaja() {
         areaTilastot.setText("");
         pelaajaKohdalla = chooserPelaajat.getSelectedObject();
@@ -294,10 +291,58 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         nimi.setText(pelaajaKohdalla.getNimi());
         numero.setText(String.valueOf(pelaajaKohdalla.getPelinumero()));
         pelipaikka.setText(pelaajaKohdalla.getPelipaikka());
+        naytaTilastot(pelaajaKohdalla);
+    }
+    
+    /**
+     * Näyttää listasta valitun pelaajan tilastot
+     * @param pelaaja jonka tilastot näytetään
+     */
+    private void naytaTilastot(Pelaaja pelaaja) {
+        gridTilastot.getChildren().clear();
+        for (int k = 0; k < aputilasto.getKenttia()-aputilasto.ekaKentta(); k++) 
+            gridTilastot.add(new Label(aputilasto.getKysymys(k+aputilasto.ekaKentta())), 0, k);
         
-        List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(pelaajaKohdalla);
-        for (Tilasto til: tilastot)
-            til.tulosta(TextAreaOutputStream.getTextPrintStream(areaTilastot));
+        List<Tilasto> tilastot = lentopallotilastotyokalu.annaTilastot(pelaaja);
+        if (tilastot.isEmpty()) return;
+        String paiva = tilastot.get(0).getKentta(1);
+        String vastustaja = tilastot.get(0).getKentta(2);
+        int syottoja = 0;
+        int assia = 0;
+        int nostoja = 0;
+        int pisteita = 0;
+        int virheita = 0;
+        int i = 1;
+
+        for (Tilasto til: tilastot) {
+            if (til.getKentta(1).contains(paiva) && til.getKentta(2).contains(vastustaja)) {
+                syottoja += Integer.parseInt(til.getKentta(3));
+                assia += Integer.parseInt(til.getKentta(4));
+                nostoja += Integer.parseInt(til.getKentta(5));
+                pisteita += Integer.parseInt(til.getKentta(6));
+                virheita += Integer.parseInt(til.getKentta(7));
+            }else {
+                //gridTilastot.addColumn(i, new TextField(vastustaja));
+                gridTilastot.add(new TextField(paiva), i, 0);
+                gridTilastot.add(new TextField(vastustaja), i, 1);
+                gridTilastot.add(new TextField(Integer.toString(syottoja)), i, 2);
+                gridTilastot.add(new TextField(Integer.toString(assia)), i, 3);
+                gridTilastot.add(new TextField(Integer.toString(nostoja)), i, 4);
+                gridTilastot.add(new TextField(Integer.toString(pisteita)), i, 5);
+                gridTilastot.add(new TextField(Integer.toString(virheita)), i, 6); 
+                i++;
+                paiva = til.getKentta(1);
+                vastustaja = til.getKentta(2);    
+            }
+            gridTilastot.add(new TextField(paiva), i, 0);
+            gridTilastot.add(new TextField(vastustaja), i, 1);
+            gridTilastot.add(new TextField(Integer.toString(syottoja)), i, 2);
+            gridTilastot.add(new TextField(Integer.toString(assia)), i, 3);
+            gridTilastot.add(new TextField(Integer.toString(nostoja)), i, 4);
+            gridTilastot.add(new TextField(Integer.toString(pisteita)), i, 5);
+            gridTilastot.add(new TextField(Integer.toString(virheita)), i, 6); 
+        }
+            
     }
     
     
