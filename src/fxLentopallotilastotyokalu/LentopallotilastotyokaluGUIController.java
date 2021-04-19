@@ -1,10 +1,15 @@
 package fxLentopallotilastotyokalu;
 
+import javafx.scene.input.MouseEvent;
+
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
@@ -12,6 +17,7 @@ import fi.jyu.mit.fxgui.ModalController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -78,8 +84,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     
     @FXML private void handleApua() {
-        ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("HelpView.fxml"), "Lentopallo tilastotyökalu", null, "");
-        // TODO: tarkenna ohjeita tai linkitä sivulle
+        avustus();
     }
 
     
@@ -89,8 +94,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
     
     @FXML private void handlePoistaOttelu() {
-        Dialogs.showMessageDialog("Ei osata poistaa ottelua");
-        // TODO: korvaa ottelun poistolla 
+        poistaOttelu();
     }
 
     
@@ -112,7 +116,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     @FXML private void handleTietoja() {
         ModalController.showModal(LentopallotilastotyokaluGUIController.class.getResource("AboutView.fxml"), "Lentopallo tilastotyökalu", null, "");
-        // TODO: tarkenna tietoja ikkunaan
     }
 
     
@@ -126,6 +129,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private TextArea areaTilastot = new TextArea();
     private Joukkue joukkue;
     private String kansio = "tilastotyokalu";
+    private int ottelunIndeksi = -1;
     
     
     private void setTitle(String title) {
@@ -147,10 +151,11 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             cbKentat.add(apupelaaja.getKysymys(k), null); 
         cbKentat.getSelectionModel().select(1);
         
+        panelTilastot = new ScrollPane();
         gridTilastot.getChildren().clear();
+  
         for (int k = 0; k < aputilasto.getKenttia()-aputilasto.ekaKentta(); k++) 
             gridTilastot.add(new Label(aputilasto.getKysymys(k+aputilasto.ekaKentta())), 0, k); 
-       
     }
     
     
@@ -195,6 +200,32 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
             return ex.getMessage();
         }
+    }
+    
+    
+
+    private void poistaOttelu() {
+        if ( ottelunIndeksi < 1) {
+           Dialogs.showMessageDialog("Valitse ensin ottelu!");
+           return;
+        }
+        
+        TextField paiva = new TextField();
+        TextField vastustaja = new TextField();
+
+        for (Node child : gridTilastot.getChildren()) {
+            Integer r = GridPane.getRowIndex(child);
+            Integer c = GridPane.getColumnIndex(child);
+            if( c == ottelunIndeksi && r == 0) paiva = (TextField) child;
+            if( c == ottelunIndeksi && r == 1) vastustaja =(TextField) child;
+            
+        }
+        int poistettuja = lentopallotilastotyokalu.poistaOttelu(paiva.getText(), vastustaja.getText());
+        if (poistettuja > 0) {
+            ottelunIndeksi = -1;
+            naytaPelaaja();
+        }
+            
     }
 
 
@@ -299,6 +330,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * @param pelaaja jonka tilastot näytetään
      */
     private void naytaTilastot(Pelaaja pelaaja) {
+        ottelunIndeksi = -1;
         gridTilastot.getChildren().clear();
         for (int k = 0; k < aputilasto.getKenttia()-aputilasto.ekaKentta(); k++) 
             gridTilastot.add(new Label(aputilasto.getKysymys(k+aputilasto.ekaKentta())), 0, k);
@@ -313,6 +345,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         int pisteita = 0;
         int virheita = 0;
         int i = 1;
+        
 
         for (Tilasto til: tilastot) {
             if (til.getKentta(1).contains(paiva) && til.getKentta(2).contains(vastustaja)) {
@@ -322,27 +355,84 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
                 pisteita += Integer.parseInt(til.getKentta(6));
                 virheita += Integer.parseInt(til.getKentta(7));
             }else {
-                //gridTilastot.addColumn(i, new TextField(vastustaja));
-                gridTilastot.add(new TextField(paiva), i, 0);
-                gridTilastot.add(new TextField(vastustaja), i, 1);
-                gridTilastot.add(new TextField(Integer.toString(syottoja)), i, 2);
-                gridTilastot.add(new TextField(Integer.toString(assia)), i, 3);
-                gridTilastot.add(new TextField(Integer.toString(nostoja)), i, 4);
-                gridTilastot.add(new TextField(Integer.toString(pisteita)), i, 5);
-                gridTilastot.add(new TextField(Integer.toString(virheita)), i, 6); 
+                TextField tp = new TextField(paiva);
+                tp.setEditable(false);
+                tp.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tp)));
+                gridTilastot.add(tp, i, 0);
+                TextField tv = new TextField(vastustaja);
+                tv.setEditable(false);
+                tv.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tv)));
+                gridTilastot.add(tv, i, 1);
+                TextField ts = new TextField(Integer.toString(syottoja));
+                ts.setEditable(false);
+                ts.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(ts)));
+                gridTilastot.add(ts, i, 2);
+                TextField ta = new TextField(Integer.toString(assia));
+                ta.setEditable(false);
+                ta.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(ta)));
+                gridTilastot.add(ta, i, 3);
+                TextField tn = new TextField(Integer.toString(nostoja));
+                tn.setEditable(false);
+                tn.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tn)));
+                gridTilastot.add(tn, i, 4);
+                TextField tpi = new TextField(Integer.toString(pisteita));
+                tpi.setEditable(false);
+                tpi.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tpi)));
+                gridTilastot.add(tpi, i, 5);
+                TextField tvi = new TextField(Integer.toString(virheita));
+                tvi.setEditable(false);
+                tvi.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tvi)));
+                gridTilastot.add(tvi, i, 6); 
                 i++;
                 paiva = til.getKentta(1);
-                vastustaja = til.getKentta(2);    
+                vastustaja = til.getKentta(2);
+                syottoja = 0;
+                syottoja += Integer.parseInt(til.getKentta(3));
+                assia =  0; 
+                assia += Integer.parseInt(til.getKentta(4));
+                nostoja = 0; 
+                nostoja += Integer.parseInt(til.getKentta(5));
+                pisteita = 0; 
+                pisteita += Integer.parseInt(til.getKentta(6));
+                virheita = 0; 
+                virheita += Integer.parseInt(til.getKentta(7));
             }
-            gridTilastot.add(new TextField(paiva), i, 0);
-            gridTilastot.add(new TextField(vastustaja), i, 1);
-            gridTilastot.add(new TextField(Integer.toString(syottoja)), i, 2);
-            gridTilastot.add(new TextField(Integer.toString(assia)), i, 3);
-            gridTilastot.add(new TextField(Integer.toString(nostoja)), i, 4);
-            gridTilastot.add(new TextField(Integer.toString(pisteita)), i, 5);
-            gridTilastot.add(new TextField(Integer.toString(virheita)), i, 6); 
+            TextField tp = new TextField(paiva);
+            tp.setEditable(false);
+            tp.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tp)));
+            gridTilastot.add(tp, i, 0);
+            TextField tv = new TextField(vastustaja);
+            tv.setEditable(false);
+            tv.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tv)));
+            gridTilastot.add(tv, i, 1);
+            TextField ts = new TextField(Integer.toString(syottoja));
+            ts.setEditable(false);
+            ts.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(ts)));
+            gridTilastot.add(ts, i, 2);
+            TextField ta = new TextField(Integer.toString(assia));
+            ta.setEditable(false);
+            ta.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(ta)));
+            gridTilastot.add(ta, i, 3);
+            TextField tn = new TextField(Integer.toString(nostoja));
+            tn.setEditable(false);
+            tn.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tn)));
+            gridTilastot.add(tn, i, 4);
+            TextField tpi = new TextField(Integer.toString(pisteita));
+            tpi.setEditable(false);
+            tpi.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tpi)));
+            gridTilastot.add(tpi, i, 5);
+            TextField tvi = new TextField(Integer.toString(virheita));
+            tvi.setEditable(false);
+            tvi.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tvi)));
+            gridTilastot.add(tvi, i, 6); 
+              
         }
-            
+ 
+    }
+    
+    
+    private void valitseOttelu(int ottelunI) {
+        ottelunIndeksi = ottelunI;
     }
     
     
@@ -373,15 +463,32 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         hae(pelaajaKohdalla.getTunnusNro());
         naytaHuomautus(null);
     }
+    
        
     private void naytaHuomautus(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelHuomautus.setText("");
-            labelHuomautus.getStyleClass().add("normaali");
+            labelHuomautus.getStyleClass().clear();
             return;
         }
         labelHuomautus.setText(virhe);
         labelHuomautus.getStyleClass().add("huomautus");
+    }
+
+    
+    /**
+     * Näytetään ohjelman suunnitelma erillisessä selaimessa.
+     */
+    private void avustus() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2021k/ht/lrtinkiv");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
     }
 
     

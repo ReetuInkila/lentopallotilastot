@@ -103,6 +103,38 @@ public class Tilastot implements Iterable<Tilasto>{
         alkiot.remove(viimeinen);
         muutettu = true;
     } 
+    
+    
+    /** poistaa tilastoista ottelun tilastot
+     * @param paiva päivä minkä mukaan tilastoja poistetaan
+     * @param vastustaja minkä mukaan tilastoja poistetaan
+     * @return poistettujen tilastojen määrä
+     * @example
+     * <pre name="test">
+     * Tilastot tilastot = new Tilastot(); 
+     * Tilasto suorite1 = new Tilasto(1, "22.12.2121", "Puulaaki", "Ässä");
+     * Tilasto suorite2 = new Tilasto(3, "22.12.2121","VaLePa", "Piste"); 
+     * Tilasto suorite3 = new Tilasto(5, "23.12.2121","Puulaaki", "Piste");
+     * Tilasto suorite4 = new Tilasto(2, "23.12.2121","Puulaaki", "Piste");
+     * tilastot.lisaa(suorite1); tilastot.lisaa(suorite2); tilastot.lisaa(suorite3); tilastot.lisaa(suorite4);
+     * tilastot.getLkm() === 4;
+     * tilastot.poistaOttelunTilastot("22.12.2121", "Puulaaki"); tilastot.getLkm() === 3;
+     * tilastot.poistaOttelunTilastot("22.12.2121", "VaLePa"); tilastot.getLkm() === 2; 
+     * tilastot.poistaOttelunTilastot("23.12.2121", "Puulaaki"); tilastot.getLkm() === 0; 
+     * </pre>
+     */
+    public int poistaOttelunTilastot(String paiva, String vastustaja) {
+        int poistettuja = 0;
+        for(Iterator<Tilasto> it = alkiot.iterator(); it.hasNext();) {
+            Tilasto tilasto = it.next();
+            if (tilasto.getKentta(1).contains(paiva) && tilasto.getKentta(2).contains(vastustaja)) {
+                it.remove();
+                poistettuja++;
+            }
+        }
+        if (poistettuja > 0) muutettu = true;
+        return poistettuja;
+    }
 
     
     /**

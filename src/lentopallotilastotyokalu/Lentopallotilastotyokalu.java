@@ -47,6 +47,16 @@ public class Lentopallotilastotyokalu {
         int ret = joukkueet.poista(poistettava.getTunnusNro());  
         return ret; 
     }
+    
+    
+    /** poistaa lentopallotilastotyökalusta ottelun tilastotS
+     * @param paiva päivä minkä mukaan tilastoja poistetaan
+     * @param vastustaja minkä mukaan tilastoja poistetaan
+     * @return poistettujen tilastojen määrä
+     */
+    public int poistaOttelu(String paiva, String vastustaja) {
+        return tilastot.poistaOttelunTilastot(paiva, vastustaja);
+    }
 
     
     

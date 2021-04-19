@@ -39,7 +39,6 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     
     @FXML private void handleTallenna() throws SailoException {
         tallennaTilasto();
-        // TODO: korvaa tilaston tallentamisella
     }
 
     
