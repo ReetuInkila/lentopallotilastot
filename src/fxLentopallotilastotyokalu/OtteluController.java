@@ -92,7 +92,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
             vastustaja = textVastustaja.getText();
             paiva = pickPaiva.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             suorite = chooserTilastot.getSelectedObject();
-            if (vastustaja.equals("") || paiva.equals("") || suorite.equals(""))return;
+            if (vastustaja.equals("") || paiva.equals("") || suorite.equals("")) Dialogs.showMessageDialog("Tarkista vastustaja, p‰iv‰ ja suorite!");
         }catch ( java.lang.NullPointerException e) {
             Dialogs.showMessageDialog("Tilastoa ei voitu tallentaa.");
             return;
@@ -105,7 +105,7 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
     
     
     /**
-     * Avataan varmistus ikkuna tilaston poistamiselle ja siirryt‰‰n tilaston poistamiseen jos poistaminen valittu
+     * Avataan varmistus ikkuna viimeisimm‰n tilaston poistamiselle ja siirryt‰‰n tilaston poistamiseen jos poistaminen valittu
      */
     private void poistaTilasto() {
         String tilasto = labelViimeisin.getText();
@@ -130,7 +130,6 @@ public class OtteluController implements ModalControllerInterface<Joukkue>  {
      */
     private void valitsePelaaja() {
         pelaajaKohdalla = chooserPelaajat.getSelectedObject();
-        if (pelaajaKohdalla == null) return;
     }
     
     

@@ -14,8 +14,7 @@ import java.util.NoSuchElementException;
 /** Luokka Joukkueet
  *  pit‰‰ yll‰ varsinaista joukkuerekisteri‰, eli osaa: 
  *  -lis‰t‰ ja poistaa joukkueen                
- *  -lukea ja kirjoittaa joukkueiden tiedostoon      
- *  -osaa etsi‰                        
+ *  -lukea ja kirjoittaa joukkueiden tiedostoon                              
  * @author Reetu Inkil‰
  * @version Feb 22, 2021
  *
@@ -197,7 +196,7 @@ public class Joukkueet implements Iterable<Joukkue>{
     
     
     /**
-     * Luetaan aikaisemmin annetun nimisest tiedostosta
+     * Luetaan aikaisemmin annetun nimisest‰ tiedostosta
      * @param nimi uusi nimi tiedostolle mit‰ luetaan
      * @throws SailoException jos tulee poikkeus
      */

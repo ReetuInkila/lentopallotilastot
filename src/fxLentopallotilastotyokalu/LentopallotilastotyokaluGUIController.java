@@ -41,7 +41,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     @FXML private Label labelJoukkue;
     @FXML private TextField hakuehto;
     @FXML private ComboBoxChooser<String> cbKentat;
-    @FXML private ScrollPane panelPelaaja;
     @FXML private ScrollPane panelTilastot;
     @FXML private ListChooser<Pelaaja> chooserPelaajat;
     @FXML private TextField nimi;
@@ -130,8 +129,12 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     private Joukkue joukkue;
     private String kansio = "tilastotyokalu";
     private int ottelunIndeksi = -1;
+   
     
-    
+    /**
+     * Asettaa ikkunalle otsikon
+     * @param title
+     */
     private void setTitle(String title) {
         ModalController.getStage(hakuehto).setTitle(title);
     }
@@ -139,10 +142,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     /**
      * Tekee tarvittavat alustukset,
-     * Alustetaan myˆs pelaajalistan kuuntelija 
+     * Alustetaan pelaajalistan kuuntelija, hakuehto ikkuna ja tilastot kentt‰.
      */
     private void alusta() {
-        
         chooserPelaajat.clear();
         chooserPelaajat.addSelectionListener(e -> naytaPelaaja());
         
@@ -153,7 +155,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         
         panelTilastot = new ScrollPane();
         gridTilastot.getChildren().clear();
-  
         for (int k = 0; k < aputilasto.getKenttia()-aputilasto.ekaKentta(); k++) 
             gridTilastot.add(new Label(aputilasto.getKysymys(k+aputilasto.ekaKentta())), 0, k); 
     }
@@ -189,7 +190,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
 
    
     /**
-     * Tietojen tallennus
+     * Tallentaa tiedot
      * @return null jos onnistuu, muuten virhe tekstin‰
      */
     private String tallenna() {
@@ -203,7 +204,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     }
     
     
-
+    /**
+     * Avaa varmistusdialogin ja poistaa valitun ottelun tilastotyˆkalusta
+     */
     private void poistaOttelu() {
         if ( ottelunIndeksi < 1) {
            Dialogs.showMessageDialog("Valitse ensin ottelu!");
@@ -217,15 +220,18 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             Integer r = GridPane.getRowIndex(child);
             Integer c = GridPane.getColumnIndex(child);
             if( c == ottelunIndeksi && r == 0) paiva = (TextField) child;
-            if( c == ottelunIndeksi && r == 1) vastustaja =(TextField) child;
-            
+            if( c == ottelunIndeksi && r == 1) vastustaja =(TextField) child;   
+        }
+        boolean vastaus = Dialogs.showQuestionDialog("Poisto!", "Haluatko poistaa kaikki ottelun: " + paiva.getText() + " " + vastustaja.getText() + ", tiedot?", "Kyll‰", "Ei");
+        if (vastaus == false ) {
+            ottelunIndeksi = -1;
+            return;
         }
         int poistettuja = lentopallotilastotyokalu.poistaOttelu(paiva.getText(), vastustaja.getText());
         if (poistettuja > 0) {
             ottelunIndeksi = -1;
             naytaPelaaja();
-        }
-            
+        }       
     }
 
 
@@ -234,8 +240,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
      * @return true jos tallennus onnistuu
      */
     public boolean voikoSulkea() {
-        tallenna();
-        return true;
+        String s = tallenna();
+        if (s == null) return true;
+        return false;
     }
 
     
@@ -298,9 +305,10 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         chooserPelaajat.setSelectedIndex(index); // t‰st‰ tulee muutosviesti joka n‰ytt‰‰ j‰senen
     }
 
-        
-    
-    
+       
+    /**
+     * Avaa varmistus dialogin ja poistaa valitun pelaajan tilastotyˆkalusta
+     */
     private void poistaPelaaja() {
         boolean vastaus = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko pelaaja: " + pelaajaKohdalla.getNimi(), "Kyll‰", "Ei"); 
@@ -325,8 +333,9 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         naytaTilastot(pelaajaKohdalla);
     }
     
+    
     /**
-     * N‰ytt‰‰ listasta valitun pelaajan tilastot
+     * N‰ytt‰‰ listasta valitun pelaajan tilastot ryhmiteltyin‰ vastustajan ja p‰iv‰n mukaan
      * @param pelaaja jonka tilastot n‰ytet‰‰n
      */
     private void naytaTilastot(Pelaaja pelaaja) {
@@ -346,7 +355,6 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         int virheita = 0;
         int i = 1;
         
-
         for (Tilasto til: tilastot) {
             if (til.getKentta(1).contains(paiva) && til.getKentta(2).contains(vastustaja)) {
                 syottoja += Integer.parseInt(til.getKentta(3));
@@ -424,20 +432,22 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
             TextField tvi = new TextField(Integer.toString(virheita));
             tvi.setEditable(false);
             tvi.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> valitseOttelu(GridPane.getColumnIndex(tvi)));
-            gridTilastot.add(tvi, i, 6); 
-              
-        }
- 
+            gridTilastot.add(tvi, i, 6);             
+        } 
     }
     
     
+    /**
+     * Valitsee klikatun tilaston indeksin ottelun indeksiksi
+     * @param ottelunI
+     */
     private void valitseOttelu(int ottelunI) {
         ottelunIndeksi = ottelunI;
     }
     
     
     /**
-     * Mahdollistetaan pelaajan tietojen muokkaus
+     * Mahdollistetaan pelaajan tietojen muokkaus ja lis‰t‰‰n labeliin muistutus tallentamisesta
      */
     private void muokkaaPelaajaa() {
         nimi.setEditable(true);
@@ -448,7 +458,7 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
     
     
     /**
-     * Tallentaa pelaajan tietoihin tehdyt muutokset
+     * Tallentaa pelaajan tietoihin tehdyt muutokset, poistaa mahdollisuuden muokata tietoja ja poistaa labelin tallentamisen muistutuksesta
      */
     private void tallennaMuutokset() {
         pelaajaKohdalla = chooserPelaajat.getSelectedObject();
@@ -464,7 +474,11 @@ public class LentopallotilastotyokaluGUIController implements Initializable  {
         naytaHuomautus(null);
     }
     
-       
+    
+    /**
+     * N‰ytt‰‰ huomautuksen labelissa
+     * @param virhe huomautus kentt‰‰n tuotava teksti, jos null poistetaan huomautuksesta punainen taustav‰ri
+     */
     private void naytaHuomautus(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelHuomautus.setText("");

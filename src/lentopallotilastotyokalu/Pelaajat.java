@@ -309,7 +309,6 @@ public class Pelaajat implements Iterable<Pelaaja> {
         return loytyneet; 
     }
 
-
     
     /**
      * Luokka joukkueiden iteroimiseksi.

@@ -72,7 +72,7 @@ public class Tilastot implements Iterable<Tilasto>{
         int n = 0;
         for (Iterator<Tilasto> it = alkiot.iterator(); it.hasNext();) {
             Tilasto tilasto = it.next();
-            if ( tilasto.getPelaajaId() == tunnusNro ) {
+            if ( Integer.parseInt(tilasto.getKentta(0)) == tunnusNro ) {
                 it.remove();
                 n++;
             }
@@ -84,7 +84,7 @@ public class Tilastot implements Iterable<Tilasto>{
     
     
     /** 
-     * Poistaa tilaston jolla on valittu tunnusnumero  
+     * Poistaa tilastoista viimeisen alkion  
      * @example 
      * <pre name="test">  
      * Tilastot tilastot = new Tilastot(); 

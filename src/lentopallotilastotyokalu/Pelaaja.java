@@ -114,13 +114,12 @@ public class Pelaaja {
 
 
     /**
-     * Eka kenttä joka on mielekäs kysyttäväksi
+     * Ekan kentän numero joka on mielekäs kysyttäväksi
      * @return ekan kentän indeksi
      */
     public int ekaKentta() {
         return 2;
     }
-
 
     
     /** 

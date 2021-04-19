@@ -17,7 +17,6 @@ import fi.jyu.mit.fxgui.ModalController;
  */
 public class JoukkueenValintaController implements ModalControllerInterface<Joukkue> {
 
-    
     @FXML private ListChooser<Joukkue> chooserJoukkueet;
     private Joukkue vastaus;
     
@@ -45,11 +44,10 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     
     
     /**
-     * Valitsee klikatun joukkueen
+     * Valitsee listasta klikatun joukkueen
      */
     private void valitseJoukkue() {
         joukkueKohdalla = chooserJoukkueet.getSelectedObject();
-        if (joukkueKohdalla == null) return;
     }
     
     
@@ -65,7 +63,7 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
     
     
     /**
-     * Lisätään tilastotyökaluun uusi joukkue
+     * Lisätään tilastotyökaluun uusi joukkue, jolle kysytään nimi erillisessä ikkunassa
      */
     private void uusiJoukkue() {
         String uusiNimi = Dialogs.showInputDialog("Anna joukkueen nimi", "");
@@ -90,6 +88,11 @@ public class JoukkueenValintaController implements ModalControllerInterface<Jouk
         boolean poistetaanko = Dialogs.showQuestionDialog("Poisto?",
                 "Poistetaanko joukkue: " + joukkueKohdalla.getNimi(), "Kyllä", "Ei"); 
         if (poistetaanko == true ) lentopallotilastotyokalu.poista(joukkueKohdalla);
+        try {
+            lentopallotilastotyokalu.tallenna();
+        } catch (SailoException e) {
+            e.printStackTrace();
+        }
         hae();
     }
     

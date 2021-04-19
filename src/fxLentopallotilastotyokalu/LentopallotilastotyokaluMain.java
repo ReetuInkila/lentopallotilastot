@@ -17,8 +17,7 @@ import javafx.fxml.FXMLLoader;
 public class LentopallotilastotyokaluMain extends Application {
     @Override
     public void start(Stage primaryStage) {
-        try {
-            
+        try { 
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("LentopallotilastotyokaluGUIView.fxml"));
             final Pane root = (Pane)ldr.load();
             final LentopallotilastotyokaluGUIController tyokaluCtrl = (LentopallotilastotyokaluGUIController)ldr.getController();
@@ -27,13 +26,12 @@ public class LentopallotilastotyokaluMain extends Application {
             scene.getStylesheets().add(getClass().getResource("lentopallotilastotyokalu.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Lentopallo tilastotyokalu");
-           
 
             primaryStage.setOnCloseRequest((event) -> {
                     if ( !tyokaluCtrl.voikoSulkea() ) event.consume();
                 });
+            
             Lentopallotilastotyokalu lentopallotilastotyokalu = new Lentopallotilastotyokalu(); 
-
             tyokaluCtrl.setLentopallotilastotyokalu(lentopallotilastotyokalu);
             
             primaryStage.show();

@@ -187,6 +187,7 @@ public class Tilasto {
      *  Tilasto tilasto = new Tilasto();
      *  tilasto.parse("4   |26.1.2021    |Karvapallot   |1     |0      |0     |0      |0      |");
      *  tilasto.toString() === "4|26.1.2021|Karvapallot|1|0|0|0|0|";
+     *  tilasto.getPelaajaId() === 4;
      * </pre>
      */
     @Override
