@@ -188,10 +188,21 @@ public class Tilasto {
      *  tilasto.parse("4   |26.1.2021    |Karvapallot   |1     |0      |0     |0      |0      |");
      *  tilasto.toString() === "4|26.1.2021|Karvapallot|1|0|0|0|0|";
      *  tilasto.getPelaajaId() === 4;
+     *  
+     *  Tilasto tilasto2 = new Tilasto();
+     *  tilasto2.parse("4   |26.1.2021    |Karva\\|pallot   |1     |0      |0     |0      |0      |");
+     *  tilasto2.toString() === "4|26.1.2021|Karva\\|pallot|1|0|0|0|0|";
+     *  tilasto2.getKentta(2) === "Karva|pallot";
      * </pre>
      */
     @Override
     public String toString() {
+        if (vastustaja.indexOf('|')>-1) {
+            String v = vastustaja.substring(0, vastustaja.indexOf('|') )
+                    + "\\"
+                    + vastustaja.substring(vastustaja.indexOf('|') );
+            return pId + "|" + paiva + "|" + v + "|" + syotto + "|" + assa + "|" + nosto + "|" + piste + "|" + virhe + "|";
+        }
         return pId + "|" + paiva + "|" + vastustaja + "|" + syotto + "|" + assa + "|" + nosto + "|" + piste + "|" + virhe + "|";
       
     }
@@ -204,7 +215,10 @@ public class Tilasto {
       StringBuilder sb = new StringBuilder(tiedot);
       pId = Mjonot.erota(sb, '|', pId);
       paiva = Mjonot.erota(sb, '|', paiva);
-      vastustaja = Mjonot.erota(sb, '|', vastustaja);
+      if (sb.indexOf("\\") > -1) {
+          vastustaja = Mjonot.erota(sb, '\\', vastustaja) + "|" + Mjonot.erota(sb, '|', vastustaja) + Mjonot.erota(sb, '|', vastustaja);
+      }else
+          vastustaja = Mjonot.erota(sb, '|', vastustaja);
       syotto = Mjonot.erota(sb, '|', syotto);
       assa = Mjonot.erota(sb, '|', assa);
       nosto = Mjonot.erota(sb, '|', nosto);

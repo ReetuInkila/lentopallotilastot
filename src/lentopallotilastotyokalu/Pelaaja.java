@@ -26,7 +26,7 @@ public class Pelaaja {
     private String pelipaikka = "";       
     private static int seuraavaNro = 1;
     
-    
+
     /** 
      * Antaa k:n kentän sisällön merkkijonona 
      * @param k monenenko kentän sisältö palautetaan 
@@ -297,21 +297,29 @@ public class Pelaaja {
      *  Pelaaja pelaaja = new Pelaaja();
      *  pelaaja.parse("1   |1     |2          |Eemil Tervaportti |Passari        | ");
      *  pelaaja.toString() === "1|1|2|Eemil Tervaportti|Passari|";
-     *
-     *  pelaaja.rekisteroi();
-     *  int n = pelaaja.getTunnusNro();
-     *  pelaaja.parse(""+(n+20));       // Otetaan merkkijonosta vain tunnusnumero
-     *  pelaaja.rekisteroi();           // ja tarkistetaan että seuraavalla kertaa tulee yhtä isompi
-     *  pelaaja.getTunnusNro() === n+20+1;
+     *  
+     *  Pelaaja pelaaja2 = new Pelaaja();
+     *  pelaaja2.parse("1   |1     |2          |Eemil\\|Tervaportti |Passari        | ");
+     *  pelaaja2.getKentta(3) === "Eemil|Tervaportti"; 
+     *  pelaaja2.toString() === "1|1|2|Eemil\\|Tervaportti|Passari|";
+     *  
+     *  Pelaaja pelaaja3 = new Pelaaja();
+     *  pelaaja3.parse("1   |1     |2          |Eemil\\|Tervaportti |Pass\\|ari        | ");
+     *  pelaaja3.getKentta(3) === "Eemil|Tervaportti"; 
+     *  pelaaja3.getKentta(4) === "Pass|ari";
+     *  pelaaja3.toString() === "1|1|2|Eemil\\|Tervaportti|Pass\\|ari|";
      * </pre>
      */
     public void parse(String tiedot) {
       StringBuilder sb = new StringBuilder(tiedot);
-      setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
-      jId = Mjonot.erota(sb, '|', jId);
-      pelinumero = Mjonot.erota(sb, '|', pelinumero);
-      nimi = Mjonot.erota(sb, '|', nimi);
-      pelipaikka = Mjonot.erota(sb, '|', pelipaikka);
+      for (int k = 0; k < getKenttia(); k++) {
+          if (sb.indexOf("\\") < 0 || sb.indexOf("\\") > sb.indexOf("|")) {
+              aseta(k, Mjonot.erota(sb, '|'));
+          } else {
+              String s = Mjonot.erota(sb, '\\') + "|" + Mjonot.erota(sb, '|') +  Mjonot.erota(sb, '|');
+              aseta(k, s);
+          }
+      }           
     }
     
     
@@ -322,10 +330,41 @@ public class Pelaaja {
      *  Pelaaja pelaaja = new Pelaaja();
      *  pelaaja.parse("1   |1     |2          |Eemil Tervaportti |Passari        | ");
      *  pelaaja.toString() === "1|1|2|Eemil Tervaportti|Passari|";
+     *  
+     *  Pelaaja pelaaja2 = new Pelaaja();
+     *  pelaaja2.aseta(3, "nimi|viivalla"); pelaaja2.aseta(4, "pelipaikka|viivalla");
+     *  pelaaja2.toString() === "0|0|0|nimi\\|viivalla|pelipaikka\\|viivalla|";
+     *  
+     *  Pelaaja pelaaja3 = new Pelaaja();
+     *  pelaaja3.aseta(3, "nimi|viivalla"); ;
+     *  pelaaja3.toString() === "0|0|0|nimi\\|viivalla||";
+     *  
+     *  Pelaaja pelaaja4 = new Pelaaja();
+     *  pelaaja4.aseta(4, "pelipaikka|viivalla");
+     *  pelaaja4.toString() === "0|0|0||pelipaikka\\|viivalla|";
      * </pre>
      */
     @Override
     public String toString() {
+        if (nimi.indexOf('|')>-1) {
+            String n = nimi.substring(0, nimi.indexOf('|') )
+                    + "\\"
+                    + nimi.substring(nimi.indexOf('|') );
+            if (pelipaikka.indexOf('|')>-1) {
+                String p = pelipaikka.substring(0, pelipaikka.indexOf('|') )
+                        + "\\"
+                        + pelipaikka.substring(pelipaikka.indexOf('|') );
+                return tunnusNro + "|" + jId + "|" + pelinumero + "|" + n + "|" + p + "|";
+            }
+            return tunnusNro + "|" + jId + "|" + pelinumero + "|" + n + "|" + pelipaikka + "|";
+        }
+        if (pelipaikka.indexOf('|')>-1) {
+            String p = pelipaikka.substring(0, pelipaikka.indexOf('|') )
+                    + "\\"
+                    + pelipaikka.substring(pelipaikka.indexOf('|') );
+            return tunnusNro + "|" + jId + "|" + pelinumero + "|" + nimi + "|" + p + "|";
+        }
+
         return tunnusNro + "|" + jId + "|" + pelinumero + "|" + nimi + "|" + pelipaikka + "|";    
     }
     

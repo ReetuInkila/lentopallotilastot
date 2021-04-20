@@ -104,12 +104,20 @@ public class Joukkue {
      * @example
      * <pre name="test">
      *  Joukkue joukkue = new Joukkue();
+     *  Joukkue joukkue2 = new Joukkue("Joukkue|viivalla");
      *  joukkue.parse("   8  |  Oulun Etta  |");
      *  joukkue.toString() === "8|Oulun Etta|";
+     *  joukkue2.toString() === "0|Joukkue\\|viivalla|";
      * </pre>
      */
     @Override
     public String toString() {
+        if (nimi.indexOf('|')>-1) {
+            String n = nimi.substring(0, nimi.indexOf('|') )
+                    + "\\"
+                    + nimi.substring(nimi.indexOf('|') );
+            return getTunnusNro() + "|" + n + "|";
+        }
         return getTunnusNro() + "|" + nimi + "|";
       
     }
@@ -122,6 +130,10 @@ public class Joukkue {
      *  Joukkue joukkue = new Joukkue();
      *  joukkue.parse("   8  |  Oulun Etta  |");
      *  joukkue.toString() === "8|Oulun Etta|";
+     *  
+     *  Joukkue joukkue2 = new Joukkue();
+     *  joukkue2.parse("   8  |Joukkue\\|viivalla|");
+     *  joukkue2.getNimi() === "Joukkue|viivalla"; 
      *
      *  joukkue.rekisteroi();
      *  int n = joukkue.getTunnusNro();
@@ -133,6 +145,10 @@ public class Joukkue {
     public void parse(String tiedot) {
       StringBuilder sb = new StringBuilder(tiedot);
       setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+      if (sb.indexOf("\\") > -1) {
+          nimi = Mjonot.erota(sb, '\\', nimi) + Mjonot.erota(sb, '|', nimi) + "|" + Mjonot.erota(sb, '|', nimi);
+          return;
+      }
       nimi = Mjonot.erota(sb, '|', nimi);
     }
 
